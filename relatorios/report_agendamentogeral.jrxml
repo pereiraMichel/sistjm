@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report_agendamentogeral" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="ab3a076c-7d6a-4a97-bc59-7af152346810">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString>
+		<![CDATA[select * from agendamento]]>
+	</queryString>
+	<field name="idagendamento" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="data" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="consultor" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="valor" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="consultado" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tconsultado" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="codigo" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="codusuario" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="pago" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<image hAlign="Center">
+				<reportElement x="10" y="8" width="83" height="62" uuid="d3efe879-3ae2-4c6f-a720-192ca1e250fb"/>
+				<imageExpression><![CDATA["C:\\Users\\Michel\\Documents\\NetBeansProjects\\SISTEJM\\src\\br\\com\\sistejm\\images\\logoTJM.jpg"]]></imageExpression>
+			</image>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="627" y="8" width="100" height="20" uuid="05628306-faa8-4993-9ccc-386929d142b2"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField pattern="HH.mm">
+				<reportElement x="736" y="8" width="59" height="20" uuid="149eb735-b45c-4346-b6f6-a67e05221e19"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="22" splitType="Stretch">
+			<staticText>
+				<reportElement x="3" y="0" width="140" height="20" uuid="cf4c78f2-8a3b-4490-afff-0f2f6b0fffa7"/>
+				<text><![CDATA[COMPROVANTE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="143" y="1" width="384" height="20" uuid="8f68c0df-9cd1-43d4-99a9-6be07d063ba8"/>
+				<text><![CDATA[NOME]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="527" y="0" width="100" height="20" uuid="65d2e584-9967-4b5d-b58e-2d75b9b1215c"/>
+				<text><![CDATA[CONSULTOR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="636" y="0" width="100" height="20" uuid="e717b548-8a2f-432d-9134-fcbd422cab68"/>
+				<text><![CDATA[DATA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="736" y="0" width="66" height="20" uuid="c85185fe-2f79-4ec0-a58d-03fb68dc49cd"/>
+				<text><![CDATA[PAGO (S/N)]]></text>
+			</staticText>
+			<line>
+				<reportElement x="3" y="19" width="792" height="1" uuid="c8a0ae0f-4641-4f22-aa01-0686dc10bf0e"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="27" splitType="Stretch">
+			<textField>
+				<reportElement x="527" y="0" width="100" height="20" uuid="9daec83a-4c45-4651-8328-f65a687876d6"/>
+				<textFieldExpression><![CDATA[$F{consultor}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="3" y="20" width="792" height="1" uuid="8a2cd6f5-f74a-4f2c-9aee-88419e3316da"/>
+			</line>
+			<textField>
+				<reportElement x="636" y="1" width="100" height="20" uuid="46a2f0d7-f22b-429f-b17a-a378032128dc"/>
+				<textFieldExpression><![CDATA[$F{data}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="736" y="0" width="63" height="20" uuid="909493d8-0be9-4387-aa23-fc5490200689"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{pago}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="3" y="0" width="140" height="20" uuid="cac492a0-bcb0-4f49-b18e-9932913aedd8"/>
+				<textFieldExpression><![CDATA[$F{codigo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="143" y="1" width="384" height="20" uuid="f2230840-9db0-4382-a905-4618c751a13a"/>
+				<textFieldExpression><![CDATA[$F{consultado}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="24" splitType="Stretch">
+			<textField evaluationTime="Report">
+				<reportElement x="759" y="2" width="40" height="20" uuid="78b0147c-91f0-40fa-a99b-8a541ab6fd76"/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="679" y="2" width="80" height="20" uuid="823191fd-6d2e-432d-a43a-032690652962"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Página "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnFooter>
+</jasperReport>
