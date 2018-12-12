@@ -16,7 +16,9 @@ import java.util.GregorianCalendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 import jxl.write.DateTime;
+import org.hsqldb.Library;
 import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -35,6 +37,29 @@ public class DCoroa extends javax.swing.JDialog {
     public DCoroa(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        preencheCampos();
+        campoPeriodo(false);
+    }
+    
+    public void preencheCampos(){
+        cal = new GregorianCalendar();
+        
+        int mes = cal.get(Calendar.MONTH) + 1;
+        int ano = cal.get(Calendar.YEAR);
+        
+        txtMes.setText(String.valueOf(mes));
+        txtAno.setText(String.valueOf(ano));
+        
+    }
+    
+    public void campoPeriodo(boolean valor){
+        txtMesAno1.setEditable(valor);
+        txtMesAno2.setEditable(valor);
+    }
+    
+    public void exibeTabTodos(){
+        c = new Coroa();
+        c.preencheTabSaidasNConfirmadasGeral(tabMedSaida);
     }
 
     /**
@@ -56,6 +81,7 @@ public class DCoroa extends javax.swing.JDialog {
         labelFotoCoroa = new javax.swing.JLabel();
         txtMes = new javax.swing.JTextField();
         txtAno = new javax.swing.JTextField();
+        dataSelect = new com.toedter.calendar.JDateChooser();
         panelDown = new javax.swing.JPanel();
         labelVersao = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -65,10 +91,14 @@ public class DCoroa extends javax.swing.JDialog {
         btColocar = new javax.swing.JButton();
         btTirar = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        jRadioButton1 = new javax.swing.JRadioButton();
-        jRadioButton2 = new javax.swing.JRadioButton();
+        radioCorrente = new javax.swing.JRadioButton();
+        radioTodos = new javax.swing.JRadioButton();
         calendario = new com.toedter.calendar.JCalendar();
-        dataSelect = new com.toedter.calendar.JDateChooser();
+        labelDataSaida = new javax.swing.JLabel();
+        txtDataSaida = new javax.swing.JTextField();
+        radioPeriodo = new javax.swing.JRadioButton();
+        txtMesAno1 = new javax.swing.JTextField();
+        txtMesAno2 = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -128,15 +158,19 @@ public class DCoroa extends javax.swing.JDialog {
                 .addGap(18, 18, 18)
                 .addComponent(txtAno, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(dataSelect, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(92, 92, 92)
                 .addComponent(btCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         panelTopLayout.setVerticalGroup(
             panelTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(labelTitulo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(labelFotoCoroa, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(panelTopLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(panelTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(dataSelect, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(panelTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(txtData, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(txtCodUser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -145,7 +179,6 @@ public class DCoroa extends javax.swing.JDialog {
                         .addComponent(txtAno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(btCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(15, Short.MAX_VALUE))
-            .addComponent(labelFotoCoroa, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         panelDown.setBackground(new java.awt.Color(255, 255, 255));
@@ -199,13 +232,23 @@ public class DCoroa extends javax.swing.JDialog {
 
         jLabel1.setText("Médium");
 
-        buttonGroup.add(jRadioButton1);
-        jRadioButton1.setSelected(true);
-        jRadioButton1.setText("Do mês corrente");
+        buttonGroup.add(radioCorrente);
+        radioCorrente.setText("Do mês e ano corrente");
+        radioCorrente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                radioCorrenteActionPerformed(evt);
+            }
+        });
 
-        buttonGroup.add(jRadioButton2);
-        jRadioButton2.setText("Todos não confirmados");
+        buttonGroup.add(radioTodos);
+        radioTodos.setText("Todos");
+        radioTodos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                radioTodosActionPerformed(evt);
+            }
+        });
 
+        calendario.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Calendário", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Arial", 0, 14), new java.awt.Color(0, 0, 204))); // NOI18N
         calendario.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 calendarioMouseClicked(evt);
@@ -217,41 +260,66 @@ public class DCoroa extends javax.swing.JDialog {
             }
         });
 
+        labelDataSaida.setText("Data de saída:");
+
+        buttonGroup.add(radioPeriodo);
+        radioPeriodo.setText("Por período (MM/YYYY)");
+        radioPeriodo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                radioPeriodoActionPerformed(evt);
+            }
+        });
+
+        txtMesAno1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtMesAno1KeyReleased(evt);
+            }
+        });
+
+        txtMesAno2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtMesAno2KeyReleased(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(panelTop, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(panelDown, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addContainerGap()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 352, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel1)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jRadioButton1)
-                                        .addGap(75, 75, 75)
-                                        .addComponent(jRadioButton2)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 352, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(btColocar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(btTirar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(radioPeriodo)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(txtMesAno1, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(18, 18, 18)
-                                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 406, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(39, 39, 39))))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(dataSelect, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(81, 81, 81)))
-                        .addComponent(calendario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addComponent(txtMesAno2, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(radioTodos))
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(btColocar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(btTirar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(radioCorrente))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(labelDataSaida)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtDataSaida, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 268, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jLabel1))
+                .addGap(18, 18, 18)
+                .addComponent(calendario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(panelDown, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -261,27 +329,36 @@ public class DCoroa extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(16, 16, 16)
+                        .addComponent(calendario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel1)
-                        .addGap(1, 1, 1)
-                        .addComponent(dataSelect, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jRadioButton1)
-                            .addComponent(jRadioButton2))
-                        .addGap(18, 18, 18)
+                        .addGap(12, 12, 12)
+                        .addComponent(radioTodos)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(3, 3, 3)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(labelDataSaida)
+                                    .addComponent(txtDataSaida, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(radioCorrente)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(radioPeriodo)
+                            .addComponent(txtMesAno1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtMesAno2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(8, 8, 8)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(btColocar)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(btTirar))
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
-                        .addComponent(panelDown, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(calendario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btTirar)))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 57, Short.MAX_VALUE)
+                .addComponent(panelDown, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
@@ -317,9 +394,62 @@ public class DCoroa extends javax.swing.JDialog {
         java.util.Date g = calendario.getDate();
         SimpleDateFormat f = new SimpleDateFormat("dd/MM/yyyy");
         SimpleDateFormat fsql = new SimpleDateFormat("yyyy-MM-dd"); 
-        txtData.setText(f.format(g));        // TODO add your handling code here:
+        txtData.setText(f.format(g));
+        txtDataSaida.setText(f.format(g));
+// TODO add your handling code here:
     }//GEN-LAST:event_calendarioPropertyChange
 
+    private void txtMesAno1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtMesAno1KeyReleased
+
+        preencheBarra(txtMesAno1);
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtMesAno1KeyReleased
+
+    private void txtMesAno2KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtMesAno2KeyReleased
+
+        preencheBarra(txtMesAno2);
+        if(txtMesAno2.getText().length() >= 7){
+            c = new Coroa();
+            int mes1 = Integer.valueOf(txtMesAno1.getText().substring(0, 1));
+            int ano1 = Integer.valueOf(txtMesAno1.getText().substring(3, 6));
+            int mes2 = Integer.valueOf(txtMesAno2.getText().substring(0, 1));
+            int ano2 = Integer.valueOf(txtMesAno2.getText().substring(3, 6));
+
+            c.preencheTabSaidasPeriodo(tabMedSaida, mes1, ano1, mes2, ano2);
+            
+        }
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtMesAno2KeyReleased
+
+    private void radioPeriodoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioPeriodoActionPerformed
+        campoPeriodo(true);
+        // TODO add your handling code here:
+    }//GEN-LAST:event_radioPeriodoActionPerformed
+
+    private void radioCorrenteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioCorrenteActionPerformed
+
+        campoPeriodo(false);
+        
+        c = new Coroa();
+        c.setMes(Integer.valueOf(txtMes.getText()));
+        c.setAno(Integer.valueOf(txtAno.getText()));
+        c.preencheTabSaidasMesAnoCorrente(tabMedSaida);
+        // TODO add your handling code here:
+    }//GEN-LAST:event_radioCorrenteActionPerformed
+
+    private void radioTodosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioTodosActionPerformed
+
+        campoPeriodo(false);
+        exibeTabTodos();
+        // TODO add your handling code here:
+    }//GEN-LAST:event_radioTodosActionPerformed
+
+    public void preencheBarra(JTextField campo){
+        if(campo.getText().length() > 2){
+            campo.setText(campo.getText() + "/");
+        }        
+    }
+    
     public void exibeMesAno(){
         cal = new GregorianCalendar();
         
@@ -399,21 +529,26 @@ public class DCoroa extends javax.swing.JDialog {
     private com.toedter.calendar.JCalendar calendario;
     private com.toedter.calendar.JDateChooser dataSelect;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JRadioButton jRadioButton1;
-    private javax.swing.JRadioButton jRadioButton2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JLabel labelDataSaida;
     private javax.swing.JLabel labelFotoCoroa;
     private javax.swing.JLabel labelTitulo;
     private javax.swing.JLabel labelVersao;
     private javax.swing.JPanel panelDown;
     private javax.swing.JPanel panelTop;
+    private javax.swing.JRadioButton radioCorrente;
+    private javax.swing.JRadioButton radioPeriodo;
+    private javax.swing.JRadioButton radioTodos;
     private javax.swing.JTable tabMedSaida;
     private javax.swing.JTable tabMedSaidaOrixa;
     private javax.swing.JTextField txtAno;
     private javax.swing.JTextField txtCodMedium;
     private javax.swing.JTextField txtCodUser;
     private javax.swing.JTextField txtData;
+    private javax.swing.JTextField txtDataSaida;
     private javax.swing.JTextField txtMes;
+    private javax.swing.JTextField txtMesAno1;
+    private javax.swing.JTextField txtMesAno2;
     // End of variables declaration//GEN-END:variables
 }

@@ -99,7 +99,7 @@ public class TelaInicial extends javax.swing.JFrame {
         subMenuLogoff.setEnabled(valor);
     }
     public void ocultaMenus(boolean valor){
-        subMenuBaixa.setEnabled(valor);
+        subMenuBaixa.setVisible(valor);
     }
 
     

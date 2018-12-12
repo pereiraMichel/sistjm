@@ -410,16 +410,14 @@ public class Coroa {
         }          
     }
     
-    public void preencheTabSaidasConfirmadas(JTable tabela){
+    public void preencheTabSaidasNConfirmadasGeral(JTable tabela){
         config = new Configuracoes();
-        String sql = "SELECT DISTINCT m.nome FROM mediuns m "
-                + "LEFT JOIN medium_ori mo ON m.idmedium = mo.codMedium  "
-                + "LEFT JOIN tipo_orixa tp ON tp.idtipo_orixa = mo.codTipo "
-                + "LEFT JOIN orixas o ON o.idorixa = mo.cod_orixa";
-//        String sql = "SELECT m.nome, o.nome, tp.tipo, tp.idtipo_orixa FROM mediuns m "
-//                + "LEFT JOIN medium_ori mo ON m.idmedium = mo.codMedium  "
-//                + "LEFT JOIN tipo_orixa tp ON tp.idtipo_orixa = mo.codTipo "
-//                + "LEFT JOIN orixas o ON o.idorixa = mo.cod_orixa";
+        String sql = "SELECT m.nome, m.ativo, tp.nome AS tipo, c.confirma, c.mes, c.ano "
+                + "FROM mediuns m  "
+                + "LEFT JOIN coroa c ON c.codmedium = m.idmedium "
+                + "LEFT JOIN tipocoroa tp ON tp.idtipocoroa = c.codtipocoroa "
+                + "WHERE m.ativo = 1 "
+                + "AND c.confirma = 'n' ";
         
         try{
             con = new Conexao();
@@ -431,17 +429,120 @@ public class Coroa {
             tabela.setModel(medium);
 
             medium.addColumn("Nome");
+            medium.addColumn("Mês");
+            medium.addColumn("Ano");
+            medium.addColumn("Tipo");
             tabela.getColumnModel().getColumn(0).setPreferredWidth(100);
+            tabela.getColumnModel().getColumn(1).setPreferredWidth(20);
+            tabela.getColumnModel().getColumn(2).setPreferredWidth(20);
+            tabela.getColumnModel().getColumn(3).setPreferredWidth(20);
 
             while(rs.next()){
                 String nome = rs.getString("m.nome");
-                if(tabela.getRowCount() % 2 == 0){
-                    tabela.setSelectionBackground(Color.WHITE);
-                }
-                medium.addRow(new Object[]{nome});
+                String mes = rs.getString("c.mes");
+                String ano = rs.getString("c.ano");
+                String tipo = rs.getString("tipo");
+
+                medium.addRow(new Object[]{nome, mes, ano, tipo});
             }
         }catch(Exception ex){
-            config.gravaErroLog("Tentativa de preenchimento da tabela geral do Médium | Orixá. Erro: " + ex.getMessage(), "Tipo de Orixá", "sistejm.tipoorixa");
+            config.gravaErroLog("Tentativa de preenchimento da tabela de saídas do Médium | Orixá. Erro: " + ex.getMessage(), "Tipo de Orixá", "sistejm.tipoorixa");
+        }            
+    }    
+    public void preencheTabSaidasMesAnoCorrente(JTable tabela){
+        config = new Configuracoes();
+        
+        String sql = "SELECT m.nome, m.ativo, tp.nome AS tipo, c.confirma, c.mes, c.ano "
+                + "FROM mediuns m  "
+                + "LEFT JOIN coroa c ON c.codmedium = m.idmedium "
+                + "LEFT JOIN tipocoroa tp ON tp.idtipocoroa = c.codtipocoroa "
+                + "WHERE m.ativo = 1 "
+                + "AND c.confirma = 'n' "
+                + "AND c.mes = " + this.mes + " "
+                + "AND c.ano = " + this.ano;
+        
+//        System.out.println(sql);
+        
+        try{
+            con = new Conexao();
+            conn = con.getConnection();
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery(sql);
+                
+            DefaultTableModel medium = new DefaultTableModel();
+            tabela.setModel(medium);
+
+            medium.addColumn("Nome");
+            medium.addColumn("Mês");
+            medium.addColumn("Ano");
+            medium.addColumn("Tipo");
+            tabela.getColumnModel().getColumn(0).setPreferredWidth(100);
+            tabela.getColumnModel().getColumn(1).setPreferredWidth(20);
+            tabela.getColumnModel().getColumn(2).setPreferredWidth(20);
+            tabela.getColumnModel().getColumn(3).setPreferredWidth(20);
+
+            while(rs.next()){
+                String nome = rs.getString("m.nome");
+                String mes = rs.getString("c.mes");
+                String ano = rs.getString("c.ano");
+                String tipo = rs.getString("tipo");
+
+                medium.addRow(new Object[]{nome, mes, ano, tipo});
+            }
+        }catch(Exception ex){
+            config.gravaErroLog("Tentativa de preenchimento da tabela de saídas do Médium (por mes/ano corrente). Erro: " + ex.getMessage(), "Saída do Médium - por mes/ano corrente", "sistejm.saidacorrente");
+        }            
+    }
+    
+    public void preencheTabSaidasPeriodo(JTable tabela, int mes1, int mes2, int ano1, int ano2){
+        config = new Configuracoes();
+        String complemento = null;
+        
+        if((mes1 == 0 && ano1 == 0) && (mes2 == 0 && ano2 == 0)){
+            complemento = "  AND c.mes BETWEEN " + mes1 +" AND " + mes2 +
+                            "AND c.ano BETWEEN " + ano1 + " AND " + ano2;
+        }else{
+            complemento = "";
+        }
+        
+        String sql = "SELECT m.nome, m.ativo, tp.nome, c.confirma, c.mes, c.ano "
+                + "FROM mediuns m  "
+                + "LEFT JOIN coroa c ON c.codmedium = m.idmedium "
+                + "LEFT JOIN tipocoroa tp ON tp.idtipocoroa = c.codtipocoroa "
+                + "WHERE m.ativo = 1 "
+                + "AND c.confirma = 'n' "
+                + "AND c.mes = " + this.mes
+                + "AND c.ano = " + this.ano
+                + complemento;
+        
+        try{
+            con = new Conexao();
+            conn = con.getConnection();
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery(sql);
+                
+            DefaultTableModel medium = new DefaultTableModel();
+            tabela.setModel(medium);
+
+            medium.addColumn("Nome");
+            medium.addColumn("Mês");
+            medium.addColumn("Ano");
+            medium.addColumn("Tipo");
+            tabela.getColumnModel().getColumn(0).setPreferredWidth(100);
+            tabela.getColumnModel().getColumn(1).setPreferredWidth(20);
+            tabela.getColumnModel().getColumn(2).setPreferredWidth(20);
+            tabela.getColumnModel().getColumn(3).setPreferredWidth(20);
+
+            while(rs.next()){
+                String nome = rs.getString("m.nome");
+                String mes = rs.getString("c.mes");
+                String ano = rs.getString("c.ano");
+                String tipo = rs.getString("tipo");
+
+                medium.addRow(new Object[]{nome, mes, ano, tipo});
+            }
+        }catch(Exception ex){
+            config.gravaErroLog("Tentativa de preenchimento da tabela de saídas do Médium | Orixá. Erro: " + ex.getMessage(), "Tipo de Orixá", "sistejm.tipoorixa");
         }            
     }    
 }
