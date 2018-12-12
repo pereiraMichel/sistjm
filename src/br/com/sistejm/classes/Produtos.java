@@ -157,16 +157,16 @@ public class Produtos {
                 DefaultTableModel tabela = new DefaultTableModel();
                 produto.setModel(tabela);
                 
-                tabela.addColumn("ID");
+//                tabela.addColumn("ID");
                 tabela.addColumn("Produto");
                 
-                produto.getColumnModel().getColumn(0).setPreferredWidth(30);
-                produto.getColumnModel().getColumn(1).setPreferredWidth(100);
+//                produto.getColumnModel().getColumn(0).setPreferredWidth(30);
+                produto.getColumnModel().getColumn(0).setPreferredWidth(100);
                 
                 while(rs.next()){
-                    int idEvento = rs.getInt("idproduto");
+//                    int idEvento = rs.getInt("idproduto");
                     String nomeEvento = rs.getString("produto");
-                    tabela.addRow(new Object[]{idEvento, nomeEvento});
+                    tabela.addRow(new Object[]{nomeEvento});
                 }
                 
 //            }
@@ -208,6 +208,29 @@ public class Produtos {
             config.gravaErroLog("Problemas na busca da tabela de produtos. Erro: " + ex.getMessage() + "\nSQL: " + sql, "Produtos", "sistejm.produtos");
 //            System.out.println("Erro em tabela de produtos. Mensagem: " + ex.getMessage());
         }        
+    }
+    
+    public int retornaIdProduto(String nomeProduto){
+        String sql = "SELECT * FROM produtos WHERE produto = '" + nomeProduto + "'";
+        config = new Configuracoes();
+        
+        try{
+            con = new Conexao();
+            conn = con.getConnection();
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery(sql);
+            
+            rs.next();
+            
+            if(rs.absolute(1)){
+                int id = rs.getInt("idproduto");
+                return id;
+            }
+            
+        }catch(Exception ex){
+            config.gravaErroLog("Problemas na busca da tabela de produtos. Erro: " + ex.getMessage() + "\nSQL: " + sql, "Produtos", "sistejm.produtos");
+        }        
+        return 0;
     }
     
 }

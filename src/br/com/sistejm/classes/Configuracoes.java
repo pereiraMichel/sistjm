@@ -20,6 +20,7 @@ import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -395,8 +396,10 @@ public class Configuracoes {
 //        return novoFormato;
     }
     
-    public void geraCodigoAgendamento(){
+    public String retornaValorDecimal(String valor){
+        String f = new DecimalFormat("#0.##").format(valor);
         
+        return f;
     }
     
     public String retornaFormatoDataNormal(String data){

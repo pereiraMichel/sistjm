@@ -608,6 +608,11 @@ public class DMediumGeral extends javax.swing.JDialog {
         btTrabalhos.setBackground(new java.awt.Color(255, 255, 255));
         btTrabalhos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/sistejm/images/BtTrabalhos.png"))); // NOI18N
         btTrabalhos.setToolTipText("Trabalhos");
+        btTrabalhos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btTrabalhosActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout panelTrabalhosLayout = new javax.swing.GroupLayout(panelTrabalhos);
         panelTrabalhos.setLayout(panelTrabalhosLayout);
@@ -1322,6 +1327,19 @@ public class DMediumGeral extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(null, "Selecione ou cadastre o médium.");
         }        // TODO add your handling code here:
     }//GEN-LAST:event_btCoroaActionPerformed
+
+    private void btTrabalhosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btTrabalhosActionPerformed
+
+        inicial = new TelaInicial();
+        
+        DTrabalhoSaidas saida = new DTrabalhoSaidas(inicial, false);
+        saida.setTitle("TRABALHOS - SAÍDAS");
+        saida.setLocationRelativeTo(saida);
+        saida.recebeInfo(txtNome.getText(), txtIdMedium.getText());
+        saida.setVisible(true);
+
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btTrabalhosActionPerformed
 
     public void recebeUsuario(int iduser, String user){
         txtCodeUser.setText(String.valueOf(iduser));

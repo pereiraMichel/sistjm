@@ -919,15 +919,24 @@ public class TelaInicial extends javax.swing.JFrame {
 
     private void subMenuMediunsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuMediunsActionPerformed
 
-        DMediumGeral mediuns = new DMediumGeral(this, false);
+        DPesquisaMedium mediuns = new DPesquisaMedium(this, false);
 //        DSelecionaOpMedium mediuns = new DSelecionaOpMedium(this, false);
         mediuns.setLocationRelativeTo(mediuns);
-        mediuns.setTitle("MÉDIUNS");
-        mediuns.recebeUsuario(iduser, user);
+        mediuns.setTitle("SELECIONE O MÉDIUM");
+//        mediuns.recebeUsuario(iduser, user);
         mediuns.setVisible(true);
         preencheCampo("\nAbrindo seleção de operação dos Médiuns...");
         config = new Configuracoes();
         config.gravaAtividades("Médiuns", this.user, "Seleção de operação de médiuns");
+//        DMediumGeral mediuns = new DMediumGeral(this, false);
+////        DSelecionaOpMedium mediuns = new DSelecionaOpMedium(this, false);
+//        mediuns.setLocationRelativeTo(mediuns);
+//        mediuns.setTitle("MÉDIUNS");
+//        mediuns.recebeUsuario(iduser, user);
+//        mediuns.setVisible(true);
+//        preencheCampo("\nAbrindo seleção de operação dos Médiuns...");
+//        config = new Configuracoes();
+//        config.gravaAtividades("Médiuns", this.user, "Seleção de operação de médiuns");
         
         // TODO add your handling code here:
     }//GEN-LAST:event_subMenuMediunsActionPerformed

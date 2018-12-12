@@ -307,6 +307,7 @@ public class MediumOrixa {
             config.gravaErroLog("Tentativa de preenchimento da tabela geral do Médium | Orixá. Erro: " + ex.getMessage(), "Tipo de Orixá", "sistejm.tipoorixa");
         }            
     }
+
     public void preencheTabMediumOriPorNome(JTable tabela, String nome){
         config = new Configuracoes();
         String sql = "SELECT m.nome AS nomeMedium, o.nome AS nomeOrixa, tp.tipo, tp.idtipo_orixa FROM mediuns m "
@@ -372,5 +373,57 @@ public class MediumOrixa {
         }        
         return 0;
     }
+    
+
+    public void retornaOriMaePai(JLabel mae, JLabel pai){
+        
+        config = new Configuracoes();
+        try{
+            String sql = "SELECT m.nome, o.nome AS nomeOrixa, tp.tipo, tp.idtipo_orixa " +
+            "FROM mediuns m " +
+            "LEFT JOIN medium_ori mo ON m.idmedium = mo.codMedium  " +
+            "LEFT JOIN tipo_orixa tp ON tp.idtipo_orixa = mo.codTipo " +
+            "LEFT JOIN orixas o ON o.idorixa = mo.cod_orixa " +
+            "WHERE m.idmedium = " + this.codMedium + " " +
+            "ORDER BY tp.idtipo_orixa";
+            
+//            System.out.println(sql);
+            
+            con = new Conexao();
+            conn = con.getConnection();
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery(sql);
+            
+            rs.next();
+            
+            if(rs.getInt("tp.idtipo_orixa") == 1){
+                String getpai = rs.getString("nomeOrixa");
+                pai.setText(getpai.toUpperCase());
+            }
+            rs.next();
+
+            if(rs.getInt("tp.idtipo_orixa") == 2){
+                String getmae = rs.getString("nomeOrixa");
+                mae.setText(getmae.toUpperCase());
+            }
+
+//            while(rs.next()){
+//                if(rs.getInt("tp.idtipo_orixa") == 1){
+//                    pai.setText(rs.getString("nomeOrixa"));
+//                }else{
+//                    pai.setText("Orixá pai não cadastrado");
+//                }
+//                if(rs.getInt("tp.idtipo_orixa") == 2){
+//                    mae.setText(rs.getString("nomeOrixa"));
+//                }else{
+//                    mae.setText("Orixá mãe não cadastrado");
+//                }
+//            }
+
+        }catch(IOException | SQLException ex){
+            config.gravaErroLog("Tentativa de retorno do id do de Orixá. Erro: " + ex.getMessage(), "Id Orixás", "sistejm.idorixa");
+        }
+        
+    }    
     
 }

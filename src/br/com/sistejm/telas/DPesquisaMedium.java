@@ -116,6 +116,7 @@ public class DPesquisaMedium extends javax.swing.JDialog {
         btDesativar = new javax.swing.JButton();
         btCancelar = new javax.swing.JButton();
         btExcluir = new javax.swing.JButton();
+        btNovo = new javax.swing.JButton();
         txtDataEntrada = new javax.swing.JTextField();
         txtMatricula = new javax.swing.JTextField();
         txtIdMedium = new javax.swing.JTextField();
@@ -235,6 +236,19 @@ public class DPesquisaMedium extends javax.swing.JDialog {
             }
         });
 
+        btNovo.setBackground(new java.awt.Color(255, 255, 255));
+        btNovo.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
+        btNovo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/sistejm/images/novo16x16.png"))); // NOI18N
+        btNovo.setText("Novo");
+        btNovo.setToolTipText("Novo");
+        btNovo.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btNovo.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btNovo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btNovoActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout panelTopLayout = new javax.swing.GroupLayout(panelTop);
         panelTop.setLayout(panelTopLayout);
         panelTopLayout.setHorizontalGroup(
@@ -243,6 +257,8 @@ public class DPesquisaMedium extends javax.swing.JDialog {
                 .addContainerGap()
                 .addComponent(labelTitulo)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btNovo, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btDesativar)
                 .addGap(10, 10, 10)
                 .addComponent(btExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -262,7 +278,8 @@ public class DPesquisaMedium extends javax.swing.JDialog {
                     .addComponent(btExcluir, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelTopLayout.createSequentialGroup()
                         .addComponent(btCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(btNovo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -455,6 +472,17 @@ public class DPesquisaMedium extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_btExcluirActionPerformed
 
+    private void btNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btNovoActionPerformed
+
+        inicial = new TelaInicial();
+        med = new DMediumGeral(inicial, false);
+        med.limpaCampos();
+//        med.setFocusableWindowState(true);
+        med.setLocationRelativeTo(med);
+        med.setVisible(true);
+        fechar();        // TODO add your handling code here:
+    }//GEN-LAST:event_btNovoActionPerformed
+
     
     public void fechar(){
         this.dispose();
@@ -505,6 +533,7 @@ public class DPesquisaMedium extends javax.swing.JDialog {
     private javax.swing.JButton btCancelar;
     private javax.swing.JButton btDesativar;
     private javax.swing.JButton btExcluir;
+    private javax.swing.JButton btNovo;
     private javax.swing.ButtonGroup buttonGroup;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;

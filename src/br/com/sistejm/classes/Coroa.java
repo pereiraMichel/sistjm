@@ -5,6 +5,7 @@
  */
 package br.com.sistejm.classes;
 
+import java.awt.Color;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -409,4 +410,38 @@ public class Coroa {
         }          
     }
     
+    public void preencheTabSaidasConfirmadas(JTable tabela){
+        config = new Configuracoes();
+        String sql = "SELECT DISTINCT m.nome FROM mediuns m "
+                + "LEFT JOIN medium_ori mo ON m.idmedium = mo.codMedium  "
+                + "LEFT JOIN tipo_orixa tp ON tp.idtipo_orixa = mo.codTipo "
+                + "LEFT JOIN orixas o ON o.idorixa = mo.cod_orixa";
+//        String sql = "SELECT m.nome, o.nome, tp.tipo, tp.idtipo_orixa FROM mediuns m "
+//                + "LEFT JOIN medium_ori mo ON m.idmedium = mo.codMedium  "
+//                + "LEFT JOIN tipo_orixa tp ON tp.idtipo_orixa = mo.codTipo "
+//                + "LEFT JOIN orixas o ON o.idorixa = mo.cod_orixa";
+        
+        try{
+            con = new Conexao();
+            conn = con.getConnection();
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery(sql);
+                
+            DefaultTableModel medium = new DefaultTableModel();
+            tabela.setModel(medium);
+
+            medium.addColumn("Nome");
+            tabela.getColumnModel().getColumn(0).setPreferredWidth(100);
+
+            while(rs.next()){
+                String nome = rs.getString("m.nome");
+                if(tabela.getRowCount() % 2 == 0){
+                    tabela.setSelectionBackground(Color.WHITE);
+                }
+                medium.addRow(new Object[]{nome});
+            }
+        }catch(Exception ex){
+            config.gravaErroLog("Tentativa de preenchimento da tabela geral do Médium | Orixá. Erro: " + ex.getMessage(), "Tipo de Orixá", "sistejm.tipoorixa");
+        }            
+    }    
 }
