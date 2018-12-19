@@ -331,13 +331,16 @@
                 <Property name="text" type="java.lang.String" value="Tesouraria"/>
               </Properties>
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="subMenuRelAdministracao">
+            <MenuItem class="javax.swing.JMenuItem" name="subMenuRelSaidas">
               <Properties>
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
-                  <KeyStroke key="Ctrl+Alt+A"/>
+                  <KeyStroke key="Ctrl+Alt+S"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Administra&#xe7;&#xe3;o"/>
+                <Property name="text" type="java.lang.String" value="Cor&#xf4;as - Sa&#xed;das"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="subMenuRelSaidasActionPerformed"/>
+              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="subMenuConsultas">
               <Properties>

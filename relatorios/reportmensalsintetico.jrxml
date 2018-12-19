@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reportmensalidade" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="add0d8fb-5ae8-4c8c-ad41-937d1753e2cf">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString>
+		<![CDATA[SELECT
+(SELECT COUNT(me.idmensalidade)
+FROM mensalidade me
+WHERE me.pago = 'n'
+AND me.ano = 2018) AS quantidadeNPagos,
+(SELECT COUNT(me.idmensalidade)
+FROM mensalidade me
+WHERE me.pago = 's'
+AND me.ano = 2018) AS quantidadePagos,
+(SELECT REPLACE(CAST(SUM(me.valor) AS DECIMAL(15, 2)), '.', ',')
+FROM mensalidade me
+WHERE me.pago = 'n'
+AND me.ano = 2018) AS valoresPendentes,
+(SELECT REPLACE(CAST(SUM(me.valor) AS DECIMAL(15, 2)), '.', ',')
+FROM mensalidade me
+WHERE me.pago = 's'
+AND me.ano = 2018) AS valoresPagos,
+(SELECT COUNT(m.isentoMensal) FROM mediuns m WHERE m.isentoMensal = 1) AS quantIsentos,
+me.ano
+FROM mensalidade me]]>
+	</queryString>
+	<field name="quantidadeNPagos" class="java.lang.Long"/>
+	<field name="quantidadePagos" class="java.lang.Long"/>
+	<field name="valoresPendentes" class="java.lang.String"/>
+	<field name="valoresPagos" class="java.lang.String"/>
+	<field name="quantIsentos" class="java.lang.Long"/>
+	<field name="ano" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<staticText>
+				<reportElement x="93" y="10" width="282" height="30" forecolor="#0000CC" uuid="5e417b46-49ce-4f44-aabd-afb74f245afd"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Calibri" size="12" isBold="true" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[TEMPLO ESPÍRITA JORGE MIGUEL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="93" y="45" width="257" height="15" uuid="b1ae5f79-800d-44bd-b4af-c122fdf7265f"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Calibri" size="11" isBold="true" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[RELATÓRIO SINTÉTICO DE MENSALIDADES]]></text>
+			</staticText>
+			<image hAlign="Center">
+				<reportElement x="10" y="10" width="83" height="62" uuid="82dd3b2c-20d8-4316-b827-86a011651f10"/>
+				<imageExpression><![CDATA["C:\\Users\\Michel\\Documents\\NetBeansProjects\\SISTEJM\\src\\br\\com\\sistejm\\images\\logoTJM.jpg"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="432" y="10" width="109" height="20" uuid="d96f0f7b-ab78-4ef5-aa31-155ceebc3a18"/>
+				<textElement>
+					<font fontName="Calibri" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[MOVIMENTO DO ANO]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="434" y="30" width="107" height="30" uuid="b8fa30bf-46a7-438a-863c-6d0521c519b7"/>
+				<textElement textAlignment="Center">
+					<font fontName="Calibri" size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ano}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="23" splitType="Stretch">
+			<staticText>
+				<reportElement x="10" y="3" width="105" height="20" forecolor="#0000CC" uuid="5574c11d-3c36-40df-b7f3-9688d84beae6"/>
+				<textElement>
+					<font fontName="Calibri" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[RECEBIMENTOS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="310" y="3" width="65" height="20" forecolor="#FF0000" uuid="aa398708-ea86-429b-add8-ff18f1628626"/>
+				<textElement>
+					<font fontName="Calibri" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[A RECEBER]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="184" splitType="Stretch">
+			<staticText>
+				<reportElement x="11" y="39" width="43" height="20" uuid="9179b695-90da-4460-b0de-9ae100a98a99"/>
+				<textElement>
+					<font fontName="Calibri" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[VALOR:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="13" width="71" height="20" uuid="bd4fcd9e-3a03-45e1-83d0-25eb84a14fe2"/>
+				<textElement>
+					<font fontName="Calibri" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[QUANTIDADE:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="311" y="39" width="43" height="20" uuid="927a639c-caa5-4266-b5b9-2f20d6b49c84"/>
+				<textElement>
+					<font fontName="Calibri" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[VALOR:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="310" y="13" width="71" height="20" uuid="4306e2b1-c264-4807-86ac-df404e1fd00e"/>
+				<textElement>
+					<font fontName="Calibri" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[QUANTIDADE:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="387" y="13" width="31" height="20" uuid="9e66a45d-7bc0-42fd-9840-6111935a649c"/>
+				<textFieldExpression><![CDATA[$F{quantidadeNPagos}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="86" y="13" width="23" height="20" uuid="a8b1bffa-61a0-4986-ab4f-783f2004aae9"/>
+				<textFieldExpression><![CDATA[$F{quantidadePagos}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="86" y="39" width="45" height="20" uuid="1a4d5909-2251-4926-a655-2b0ea8e8af7b"/>
+				<textFieldExpression><![CDATA[$F{valoresPagos}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="387" y="39" width="57" height="20" uuid="f35b4250-c25b-464f-9820-d5092227801d"/>
+				<textFieldExpression><![CDATA[$F{valoresPendentes}]]></textFieldExpression>
+			</textField>
+			<break>
+				<reportElement x="0" y="171" width="555" height="1" uuid="36fc6ceb-c4ba-4dc5-bd7d-1b53c3173bd0"/>
+			</break>
+			<staticText>
+				<reportElement x="275" y="137" width="143" height="20" forecolor="#0000CC" uuid="8c5ee725-1399-4505-a449-2723784f0261"/>
+				<textElement>
+					<font fontName="Calibri" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[QUANTIDADE DE ISENTOS:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="418" y="137" width="21" height="20" forecolor="#0000CC" uuid="d7560ccd-7737-4cd6-9cbc-a3cdccb8c3c9"/>
+				<textElement>
+					<font fontName="Calibri" size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{quantIsentos}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="92" splitType="Stretch">
+			<textField>
+				<reportElement x="523" y="72" width="27" height="20" uuid="49519dc6-7ef8-4a9b-aeb4-3398732d5e6b"/>
+				<textElement textAlignment="Right">
+					<font isStrikeThrough="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="19" width="554" height="20" uuid="71d82e50-a41d-43c7-92a2-dde516a41610"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial Narrow" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[USO EXCLUSIVO DO TEJM]]></text>
+			</staticText>
+			<line>
+				<reportElement x="4" y="4" width="551" height="1" uuid="ba45dd49-8ef8-4ebb-bff2-c095068a9d00"/>
+				<graphicElement>
+					<pen lineStyle="Dotted"/>
+				</graphicElement>
+			</line>
+		</band>
+	</columnFooter>
+</jasperReport>

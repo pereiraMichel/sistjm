@@ -9,10 +9,19 @@ import java.awt.Color;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.Map;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
+import net.sf.jasperreports.engine.JRResultSetDataSource;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.view.JasperViewer;
 
 /**
  *
@@ -33,6 +42,7 @@ public class Coroa {
     Connection conn;
     Statement stmt;
     ResultSet rs;
+    Calendar cal;
 
     public String getDataRealizacao() {
         return dataRealizacao;
@@ -195,31 +205,79 @@ public class Coroa {
         return false;
     }
     
-    public boolean marcaCoroa(){
+   public boolean verificaCoroaAnterior(){
         config = new Configuracoes();
         con = new Conexao();
         
-        String sql = "UPDATE coroa SET mes = " + this.mes + ", ano = " + this.ano + ", dataRealizacao = '" + this.dataRealizacao + "', confirma = 's' "
-                + "WHERE codmedium = " + this.codmedium + " AND codtipocoroa = " + this.codtipocoroa;
+        int tipoCoroAnterior = this.codtipocoroa - 1;
+        String sql = "SELECT * FROM coroa "
+                + "WHERE codmedium = " + this.codmedium + " "
+                + "AND codtipocoroa = " + tipoCoroAnterior;
+        
+//        System.out.println(sql);
         
         try{
             conn = con.getConnection();
             stmt = conn.createStatement();
-            stmt.executeUpdate(sql);
+            rs = stmt.executeQuery(sql);
 
-            return true;
+            rs.next();
+             if(rs.absolute(1)){
+                if(rs.getString("confirma").equals("n")){
+                    return true;
+                }else{
+                    return false;
+                }
+             }
         }catch(Exception ex){
-            config.gravaErroLog("Erro: " + ex.getMessage() + ". SQL: " + sql, "Marcação da Corôa", "sistejm.marcacoroa");
+            config.gravaErroLog("Erro: " + ex.getMessage() + ".", "Verificação da Corôa", "sistejm.verifmarcacoroa");
         }
         return false;
+   }
+    public boolean marcaCoroa(){
+        config = new Configuracoes();
+        con = new Conexao();
+
+        if(verificaCoroaAnterior()){
+            JOptionPane.showMessageDialog(null, "Existe saídas anteriores pendentes");
+            return false;
+        }else{
+            String sql = "UPDATE coroa SET "
+                    + "mes = " + this.mes + ", "
+                    + "ano = " + this.ano + ", "
+                    + "dataRealizacao = '" + this.dataRealizacao + "', "
+                    + "confirma = '" + this.confirma + "' "
+                    + "WHERE codmedium = " + this.codmedium + " "
+                    + "AND codtipocoroa = " + this.codtipocoroa;
+
+    //        System.out.println(sql);
+
+            try{
+                conn = con.getConnection();
+                stmt = conn.createStatement();
+                stmt.executeUpdate(sql);
+
+                return true;
+            }catch(Exception ex){
+                config.gravaErroLog("Erro: " + ex.getMessage() + ". SQL: " + sql, "Marcação da Corôa", "sistejm.marcacoroa");
+            }
+            return false;
+        }
+        
     }
     public boolean desmarcaCoroa(){
         config = new Configuracoes();
         con = new Conexao();
         
-        String sql = "UPDATE coroa SET mes = " + this.mes + ", ano = " + this.ano + ", dataRealizacao = '" + this.dataRealizacao + "', confirma = 'n' "
-                + "WHERE codmedium = " + this.codmedium + " AND codtipocoroa = " + this.codtipocoroa;
+        String sql = "UPDATE coroa SET "
+                + "mes = " + this.mes + ", "
+                + "ano = " + this.ano + ", "
+                + "dataRealizacao = '" + this.dataRealizacao + "', "
+                + "confirma = '" + this.confirma + "' "
+                + "WHERE codmedium = " + this.codmedium + " "
+                + "AND codtipocoroa = " + this.codtipocoroa;
 
+//        System.out.println(sql);
         
         try{
             conn = con.getConnection();
@@ -412,12 +470,19 @@ public class Coroa {
     
     public void preencheTabSaidasNConfirmadasGeral(JTable tabela){
         config = new Configuracoes();
+        cal = new GregorianCalendar();
+        
+        int anoAnterior = cal.get(Calendar.YEAR) - 1;
+        int anoPosterior = cal.get(Calendar.YEAR) + 1;
         String sql = "SELECT m.nome, m.ativo, tp.nome AS tipo, c.confirma, c.mes, c.ano "
                 + "FROM mediuns m  "
                 + "LEFT JOIN coroa c ON c.codmedium = m.idmedium "
                 + "LEFT JOIN tipocoroa tp ON tp.idtipocoroa = c.codtipocoroa "
                 + "WHERE m.ativo = 1 "
-                + "AND c.confirma = 'n' ";
+                + "AND c.confirma = 'n' "
+                + "AND c.ano  BETWEEN " + anoAnterior + " AND " + anoPosterior;
+        
+//        System.out.println(sql);
         
         try{
             con = new Conexao();
@@ -428,7 +493,7 @@ public class Coroa {
             DefaultTableModel medium = new DefaultTableModel();
             tabela.setModel(medium);
 
-            medium.addColumn("Nome");
+            medium.addColumn("Médium");
             medium.addColumn("Mês");
             medium.addColumn("Ano");
             medium.addColumn("Tipo");
@@ -446,7 +511,7 @@ public class Coroa {
                 medium.addRow(new Object[]{nome, mes, ano, tipo});
             }
         }catch(Exception ex){
-            config.gravaErroLog("Tentativa de preenchimento da tabela de saídas do Médium | Orixá. Erro: " + ex.getMessage(), "Tipo de Orixá", "sistejm.tipoorixa");
+            config.gravaErroLog("Tentativa de preenchimento da tabela de saídas a confirmar do Médium. Erro: " + ex.getMessage(), "Tabela de Saídas não confirmadas do Médium", "sistejm.saidasmedium");
         }            
     }    
     public void preencheTabSaidasMesAnoCorrente(JTable tabela){
@@ -499,21 +564,21 @@ public class Coroa {
         String complemento = null;
         
         if((mes1 == 0 && ano1 == 0) && (mes2 == 0 && ano2 == 0)){
-            complemento = "  AND c.mes BETWEEN " + mes1 +" AND " + mes2 +
-                            "AND c.ano BETWEEN " + ano1 + " AND " + ano2;
-        }else{
             complemento = "";
+        }else{
+            complemento = "  AND c.mes BETWEEN " + mes1 +" AND " + mes2 +
+                            " AND c.ano BETWEEN " + ano1 + " AND " + ano2;
         }
         
-        String sql = "SELECT m.nome, m.ativo, tp.nome, c.confirma, c.mes, c.ano "
+        String sql = "SELECT m.nome, m.ativo, tp.nome AS tipo, c.confirma, c.mes, c.ano "
                 + "FROM mediuns m  "
                 + "LEFT JOIN coroa c ON c.codmedium = m.idmedium "
                 + "LEFT JOIN tipocoroa tp ON tp.idtipocoroa = c.codtipocoroa "
                 + "WHERE m.ativo = 1 "
                 + "AND c.confirma = 'n' "
-                + "AND c.mes = " + this.mes
-                + "AND c.ano = " + this.ano
                 + complemento;
+        
+//        System.out.println(sql);
         
         try{
             con = new Conexao();
@@ -542,7 +607,152 @@ public class Coroa {
                 medium.addRow(new Object[]{nome, mes, ano, tipo});
             }
         }catch(Exception ex){
-            config.gravaErroLog("Tentativa de preenchimento da tabela de saídas do Médium | Orixá. Erro: " + ex.getMessage(), "Tipo de Orixá", "sistejm.tipoorixa");
+            config.gravaErroLog("Tentativa de preenchimento da tabela de saídas do Médium | Orixá. Erro: " + ex.getMessage(), "Corôa do Médium - Pesquisas", "sistejm.coroaPesquisa");
         }            
-    }    
+    }
+    
+    public void preencheTabSaidasConfirmadasGeral(JTable tabela){
+        config = new Configuracoes();
+        String sql = "SELECT m.nome, m.ativo, tp.nome AS tipo, c.confirma, c.mes, c.ano, "
+                + "DATE_FORMAT(c.dataRealizacao, '%d/%m/%y') AS dataSaida "
+                + "FROM mediuns m  "
+                + "LEFT JOIN coroa c ON c.codmedium = m.idmedium "
+                + "LEFT JOIN tipocoroa tp ON tp.idtipocoroa = c.codtipocoroa "
+                + "WHERE m.ativo = 1 "
+                + "AND c.confirma = 's' "
+                + "AND c.mes = " + this.mes + " "
+                + "AND c.ano = " + this.ano;
+        
+//        System.out.println(sql);
+        
+        try{
+            con = new Conexao();
+            conn = con.getConnection();
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery(sql);
+                
+            DefaultTableModel medium = new DefaultTableModel();
+            tabela.setModel(medium);
+
+            medium.addColumn("Médium");
+            medium.addColumn("Mês");
+            medium.addColumn("Ano");
+            medium.addColumn("Tipo");
+            medium.addColumn("Data de Saída");
+            tabela.getColumnModel().getColumn(0).setPreferredWidth(100);
+            tabela.getColumnModel().getColumn(1).setPreferredWidth(20);
+            tabela.getColumnModel().getColumn(2).setPreferredWidth(20);
+            tabela.getColumnModel().getColumn(3).setPreferredWidth(20);
+            tabela.getColumnModel().getColumn(4).setPreferredWidth(50);
+
+            while(rs.next()){
+                String nome = rs.getString("m.nome");
+                String mes = rs.getString("c.mes");
+                String ano = rs.getString("c.ano");
+                String tipo = rs.getString("tipo");
+                String dataSaida = rs.getString("dataSaida");
+
+                medium.addRow(new Object[]{nome, mes, ano, tipo, dataSaida});
+            }
+        }catch(Exception ex){
+            config.gravaErroLog("Tentativa de preenchimento da tabela de saídas confirmadas do Médium. Erro: " + ex.getMessage(), "Tabela de confirmação de saídas", "sistejm.tabconfirmsaidas");
+        }            
+    }
+    
+    public int quantRelatorioSaidas(String confirmado, int idmedium, int periodo, int mes1, int ano1, int mes2, int ano2){
+
+        cal = new GregorianCalendar();
+        
+        String compMedium = null;
+        String compPeriodo = null;
+        
+        if(idmedium == 0){
+            compMedium = "";
+        }else{
+            compMedium = " AND m.idmedium = " + idmedium;
+        }
+
+        switch(periodo){
+            case 1: //pelo 3 meses do ano
+                    if(mes2 > 12){
+                        mes2 = 12;
+                        compPeriodo = " AND c.mes BETWEEN " + mes1 + " AND " + mes2 +
+                            " AND c.ano = " + ano1;
+                    }
+                    compPeriodo = " AND c.mes BETWEEN " + mes1 + " AND " + mes2 +
+                        " AND c.ano = " + ano1;
+                break;
+            case 2: // pelo mes e ano
+                compPeriodo = " AND c.mes = " + mes1 +
+                        " AND ano = " + ano1;
+                break;
+            case 3: // pelo período de mes e ano a mes ano
+                compPeriodo = " AND c.mes BETWEEN " + mes1 + " AND " + mes2 +
+                        " AND c.ano BETWEEN " + ano1 + " AND " + ano2;
+                break;
+        }
+
+        String sql = "SELECT COUNT(m.idmedium) AS quantidade, c.mes, c.ano, m.ativo, m.idmedium, mo.codTipo, "
+                + "c.confirma "
+                + "FROM mediuns m " +
+                "LEFT JOIN coroa c ON c.codmedium = m.idmedium " +
+                "LEFT JOIN medium_ori mo ON mo.codMedium = m.idmedium " +
+                "LEFT JOIN orixas o ON mo.cod_orixa = o.idorixa " +
+                "LEFT JOIN tipocoroa tp ON c.codtipocoroa = tp.idtipocoroa " +
+                "WHERE m.ativo = 1 " +
+                "AND mo.codTipo = 1 " +
+                "AND c.confirma = '" + confirmado + "' " +
+                compMedium +
+                compPeriodo;
+        
+//        System.out.println(sql);
+        try{
+            con = new Conexao();
+            conn = con.getConnection();
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery(sql);
+            
+            rs.next();
+            
+            if(rs.absolute(1)){
+                return rs.getInt("quantidade");
+            }
+            
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
+        return 0;
+    }
+    
+    public String ultimaCoroa(int idMedium){
+
+        String sql = "SELECT DATE_FORMAT(c.dataRealizacao, '%d/%m/%Y') AS ultimadata " +
+                    "FROM mediuns m " +
+                    "LEFT JOIN coroa c ON c.codmedium = m.idmedium " +
+                    "WHERE m.ativo = 1 " +
+                    "AND c.confirma = 's' " +
+                    "AND m.idmedium = " + idMedium + " " + 
+                    "ORDER BY m.idmedium DESC " +
+                    "LIMIT 1 ";
+        
+//        System.out.println(sql);
+        try{
+            con = new Conexao();
+            conn = con.getConnection();
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery(sql);
+            
+            rs.next();
+            
+            if(rs.absolute(1)){
+                return rs.getString("ultimadata");
+            }
+            
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
+        return null;
+    }
+    
+    
 }

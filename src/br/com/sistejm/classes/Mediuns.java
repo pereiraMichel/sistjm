@@ -171,17 +171,25 @@ public class Mediuns {
             medium.addColumn("ID");
             medium.addColumn("Matrícula");
             medium.addColumn("Médium");
+            medium.addColumn("Ativo");
 
             tabela.getColumnModel().getColumn(0).setPreferredWidth(5);
             tabela.getColumnModel().getColumn(1).setPreferredWidth(10);
             tabela.getColumnModel().getColumn(2).setPreferredWidth(110);
+            tabela.getColumnModel().getColumn(2).setPreferredWidth(50);
 
             while(rs.next()){
                 int id = rs.getInt("idmedium");
                 String nome = rs.getString("nome");
                 String matricula = rs.getString("matricula");
-//                String codMedium = rs.getString("codeMedium");
-                medium.addRow(new Object[]{id, matricula, nome});
+                String ativo = null;
+                
+                if(rs.getString("ativo").equals("1")){
+                    ativo = "Sim";
+                }else{
+                    ativo = "Não";
+                }
+                medium.addRow(new Object[]{id, matricula, nome, ativo});
             }
             
         }catch(Exception ex){
@@ -612,6 +620,27 @@ public class Mediuns {
         }catch(Exception ex){
             System.out.println("Erro em tabela de mediuns. Mensagem: " + ex.getMessage());
         }        
-    }    
+    }
+//    public int retornaIdMedium(JTable tabela, String texto){
+//        config = new Configuracoes();
+//
+//        String sql = "SELECT DISTINCT * FROM mediuns m WHERE nome = '" + texto + "'";
+//     
+//        try{
+//            con = new Conexao();
+//            conn = con.getConnection();
+//            stmt = conn.createStatement();
+//            rs = stmt.executeQuery(sql);
+//            rs.next();
+//
+//            if(rs.absolute(1)){
+//                return rs.getInt("idmedium");
+//            }
+//            
+//        }catch(Exception ex){
+//            config.gravaErroLog("Erro no retorno. Descrção: " + ex.getMessage(), "Retorno de Id do Médium", "sistejm.retornaidmedium");
+//        }
+//        return 0;        
+//    }
     
 }

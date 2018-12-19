@@ -5,7 +5,10 @@
  */
 package br.com.sistejm.telas;
 
+import br.com.sistejm.classes.Configuracoes;
 import br.com.sistejm.classes.Coroa;
+import br.com.sistejm.classes.Mediuns;
+import java.awt.event.KeyEvent;
 import java.beans.PropertyChangeListener;
 import java.sql.Date;
 import java.text.DateFormat;
@@ -31,6 +34,31 @@ public class DCoroa extends javax.swing.JDialog {
 
     Calendar cal;
     Coroa c;
+    Mediuns m;
+    TelaInicial inicial;
+    DRelatorioCoroa r;
+    Configuracoes config;
+    private String user;
+    private int iduser;
+
+    public int getIduser() {
+        return iduser;
+    }
+
+    public void setIduser(int iduser) {
+        this.iduser = iduser;
+    }
+
+    public String getUser() {
+        return user;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
+    }
+    
+    
+    
     /**
      * Creates new form DCoroa
      */
@@ -39,7 +67,27 @@ public class DCoroa extends javax.swing.JDialog {
         initComponents();
         preencheCampos();
         campoPeriodo(false);
+        campoMesAno(false);
+        exibeTabTodos();
+        exibeTabSaidaDoDia();
+        preencheRadioTodos();
+        limpaLabels();
+        ocultaText(false);
     }
+    
+    public void limpaLabels(){
+        labelDataSaidaMedium.setText("");
+        labelTipoCoroa.setText("");
+    }
+    
+    public void ocultaText(boolean valor){
+        txtCodMedium.setVisible(valor);
+        txtCodTpCoroa.setVisible(valor);
+        txtData.setVisible(valor);
+        txtCodUser.setVisible(valor);
+        txtMes.setVisible(valor);
+        txtAno.setVisible(valor);
+        dataSelect.setVisible(valor);    }
     
     public void preencheCampos(){
         cal = new GregorianCalendar();
@@ -52,7 +100,28 @@ public class DCoroa extends javax.swing.JDialog {
         
     }
     
+    public void recebeInfo(int iduser, String user){
+        txtCodUser.setText(String.valueOf(iduser));
+        this.user = user;
+    }
+    
+    public void campoMesAno(boolean valor){
+        txtMesAno3.setText("");
+        txtMesAno3.setEditable(valor);
+    }
+    
+    public void preencheRadioTodos(){
+        cal = new GregorianCalendar();
+        int anoAnterior = cal.get(Calendar.YEAR) - 1;
+        int anoPosterior = cal.get(Calendar.YEAR) + 1;
+        int anoAtual = cal.get(Calendar.YEAR);
+        
+        radioTodos.setText("Todos não confirmados, dos anos " + anoAnterior + ", " + anoAtual + " e " + anoPosterior);
+    }
+    
     public void campoPeriodo(boolean valor){
+        txtMesAno1.setText("");
+        txtMesAno2.setText("");
         txtMesAno1.setEditable(valor);
         txtMesAno2.setEditable(valor);
     }
@@ -60,6 +129,13 @@ public class DCoroa extends javax.swing.JDialog {
     public void exibeTabTodos(){
         c = new Coroa();
         c.preencheTabSaidasNConfirmadasGeral(tabMedSaida);
+    }
+    public void exibeTabSaidaDoDia(){
+        c = new Coroa();
+
+        c.setMes(Integer.valueOf(txtMes.getText()));
+        c.setAno(Integer.valueOf(txtAno.getText()));
+        c.preencheTabSaidasConfirmadasGeral(tabSaidas);
     }
 
     /**
@@ -82,15 +158,17 @@ public class DCoroa extends javax.swing.JDialog {
         txtMes = new javax.swing.JTextField();
         txtAno = new javax.swing.JTextField();
         dataSelect = new com.toedter.calendar.JDateChooser();
+        txtCodTpCoroa = new javax.swing.JTextField();
+        btImprimir = new javax.swing.JButton();
         panelDown = new javax.swing.JPanel();
         labelVersao = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tabMedSaida = new javax.swing.JTable();
         jScrollPane2 = new javax.swing.JScrollPane();
-        tabMedSaidaOrixa = new javax.swing.JTable();
+        tabSaidas = new javax.swing.JTable();
         btColocar = new javax.swing.JButton();
         btTirar = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
+        labelMedium = new javax.swing.JLabel();
         radioCorrente = new javax.swing.JRadioButton();
         radioTodos = new javax.swing.JRadioButton();
         calendario = new com.toedter.calendar.JCalendar();
@@ -99,6 +177,9 @@ public class DCoroa extends javax.swing.JDialog {
         radioPeriodo = new javax.swing.JRadioButton();
         txtMesAno1 = new javax.swing.JTextField();
         txtMesAno2 = new javax.swing.JTextField();
+        txtMesAno3 = new javax.swing.JTextField();
+        labelDataSaidaMedium = new javax.swing.JLabel();
+        labelTipoCoroa = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -138,6 +219,21 @@ public class DCoroa extends javax.swing.JDialog {
 
         txtAno.setEditable(false);
 
+        txtCodTpCoroa.setEditable(false);
+
+        btImprimir.setBackground(new java.awt.Color(255, 255, 255));
+        btImprimir.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
+        btImprimir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/sistejm/images/icon16x16Relatorio.png"))); // NOI18N
+        btImprimir.setText("Relatório");
+        btImprimir.setToolTipText("Relatório");
+        btImprimir.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btImprimir.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btImprimir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btImprimirActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout panelTopLayout = new javax.swing.GroupLayout(panelTop);
         panelTop.setLayout(panelTopLayout);
         panelTopLayout.setHorizontalGroup(
@@ -148,8 +244,10 @@ public class DCoroa extends javax.swing.JDialog {
                 .addGap(18, 18, 18)
                 .addComponent(labelTitulo)
                 .addGap(66, 66, 66)
-                .addComponent(txtData, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtData, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(txtCodTpCoroa, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(38, 38, 38)
                 .addComponent(txtCodMedium, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(txtCodUser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -157,9 +255,11 @@ public class DCoroa extends javax.swing.JDialog {
                 .addComponent(txtMes, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(txtAno, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(dataSelect, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(dataSelect, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(92, 92, 92)
+                .addComponent(btImprimir, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(btCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -170,15 +270,20 @@ public class DCoroa extends javax.swing.JDialog {
             .addGroup(panelTopLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(panelTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(dataSelect, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(panelTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(txtData, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(txtCodUser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(txtCodMedium, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(txtMes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(txtAno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(btCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(15, Short.MAX_VALUE))
+                    .addComponent(btImprimir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(panelTopLayout.createSequentialGroup()
+                        .addGroup(panelTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(dataSelect, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(panelTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(txtData, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtCodUser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtCodMedium, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtMes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtAno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtCodTpCoroa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(btCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
 
         panelDown.setBackground(new java.awt.Color(255, 255, 255));
@@ -209,9 +314,14 @@ public class DCoroa extends javax.swing.JDialog {
                 "Médium", "Mês Confirmação", "Tipo"
             }
         ));
+        tabMedSaida.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tabMedSaidaMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tabMedSaida);
 
-        tabMedSaidaOrixa.setModel(new javax.swing.table.DefaultTableModel(
+        tabSaidas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -219,7 +329,12 @@ public class DCoroa extends javax.swing.JDialog {
                 "Médium", "Data"
             }
         ));
-        jScrollPane2.setViewportView(tabMedSaidaOrixa);
+        tabSaidas.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tabSaidasMouseClicked(evt);
+            }
+        });
+        jScrollPane2.setViewportView(tabSaidas);
 
         btColocar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/sistejm/images/setaInsere16x16.png"))); // NOI18N
         btColocar.addActionListener(new java.awt.event.ActionListener() {
@@ -229,11 +344,17 @@ public class DCoroa extends javax.swing.JDialog {
         });
 
         btTirar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/sistejm/images/setaTira16x16.png"))); // NOI18N
+        btTirar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btTirarActionPerformed(evt);
+            }
+        });
 
-        jLabel1.setText("Médium");
+        labelMedium.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        labelMedium.setText("Médium");
 
         buttonGroup.add(radioCorrente);
-        radioCorrente.setText("Do mês e ano corrente");
+        radioCorrente.setText("Por mês e ano");
         radioCorrente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 radioCorrenteActionPerformed(evt);
@@ -241,7 +362,8 @@ public class DCoroa extends javax.swing.JDialog {
         });
 
         buttonGroup.add(radioTodos);
-        radioTodos.setText("Todos");
+        radioTodos.setSelected(true);
+        radioTodos.setText("Todos não confirmados");
         radioTodos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 radioTodosActionPerformed(evt);
@@ -249,11 +371,6 @@ public class DCoroa extends javax.swing.JDialog {
         });
 
         calendario.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Calendário", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Arial", 0, 14), new java.awt.Color(0, 0, 204))); // NOI18N
-        calendario.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                calendarioMouseClicked(evt);
-            }
-        });
         calendario.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
             public void propertyChange(java.beans.PropertyChangeEvent evt) {
                 calendarioPropertyChange(evt);
@@ -262,25 +379,57 @@ public class DCoroa extends javax.swing.JDialog {
 
         labelDataSaida.setText("Data de saída:");
 
+        txtDataSaida.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtDataSaidaKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtDataSaidaKeyReleased(evt);
+            }
+        });
+
         buttonGroup.add(radioPeriodo);
-        radioPeriodo.setText("Por período (MM/YYYY)");
+        radioPeriodo.setText("Por período");
         radioPeriodo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 radioPeriodoActionPerformed(evt);
             }
         });
 
+        txtMesAno1.setText("mm/yyyy");
+        txtMesAno1.setToolTipText("mm/yyyy");
         txtMesAno1.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 txtMesAno1KeyReleased(evt);
             }
         });
 
+        txtMesAno2.setText("mm/yyyy");
+        txtMesAno2.setToolTipText("mm/yyyy");
         txtMesAno2.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 txtMesAno2KeyReleased(evt);
             }
         });
+
+        txtMesAno3.setText("mm/yyyy");
+        txtMesAno3.setToolTipText("mm/yyyy");
+        txtMesAno3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                txtMesAno3MouseClicked(evt);
+            }
+        });
+        txtMesAno3.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtMesAno3KeyReleased(evt);
+            }
+        });
+
+        labelDataSaidaMedium.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        labelDataSaidaMedium.setText("Aguardando data...");
+
+        labelTipoCoroa.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        labelTipoCoroa.setText("Aguardando tipo...");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -292,47 +441,51 @@ public class DCoroa extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 352, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(radioTodos)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 352, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(radioCorrente)
+                                    .addComponent(radioPeriodo))
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addComponent(radioPeriodo)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(txtMesAno1, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(18, 18, 18)
                                         .addComponent(txtMesAno2, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(radioTodos))
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(btColocar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(btTirar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addComponent(radioCorrente))
+                                    .addComponent(txtMesAno3, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(labelDataSaida)
-                                .addGap(18, 18, 18)
-                                .addComponent(txtDataSaida, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 268, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(jLabel1))
+                            .addComponent(btColocar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btTirar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(labelMedium))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(labelTipoCoroa)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(labelDataSaidaMedium))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 398, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(labelDataSaida)
+                        .addGap(18, 18, 18)
+                        .addComponent(txtDataSaida, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addComponent(calendario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(panelDown, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(panelDown, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(panelTop, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(16, 16, 16)
-                        .addComponent(calendario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel1)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(labelMedium)
+                            .addComponent(labelDataSaidaMedium)
+                            .addComponent(labelTipoCoroa))
                         .addGap(12, 12, 12)
                         .addComponent(radioTodos)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -343,7 +496,9 @@ public class DCoroa extends javax.swing.JDialog {
                                     .addComponent(txtDataSaida, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(radioCorrente)))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(radioCorrente)
+                                    .addComponent(txtMesAno3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(radioPeriodo)
@@ -356,8 +511,9 @@ public class DCoroa extends javax.swing.JDialog {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(btColocar)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btTirar)))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 57, Short.MAX_VALUE)
+                                .addComponent(btTirar))))
+                    .addComponent(calendario, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 59, Short.MAX_VALUE)
                 .addComponent(panelDown, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
@@ -370,51 +526,59 @@ public class DCoroa extends javax.swing.JDialog {
 
     private void btColocarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btColocarActionPerformed
 
-        java.util.Date g = dataSelect.getDate();
-        SimpleDateFormat f = new SimpleDateFormat("dd/MM/yyyy");
-        SimpleDateFormat fsql = new SimpleDateFormat("yyyy-MM-dd");
-
-        txtData.setText(f.format(g));
-//        System.out.println("Primeiro: " + f.format(g));
-
-//        JOptionPane.showMessageDialog(null, f.format(g));
-        // TODO add your handling code here:
+        c = new Coroa();
+        c.setMes(Integer.valueOf(txtMes.getText()));
+        c.setAno(Integer.valueOf(txtAno.getText()));
+        c.setCodmedium(Integer.valueOf(txtCodMedium.getText()));
+        c.setConfirma("s");
+        c.setDataRealizacao(txtDataSaida.getText());
+        c.setCodtipocoroa(Integer.valueOf(txtCodTpCoroa.getText()));
+        c.marcaCoroa();
+        exibeTabSaidaDoDia();
+        exibeTabTodos();
+        
     }//GEN-LAST:event_btColocarActionPerformed
-
-    private void calendarioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_calendarioMouseClicked
-
-//        java.util.Date g = calendario.getDate();
-//        SimpleDateFormat f = new SimpleDateFormat("dd/MM/yyyy");
-//        SimpleDateFormat fsql = new SimpleDateFormat("yyyy-MM-dd"); 
-//        txtData.setText(f.format(g));
-        // TODO add your handling code here:
-    }//GEN-LAST:event_calendarioMouseClicked
 
     private void calendarioPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_calendarioPropertyChange
         java.util.Date g = calendario.getDate();
         SimpleDateFormat f = new SimpleDateFormat("dd/MM/yyyy");
-        SimpleDateFormat fsql = new SimpleDateFormat("yyyy-MM-dd"); 
+//        SimpleDateFormat fsql = new SimpleDateFormat("yyyy-MM-dd"); 
         txtData.setText(f.format(g));
         txtDataSaida.setText(f.format(g));
+
+        String mesSelect = txtDataSaida.getText().substring(3, 5);
+        String anoSelect = txtDataSaida.getText().substring(6, 10);
+        txtMes.setText(mesSelect);
+        txtAno.setText(anoSelect);
+        
+        
 // TODO add your handling code here:
     }//GEN-LAST:event_calendarioPropertyChange
 
     private void txtMesAno1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtMesAno1KeyReleased
 
-        preencheBarra(txtMesAno1);
+        if(txtMesAno1.getText().length() == 2){
+            txtMesAno1.setText(txtMesAno1.getText() + "/");
+        }
+        if(txtMesAno1.getText().length() == 7){
+            txtMesAno2.requestFocus();
+        }
         // TODO add your handling code here:
     }//GEN-LAST:event_txtMesAno1KeyReleased
 
     private void txtMesAno2KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtMesAno2KeyReleased
 
-        preencheBarra(txtMesAno2);
-        if(txtMesAno2.getText().length() >= 7){
+        if(txtMesAno2.getText().length() == 2){
+            txtMesAno2.setText(txtMesAno2.getText() + "/");
+        }
+        if(txtMesAno2.getText().length() == 7){
             c = new Coroa();
-            int mes1 = Integer.valueOf(txtMesAno1.getText().substring(0, 1));
-            int ano1 = Integer.valueOf(txtMesAno1.getText().substring(3, 6));
-            int mes2 = Integer.valueOf(txtMesAno2.getText().substring(0, 1));
-            int ano2 = Integer.valueOf(txtMesAno2.getText().substring(3, 6));
+            int mes1 = Integer.valueOf(txtMesAno1.getText().substring(0, 2));
+            int ano1 = Integer.valueOf(txtMesAno1.getText().substring(3, 7));
+            int mes2 = Integer.valueOf(txtMesAno2.getText().substring(0, 2));
+            int ano2 = Integer.valueOf(txtMesAno2.getText().substring(3, 7));
 
+//            System.out.println(mes1 + " - " + ano1 + " - " + mes2 + " - " + ano2);
             c.preencheTabSaidasPeriodo(tabMedSaida, mes1, ano1, mes2, ano2);
             
         }
@@ -422,27 +586,183 @@ public class DCoroa extends javax.swing.JDialog {
     }//GEN-LAST:event_txtMesAno2KeyReleased
 
     private void radioPeriodoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioPeriodoActionPerformed
+        txtMesAno1.setText("");
+        txtMesAno2.setText("");
+        txtMesAno1.requestFocus();
         campoPeriodo(true);
+        campoMesAno(false);
+        limpaLabels();
+
         // TODO add your handling code here:
     }//GEN-LAST:event_radioPeriodoActionPerformed
 
     private void radioCorrenteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioCorrenteActionPerformed
 
         campoPeriodo(false);
-        
-        c = new Coroa();
-        c.setMes(Integer.valueOf(txtMes.getText()));
-        c.setAno(Integer.valueOf(txtAno.getText()));
-        c.preencheTabSaidasMesAnoCorrente(tabMedSaida);
+        campoMesAno(true);
+        txtMesAno3.requestFocus();
+        limpaLabels();
         // TODO add your handling code here:
     }//GEN-LAST:event_radioCorrenteActionPerformed
 
     private void radioTodosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioTodosActionPerformed
 
         campoPeriodo(false);
+        campoMesAno(false);
         exibeTabTodos();
+        limpaLabels();
         // TODO add your handling code here:
     }//GEN-LAST:event_radioTodosActionPerformed
+
+    private void txtMesAno3KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtMesAno3KeyReleased
+        if(txtMesAno3.getText().length() == 2){
+            txtMesAno3.setText(txtMesAno3.getText() + "/");
+        }
+        if(txtMesAno3.getText().length() == 7){
+            int mes = Integer.valueOf(txtMesAno3.getText().substring(0, 2));
+            int ano = Integer.valueOf(txtMesAno3.getText().substring(3, 7));
+
+            c = new Coroa();
+            c.setMes(mes);
+            c.setAno(ano);
+            c.preencheTabSaidasMesAnoCorrente(tabMedSaida);
+        }
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtMesAno3KeyReleased
+
+    private void txtMesAno3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtMesAno3MouseClicked
+
+        txtMesAno3.setText("");
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtMesAno3MouseClicked
+
+    private void tabMedSaidaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabMedSaidaMouseClicked
+        m = new Mediuns();
+        String nomeMedium = String.valueOf(tabMedSaida.getValueAt(tabMedSaida.getSelectedRow(), 0));
+        String mesConfirmacao = String.valueOf(tabMedSaida.getValueAt(tabMedSaida.getSelectedRow(), 1));
+        String anoConfirmacao = String.valueOf(tabMedSaida.getValueAt(tabMedSaida.getSelectedRow(), 2));
+        String tipo = String.valueOf(tabMedSaida.getValueAt(tabMedSaida.getSelectedRow(), 3));
+        
+        labelMedium.setText(nomeMedium.toUpperCase());
+        txtCodMedium.setText(String.valueOf(m.retornaIdMedium(nomeMedium)));
+        txtMes.setText(mesConfirmacao);
+        txtAno.setText(anoConfirmacao);
+        labelDataSaidaMedium.setText("");
+        switch(tipo){
+            case "batismo":
+               txtCodTpCoroa.setText("1");
+               break;
+            case "Corôa":
+               txtCodTpCoroa.setText("2");
+               break;
+            case "1 ano":
+               txtCodTpCoroa.setText("3");
+               break;
+            case "3 anos":
+               txtCodTpCoroa.setText("4");
+               break;
+            case "7 anos":
+               txtCodTpCoroa.setText("5");
+               break;
+            case "14 anos":
+               txtCodTpCoroa.setText("6");
+               break;
+            case "21 anos":
+               txtCodTpCoroa.setText("7");
+               break;
+
+        }
+        
+    }//GEN-LAST:event_tabMedSaidaMouseClicked
+
+    private void btTirarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btTirarActionPerformed
+        c = new Coroa();
+        c.setMes(Integer.valueOf(txtMes.getText()));
+        c.setAno(Integer.valueOf(txtAno.getText()));
+        c.setCodmedium(Integer.valueOf(txtCodMedium.getText()));
+        c.setConfirma("n");
+        c.setDataRealizacao(txtDataSaida.getText());
+        c.setCodtipocoroa(Integer.valueOf(txtCodTpCoroa.getText()));
+        c.desmarcaCoroa();
+        exibeTabSaidaDoDia();
+        exibeTabTodos();
+
+                // TODO add your handling code here:
+    }//GEN-LAST:event_btTirarActionPerformed
+
+    private void txtDataSaidaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDataSaidaKeyReleased
+        exibeTabSaidaDoDia();
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtDataSaidaKeyReleased
+
+    private void tabSaidasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabSaidasMouseClicked
+
+        m = new Mediuns();
+        String nomeMedium = String.valueOf(tabSaidas.getValueAt(tabSaidas.getSelectedRow(), 0));
+        String mesConfirmacao = String.valueOf(tabSaidas.getValueAt(tabSaidas.getSelectedRow(), 1));
+        String anoConfirmacao = String.valueOf(tabSaidas.getValueAt(tabSaidas.getSelectedRow(), 2));
+        String tipo = String.valueOf(tabSaidas.getValueAt(tabSaidas.getSelectedRow(), 3));
+        String dataSaida = String.valueOf(tabSaidas.getValueAt(tabSaidas.getSelectedRow(), 4));
+        
+        labelDataSaidaMedium.setText(dataSaida);
+        labelTipoCoroa.setText(tipo.toUpperCase());
+        
+        labelMedium.setText(nomeMedium.toUpperCase());
+        txtCodMedium.setText(String.valueOf(m.retornaIdMedium(nomeMedium)));
+        txtMes.setText(mesConfirmacao);
+        txtAno.setText(anoConfirmacao);
+        switch(tipo){
+            case "batismo":
+               txtCodTpCoroa.setText("1");
+               break;
+            case "Corôa":
+               txtCodTpCoroa.setText("2");
+               break;
+            case "1 ano":
+               txtCodTpCoroa.setText("3");
+               break;
+            case "3 anos":
+               txtCodTpCoroa.setText("4");
+               break;
+            case "7 anos":
+               txtCodTpCoroa.setText("5");
+               break;
+            case "14 anos":
+               txtCodTpCoroa.setText("6");
+               break;
+            case "21 anos":
+               txtCodTpCoroa.setText("7");
+               break;
+
+        }
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tabSaidasMouseClicked
+
+    private void txtDataSaidaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDataSaidaKeyPressed
+
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER){
+            exibeTabSaidaDoDia();
+        }
+// TODO add your handling code here:
+    }//GEN-LAST:event_txtDataSaidaKeyPressed
+
+    private void btImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btImprimirActionPerformed
+
+        config = new Configuracoes();
+        fechar();
+        inicial = new TelaInicial();
+        r = new DRelatorioCoroa(inicial, false);
+        config.gravaAtividades("Corôa", this.user, "Abertura de relatório de Coroação | Saídas");
+
+        r.recebeInfo(iduser, user);
+        r.setLocationRelativeTo(r);
+        r.setAutoRequestFocus(true);
+        r.setTitle("RELATÓRIO COROAÇÃO | SAÍDAS");
+        r.setVisible(true);
+        
+
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btImprimirActionPerformed
 
     public void preencheBarra(JTextField campo){
         if(campo.getText().length() > 2){
@@ -457,6 +777,7 @@ public class DCoroa extends javax.swing.JDialog {
         int ano = cal.get(Calendar.YEAR);
         
         c = new Coroa();
+        
         
         c.setAno(ano);
         c.setMes(mes);
@@ -477,6 +798,7 @@ public class DCoroa extends javax.swing.JDialog {
     }
     
     public void fechar(){
+        this.setAutoRequestFocus(false);
         this.dispose();
     }
     /**
@@ -524,15 +846,18 @@ public class DCoroa extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btCancelar;
     private javax.swing.JButton btColocar;
+    private javax.swing.JButton btImprimir;
     private javax.swing.JButton btTirar;
     private javax.swing.ButtonGroup buttonGroup;
     private com.toedter.calendar.JCalendar calendario;
     private com.toedter.calendar.JDateChooser dataSelect;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel labelDataSaida;
+    private javax.swing.JLabel labelDataSaidaMedium;
     private javax.swing.JLabel labelFotoCoroa;
+    private javax.swing.JLabel labelMedium;
+    private javax.swing.JLabel labelTipoCoroa;
     private javax.swing.JLabel labelTitulo;
     private javax.swing.JLabel labelVersao;
     private javax.swing.JPanel panelDown;
@@ -541,14 +866,16 @@ public class DCoroa extends javax.swing.JDialog {
     private javax.swing.JRadioButton radioPeriodo;
     private javax.swing.JRadioButton radioTodos;
     private javax.swing.JTable tabMedSaida;
-    private javax.swing.JTable tabMedSaidaOrixa;
+    private javax.swing.JTable tabSaidas;
     private javax.swing.JTextField txtAno;
     private javax.swing.JTextField txtCodMedium;
+    private javax.swing.JTextField txtCodTpCoroa;
     private javax.swing.JTextField txtCodUser;
     private javax.swing.JTextField txtData;
     private javax.swing.JTextField txtDataSaida;
     private javax.swing.JTextField txtMes;
     private javax.swing.JTextField txtMesAno1;
     private javax.swing.JTextField txtMesAno2;
+    private javax.swing.JTextField txtMesAno3;
     // End of variables declaration//GEN-END:variables
 }

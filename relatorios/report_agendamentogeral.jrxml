@@ -48,6 +48,20 @@
 				<reportElement x="736" y="8" width="59" height="20" uuid="149eb735-b45c-4346-b6f6-a67e05221e19"/>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="93" y="8" width="282" height="30" uuid="d4c36dee-d5c0-4e70-a5b2-71d59b29300c"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Calibri" size="12" isBold="true" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[TEMPLO ESPÍRITA JORGE MIGUEL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="93" y="46" width="175" height="16" uuid="7fe6abf4-ca7a-4f40-afd0-7d5b6ee2441a"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Calibri" size="10" isBold="true" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[RELATÓRIO DE ATENDIMENTO]]></text>
+			</staticText>
 		</band>
 	</title>
 	<columnHeader>

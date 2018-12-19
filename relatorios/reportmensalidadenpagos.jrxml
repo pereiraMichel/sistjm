@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reportmensalidade" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="add0d8fb-5ae8-4c8c-ad41-937d1753e2cf">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString>
+		<![CDATA[SELECT *, DATE_FORMAT(me.data_pagamento, '%d/%m/%Y') AS dataPago
+FROM mensalidade me
+LEFT JOIN mediuns m ON m.idmedium = me.cod_medium
+WHERE m.idmedium = 1
+AND me.pago = "n"]]>
+	</queryString>
+	<field name="idmensalidade" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ano" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="mes" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="data_pagamento" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="pago" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="valor" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cod_medium" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="codUsuario" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="idmedium" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nome" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="dataCadastro" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="dataNascimento" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="dataEntrada" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="matricula" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="isentoMensal" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ativo" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="observacoes" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="email" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="sexo" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cod_usuario" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="dataPago" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<staticText>
+				<reportElement x="93" y="10" width="282" height="30" forecolor="#0000CC" uuid="5e417b46-49ce-4f44-aabd-afb74f245afd"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Calibri" size="12" isBold="true" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[TEMPLO ESPÍRITA JORGE MIGUEL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="93" y="45" width="257" height="15" uuid="b1ae5f79-800d-44bd-b4af-c122fdf7265f"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Calibri" size="10" isBold="true" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[RELATÓRIO ANALÍTICO DE MENSALIDADES]]></text>
+			</staticText>
+			<image hAlign="Center">
+				<reportElement x="10" y="10" width="83" height="62" uuid="82dd3b2c-20d8-4316-b827-86a011651f10"/>
+				<imageExpression><![CDATA["C:\\Users\\Michel\\Documents\\NetBeansProjects\\SISTEJM\\src\\br\\com\\sistejm\\images\\logoTJM.jpg"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="605" y="47" width="109" height="20" uuid="d96f0f7b-ab78-4ef5-aa31-155ceebc3a18"/>
+				<textElement>
+					<font fontName="Calibri" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[MOVIMENTO DO ANO]]></text>
+			</staticText>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="45" splitType="Stretch">
+			<staticText>
+				<reportElement x="4" y="3" width="48" height="18" uuid="9b902001-61e1-4665-ab62-6e05fbafd957"/>
+				<textElement>
+					<font fontName="Calibri" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[MÉDIUM]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="475" y="4" width="66" height="17" uuid="5da730bd-f59a-464e-b057-e81901618a57"/>
+				<textElement textAlignment="Left">
+					<font fontName="Calibri" size="11" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[MATRÍCULA]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="52" y="2" width="400" height="17" uuid="7c766b87-e948-4677-b5ff-20d4ac3b85ee"/>
+				<textElement>
+					<font fontName="Calibri" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nome}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="541" y="4" width="100" height="17" uuid="3533fe35-0274-4992-8b13-064602e263b7"/>
+				<textElement>
+					<font fontName="Calibri" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{matricula}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="4" y="23" width="244" height="20" uuid="5574c11d-3c36-40df-b7f3-9688d84beae6"/>
+				<text><![CDATA[HISTÓRICO DE MENSALIDADES NÃO PAGOS]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="21" splitType="Stretch">
+			<textField>
+				<reportElement x="4" y="0" width="58" height="20" uuid="31c5131b-636e-4e9b-8ebd-aaf8a2f21dbd"/>
+				<textFieldExpression><![CDATA[$F{mes}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="62" y="0" width="76" height="20" uuid="60a164fe-cdd6-4d7d-ac1e-30caa700f9da"/>
+				<textFieldExpression><![CDATA[$F{valor}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="92" splitType="Stretch">
+			<staticText>
+				<reportElement x="766" y="59" width="9" height="20" uuid="33bc0cb6-92b8-418e-97bc-9b9c37de8991"/>
+				<text><![CDATA[/]]></text>
+			</staticText>
+			<textField evaluationTime="Report">
+				<reportElement x="772" y="59" width="23" height="20" uuid="32a2cb4e-de2d-4d17-b270-e4862677393d"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="739" y="59" width="27" height="20" uuid="49519dc6-7ef8-4a9b-aeb4-3398732d5e6b"/>
+				<textElement textAlignment="Right">
+					<font isStrikeThrough="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="19" width="802" height="20" uuid="71d82e50-a41d-43c7-92a2-dde516a41610"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial Narrow" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[USO EXCLUSIVO DO TEJM]]></text>
+			</staticText>
+			<line>
+				<reportElement x="4" y="4" width="798" height="1" uuid="ba45dd49-8ef8-4ebb-bff2-c095068a9d00"/>
+				<graphicElement>
+					<pen lineStyle="Dotted"/>
+				</graphicElement>
+			</line>
+		</band>
+	</columnFooter>
+</jasperReport>

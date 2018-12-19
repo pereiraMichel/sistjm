@@ -251,7 +251,7 @@ public class TelaInicial extends javax.swing.JFrame {
         subMenuRelAgenda = new javax.swing.JMenuItem();
         subMenuRelLivros = new javax.swing.JMenuItem();
         subMenuRelTesouraria = new javax.swing.JMenuItem();
-        subMenuRelAdministracao = new javax.swing.JMenuItem();
+        subMenuRelSaidas = new javax.swing.JMenuItem();
         subMenuConsultas = new javax.swing.JMenuItem();
         menuConfiguracoes = new javax.swing.JMenu();
         subMenuBancoDados = new javax.swing.JMenuItem();
@@ -717,9 +717,14 @@ public class TelaInicial extends javax.swing.JFrame {
         subMenuRelTesouraria.setText("Tesouraria");
         menuRelatorios.add(subMenuRelTesouraria);
 
-        subMenuRelAdministracao.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
-        subMenuRelAdministracao.setText("Administração");
-        menuRelatorios.add(subMenuRelAdministracao);
+        subMenuRelSaidas.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        subMenuRelSaidas.setText("Corôas - Saídas");
+        subMenuRelSaidas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                subMenuRelSaidasActionPerformed(evt);
+            }
+        });
+        menuRelatorios.add(subMenuRelSaidas);
 
         subMenuConsultas.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
         subMenuConsultas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/sistejm/images/icon16x16RelatorioGrupo2.png"))); // NOI18N
@@ -925,6 +930,7 @@ public class TelaInicial extends javax.swing.JFrame {
         mediuns.setTitle("SELECIONE O MÉDIUM");
 //        mediuns.recebeUsuario(iduser, user);
         mediuns.setVisible(true);
+        mediuns.setAutoRequestFocus(true);
         preencheCampo("\nAbrindo seleção de operação dos Médiuns...");
         config = new Configuracoes();
         config.gravaAtividades("Médiuns", this.user, "Seleção de operação de médiuns");
@@ -1229,11 +1235,29 @@ public class TelaInicial extends javax.swing.JFrame {
 
     private void subMenuCoroaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuCoroaActionPerformed
 
+        config = new Configuracoes();
         DCoroa coroa = new DCoroa(this, false);
         coroa.setTitle("Coroa - Agendamentos");
+        coroa.recebeInfo(iduser, user);
+        coroa.setAutoRequestFocus(true);
         coroa.setLocationRelativeTo(coroa);
-        coroa.setVisible(true);        // TODO add your handling code here:
+        config.gravaAtividades("Corôa", this.user, "Operação de corôas de médiuns em geral");
+        coroa.setVisible(true);
+
     }//GEN-LAST:event_subMenuCoroaActionPerformed
+
+    private void subMenuRelSaidasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuRelSaidasActionPerformed
+
+        config = new Configuracoes();
+        DRelatorioCoroa relcoroa = new DRelatorioCoroa(this, false);
+        relcoroa.setTitle("RELATÓRIO COROAÇÃO | SAÍDAS");
+        relcoroa.recebeInfo(this.iduser, user);
+        relcoroa.setAutoRequestFocus(true);
+        relcoroa.setLocationRelativeTo(relcoroa);
+        config.gravaAtividades("Corôa", this.user, "Abertura de relatório de Corôas");
+        relcoroa.setVisible(true);
+        // TODO add your handling code here:
+    }//GEN-LAST:event_subMenuRelSaidasActionPerformed
 
     public void autorizaUsuario(){
         con = new Conexao();
@@ -1459,11 +1483,11 @@ public class TelaInicial extends javax.swing.JFrame {
     private javax.swing.JMenuItem subMenuPatente;
     private javax.swing.JMenuItem subMenuProdutos;
     private javax.swing.JMenuItem subMenuRecebimentos;
-    private javax.swing.JMenuItem subMenuRelAdministracao;
     private javax.swing.JMenuItem subMenuRelAgenda;
     private javax.swing.JMenuItem subMenuRelEventos;
     private javax.swing.JMenuItem subMenuRelLivros;
     private javax.swing.JMenuItem subMenuRelMediuns;
+    private javax.swing.JMenuItem subMenuRelSaidas;
     private javax.swing.JMenuItem subMenuRelTesouraria;
     private javax.swing.JMenuItem subMenuRelUsuarios;
     private javax.swing.JMenuItem subMenuReservas;

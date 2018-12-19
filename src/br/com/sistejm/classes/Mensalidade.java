@@ -302,6 +302,36 @@ public class Mensalidade {
         }
         
     }
+    public String ultimoPagamento(int idMedium){
+
+        String sql = "SELECT DATE_FORMAT(me.data_pagamento, '%d/%m/%Y') AS ultimoPagamento " +
+                    "FROM mediuns m " +
+                    "LEFT JOIN mensalidade me ON me.cod_medium = m.idmedium " +
+                    "WHERE m.ativo = 1 " +
+                    "AND me.pago = 's' " +
+                    "AND m.idmedium = " + idMedium + " " +
+                    "ORDER BY m.idmedium DESC " +
+                    "LIMIT 1 ";
+        
+//        System.out.println(sql);
+        try{
+            con = new Conexao();
+            conn = con.getConnection();
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery(sql);
+            
+            rs.next();
+            
+            if(rs.absolute(1)){
+                return rs.getString("ultimoPagamento");
+            }
+            
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
     
 }
 

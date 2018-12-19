@@ -373,9 +373,10 @@ public class DPesquisaMedium extends javax.swing.JDialog {
         inicial = new TelaInicial();
         med = new DMediumGeral(inicial, false);
         med.recebeNomeMedium(txtPesquisa.getText(), txtMatricula.getText(), txtIdMedium.getText(), 
-                String.valueOf(this.idUser));
+                String.valueOf(this.idUser), txtAtivo.getText());
 //        med.setFocusableWindowState(true);
         med.setLocationRelativeTo(med);
+        med.setAutoRequestFocus(true);
         med.setVisible(true);
         fechar();
         
@@ -398,11 +399,13 @@ public class DPesquisaMedium extends javax.swing.JDialog {
         String id = String.valueOf(tabelaMedium.getValueAt(tabelaMedium.getSelectedRow(), 0));
         String matriculaMedium = String.valueOf(tabelaMedium.getValueAt(tabelaMedium.getSelectedRow(), 1));
         String nomeMedium = String.valueOf(tabelaMedium.getValueAt(tabelaMedium.getSelectedRow(), 2));
+        String ativo = String.valueOf(tabelaMedium.getValueAt(tabelaMedium.getSelectedRow(), 3));
         
         txtPesquisa.setText(nomeMedium);
         txtIdMedium.setText(id);
         txtMatricula.setText(matriculaMedium);
         btDesativar.setEnabled(true);
+        txtAtivo.setText(ativo);
         
 //        this.idMedium = m.retornaIdMediumPorMatricula(matriculaMedium);
         
@@ -485,6 +488,7 @@ public class DPesquisaMedium extends javax.swing.JDialog {
 
     
     public void fechar(){
+        this.setAutoRequestFocus(false);
         this.dispose();
     }
     /**

@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reportmensalidade" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="add0d8fb-5ae8-4c8c-ad41-937d1753e2cf">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString>
+		<![CDATA[SELECT m.nome, m.matricula, me.mes, me.ano, me.pago, me.valor, DATE_FORMAT(me.data_pagamento, '%d/%m/%Y') AS dataPago, (SELECT COUNT(me.idmensalidade) FROM mensalidade me LEFT JOIN mediuns m ON m.idmedium = me.cod_medium WHERE me.pago = 'n' AND me.cod_medium = 1 AND me.ano = 2018) AS quantidade
+FROM mensalidade me
+LEFT JOIN mediuns m ON m.idmedium = me.cod_medium
+WHERE m.idmedium = 1
+AND me.pago = "s"]]>
+	</queryString>
+	<field name="nome" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="matricula" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="mes" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ano" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="pago" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="valor" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="dataPago" class="java.lang.String"/>
+	<field name="quantidade" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<staticText>
+				<reportElement x="93" y="10" width="282" height="30" forecolor="#0000CC" uuid="5e417b46-49ce-4f44-aabd-afb74f245afd"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Calibri" size="12" isBold="true" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[TEMPLO ESPÍRITA JORGE MIGUEL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="93" y="45" width="257" height="15" uuid="b1ae5f79-800d-44bd-b4af-c122fdf7265f"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Calibri" size="11" isBold="true" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[RELATÓRIO ANALÍTICO DE MENSALIDADES]]></text>
+			</staticText>
+			<image hAlign="Center">
+				<reportElement x="10" y="10" width="83" height="62" uuid="82dd3b2c-20d8-4316-b827-86a011651f10"/>
+				<imageExpression><![CDATA["C:\\Users\\Michel\\Documents\\NetBeansProjects\\SISTEJM\\src\\br\\com\\sistejm\\images\\logoTJM.jpg"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="432" y="10" width="109" height="20" uuid="d96f0f7b-ab78-4ef5-aa31-155ceebc3a18"/>
+				<textElement>
+					<font fontName="Calibri" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[MOVIMENTO DO ANO]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="434" y="30" width="107" height="30" uuid="b8fa30bf-46a7-438a-863c-6d0521c519b7"/>
+				<textElement textAlignment="Center">
+					<font fontName="Calibri" size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ano}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="67" splitType="Stretch">
+			<staticText>
+				<reportElement x="4" y="3" width="48" height="18" uuid="9b902001-61e1-4665-ab62-6e05fbafd957"/>
+				<textElement>
+					<font fontName="Calibri" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[MÉDIUM]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="359" y="2" width="66" height="17" uuid="5da730bd-f59a-464e-b057-e81901618a57"/>
+				<textElement textAlignment="Left">
+					<font fontName="Calibri" size="11" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[MATRÍCULA]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="52" y="2" width="298" height="17" uuid="7c766b87-e948-4677-b5ff-20d4ac3b85ee"/>
+				<textElement>
+					<font fontName="Calibri" size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nome}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="425" y="2" width="100" height="17" uuid="3533fe35-0274-4992-8b13-064602e263b7"/>
+				<textElement>
+					<font fontName="Calibri" size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{matricula}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="4" y="23" width="229" height="20" uuid="5574c11d-3c36-40df-b7f3-9688d84beae6"/>
+				<text><![CDATA[HISTÓRICO DE MENSALIDADE PAGOS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="4" y="47" width="58" height="20" uuid="8686add9-5201-43b2-a1e7-3ddf9fb00084"/>
+				<textElement textAlignment="Center">
+					<font fontName="Calibri" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[MÊS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="62" y="48" width="76" height="19" uuid="3a8c1c10-87c7-414b-afbc-f34532cde7bd"/>
+				<textElement textAlignment="Center">
+					<font fontName="Calibri" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[VALOR (R$)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="148" y="47" width="113" height="20" uuid="46d39d7b-475a-437d-add0-13b51c496db7"/>
+				<textElement textAlignment="Center">
+					<font fontName="Calibri" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DATA  DE PAGAMENTO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="332" y="47" width="166" height="20" forecolor="#FF0000" uuid="aa398708-ea86-429b-add8-ff18f1628626"/>
+				<textElement>
+					<font fontName="Calibri" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Quantidade de meses pendentes:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="498" y="48" width="27" height="19" forecolor="#FF0000" uuid="4bef9e79-b91c-4b28-a3e0-937df00d2116"/>
+				<textElement>
+					<font fontName="Calibri" size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{quantidade}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="21" splitType="Stretch">
+			<textField>
+				<reportElement x="4" y="0" width="58" height="20" uuid="31c5131b-636e-4e9b-8ebd-aaf8a2f21dbd"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{mes}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="62" y="0" width="76" height="20" uuid="60a164fe-cdd6-4d7d-ac1e-30caa700f9da"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{valor}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="148" y="1" width="113" height="20" uuid="f6a219fb-ff03-4d0b-be86-0625f22ab2f0"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{dataPago}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="92" splitType="Stretch">
+			<staticText>
+				<reportElement x="525" y="72" width="9" height="20" uuid="33bc0cb6-92b8-418e-97bc-9b9c37de8991"/>
+				<text><![CDATA[/]]></text>
+			</staticText>
+			<textField evaluationTime="Report">
+				<reportElement x="531" y="72" width="23" height="20" uuid="32a2cb4e-de2d-4d17-b270-e4862677393d"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="498" y="72" width="27" height="20" uuid="49519dc6-7ef8-4a9b-aeb4-3398732d5e6b"/>
+				<textElement textAlignment="Right">
+					<font isStrikeThrough="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="19" width="554" height="20" uuid="71d82e50-a41d-43c7-92a2-dde516a41610"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial Narrow" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[USO EXCLUSIVO DO TEJM]]></text>
+			</staticText>
+			<line>
+				<reportElement x="4" y="4" width="551" height="1" uuid="ba45dd49-8ef8-4ebb-bff2-c095068a9d00"/>
+				<graphicElement>
+					<pen lineStyle="Dotted"/>
+				</graphicElement>
+			</line>
+		</band>
+	</columnFooter>
+</jasperReport>
