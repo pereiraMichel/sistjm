@@ -60,11 +60,10 @@ public class MediumExu {
     public void tabMediumExu(JTable tabela){
         config = new Configuracoes();
 
-        String sql = "SELECT e.nome "
+        String sql = "SELECT me.idmedium_exu, m.nome, e.nome AS nomeExu "
                     + "FROM mediuns m "
                     + "INNER JOIN medium_exu me ON me.codMedium = m.idmedium "
-                    + "LEFT JOIN exu e ON e.idexu = me.cod_exu "
-                    + "WHERE m.idmedium = " + this.codMedium;
+                    + "LEFT JOIN exu e ON e.idexu = me.cod_exu ";
         
         try{
             con = new Conexao();
@@ -76,17 +75,17 @@ public class MediumExu {
             tabela.setModel(medium);
 
             medium.addColumn("ID");
-            medium.addColumn("Matrícula");
             medium.addColumn("Médium");
+            medium.addColumn("Exu");
 
             tabela.getColumnModel().getColumn(0).setPreferredWidth(5);
-            tabela.getColumnModel().getColumn(1).setPreferredWidth(10);
-            tabela.getColumnModel().getColumn(2).setPreferredWidth(110);
+            tabela.getColumnModel().getColumn(1).setPreferredWidth(100);
+            tabela.getColumnModel().getColumn(2).setPreferredWidth(80);
 
             while(rs.next()){
-                int id = rs.getInt("idmedium");
+                int id = rs.getInt("idmedium_exu");
                 String nome = rs.getString("nome");
-                String matricula = rs.getString("matricula");
+                String matricula = rs.getString("nomeExu");
                 medium.addRow(new Object[]{id, matricula, nome});
             }
         }catch(Exception ex){
@@ -95,7 +94,11 @@ public class MediumExu {
     }
     public void buscaTabMediumMatricula(JTable tabela, JTextField texto){
 
-        String sql = "SELECT * FROM mediuns WHERE matricula LIKE '%" + texto.getText() + "%'";
+        String sql = "SELECT me.idmedium_exu, m.nome, m.matricula, e.nome AS nomeExu "
+                    + "FROM mediuns m "
+                    + "INNER JOIN medium_exu me ON me.codMedium = m.idmedium "
+                    + "LEFT JOIN exu e ON e.idexu = me.cod_exu "
+                    + "WHERE matricula LIKE '%" + texto.getText() + "%'";
 
         config = new Configuracoes();
         
@@ -109,18 +112,18 @@ public class MediumExu {
             tabela.setModel(medium);
 
             medium.addColumn("ID");
-            medium.addColumn("Matrícula");
             medium.addColumn("Médium");
+            medium.addColumn("Exu");
 
             tabela.getColumnModel().getColumn(0).setPreferredWidth(5);
-            tabela.getColumnModel().getColumn(1).setPreferredWidth(10);
-            tabela.getColumnModel().getColumn(2).setPreferredWidth(110);
+            tabela.getColumnModel().getColumn(1).setPreferredWidth(100);
+            tabela.getColumnModel().getColumn(2).setPreferredWidth(80);
 
             while(rs.next()){
-                int id = rs.getInt("idmedium");
-                String nome = rs.getString("nome");
-                String matricula = rs.getString("matricula");
-                medium.addRow(new Object[]{id, matricula, nome});
+                int id = rs.getInt("me.idmedium_exu");
+                String nome = rs.getString("m.nome");
+                String exu = rs.getString("nomeExu");
+                medium.addRow(new Object[]{id, nome, exu});
             }
         }catch(Exception ex){
             config.gravaErroLog("Tentativa de exibir a tabela de caboclo. Erro: " + ex.getMessage(), "Tabela de Caboclo", "sistejm.mcaboclo");
@@ -162,8 +165,7 @@ public class MediumExu {
             this.idMediumExu = con.ultimoId("medium_exu", "idmedium_exu");
 
             String sql = "INSERT INTO medium_exu (idmedium_exu, cod_exu, codMedium) "
-                    + "VALUES (" + this.idMediumExu + ", " + this.codExu + ", " + this.codMedium + ", "
-                    + " " + this.codMedium + ")";
+                    + "VALUES (" + this.idMediumExu + ", " + this.codExu + ", " + this.codMedium + ")";
             
             try{
                 conn = con.getConnection();
@@ -182,7 +184,7 @@ public class MediumExu {
     public boolean alterarMediumExu(){
         config = new Configuracoes();
         
-        String sql = "UPDATE medium_exu SET cod_caboclo = " + this.codExu + ""
+        String sql = "UPDATE medium_exu SET cod_exu = " + this.codExu + ""
                 + " WHERE idmedium_exu = " + this.idMediumExu + " AND codMedium = " + this.codMedium;
         
         try{
@@ -214,7 +216,6 @@ public class MediumExu {
             
         }catch(Exception ex){
             config.gravaErroLog("Tentativa de exclusão do Exu do Médium. Erro: " + ex.getMessage(), "Exclusão do Exu", "sistejm.mexu");
-//            System.out.println("Catch exclusão de Orixá de Médium ativado. Erro: " + ex.getMessage());
         }
         return false;
     }
@@ -332,7 +333,39 @@ public class MediumExu {
 //            System.out.println(" Erro: " + ex.getMessage());
         }        
         return 0;
-    }    
+    }
     
+    public void exibeTabMediumExuPorId(JTable tabela){
+        config = new Configuracoes();
+         String sql = "SELECT e.nome AS nomeExu "
+                    + "FROM mediuns m "
+                    + "INNER JOIN medium_exu me ON me.codMedium = m.idmedium "
+                    + "LEFT JOIN exu e ON e.idexu = me.cod_exu "
+                    + "WHERE m.idmedium = " + this.codMedium;
+        
+        try{
+            con = new Conexao();
+            conn = con.getConnection();
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery(sql);
+                
+            DefaultTableModel medium = new DefaultTableModel();
+            tabela.setModel(medium);
+
+            medium.addColumn("Nome");
+            tabela.getColumnModel().getColumn(0).setPreferredWidth(100);
+
+            while(rs.next()){
+                String nome = rs.getString("nomeExu");
+                if(nome.equals("")){
+                    medium.addRow(new Object[]{"Sem informações"});
+                }else{
+                    medium.addRow(new Object[]{nome});
+                }
+            }
+        }catch(Exception ex){
+            config.gravaErroLog("Tentativa de preenchimento da tabela de Exu do Médium. Erro: " + ex.getMessage(), "Tabela de exu", "sistejm.exumedium");
+        }            
+    }
     
 }

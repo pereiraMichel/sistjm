@@ -76,6 +76,8 @@ public class TipoOrixa {
         try{
             String sql = "SELECT * FROM tipo_orixa WHERE tipo = '" + nome + "'";
             
+//            System.out.println(sql);
+            
             con = new Conexao();
             conn = con.getConnection();
             stmt = conn.createStatement();
@@ -89,8 +91,6 @@ public class TipoOrixa {
 
         }catch(IOException | SQLException ex){
             config.gravaErroLog("Tentativa de retorno do id do tipo de Orixá. Erro: " + ex.getMessage(), "Tipo de Orixá", "sistejm.tipoorixa");
-            JOptionPane.showMessageDialog(null, "Houve um erro. consulte o arquivo C:/sistejm > erro > sistejm.tipoorixa para mais informações");
-//            System.out.println(" Erro: " + ex.getMessage());
         }        
         return 0;
     }

@@ -17,4 +17,9 @@ public class Constances {
     public static final String ERROR_TBATISMO = "Houve um erro ao exibir a tabela do batismo. Erro: ";
     public static final String ERROR_VBATISMO = "Houve um erro ao verificar o batismo. Erro: ";
     
+    public static final String TITULO_DMEDIUMGERAL = "TELA INDIVIDUAL DE MÉDIUNS";
+    public static final String TITULO_DANOSCARTEIRA = "TELA DE IMPRESSÃO DE ANOS | CARTEIRA";
+    
+    
+    
 }

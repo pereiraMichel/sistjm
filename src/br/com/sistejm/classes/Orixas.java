@@ -73,9 +73,10 @@ public class Orixas {
             config.gravaErroLog("Tentativa de tabela geral de Orixá. Erro: " + ex.getMessage(), "Orixá", "sistejm.tipoorixas");
         }        
     }
+    
     public void buscaTabOrixas(JTable tabela, JTextField texto){
 
-        String sql = "SELECT * FROM orixas WHERE nome LIKE '%" + texto + "'";
+        String sql = "SELECT * FROM orixas WHERE nome LIKE '%" + texto.getText() + "'";
         
         try{
             con = new Conexao();

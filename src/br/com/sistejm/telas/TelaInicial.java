@@ -7,10 +7,15 @@ package br.com.sistejm.telas;
 
 import br.com.sistejm.classes.Conexao;
 import br.com.sistejm.classes.Configuracoes;
+import br.com.sistejm.classes.Constances;
 import br.com.sistejm.classes.Usuario;
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.URL;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -39,6 +44,7 @@ public class TelaInicial extends javax.swing.JFrame {
     private String user;
     private int iduser;
     private String acesso;
+    private static ServerSocket s;
 
     public int getIduser() {
         return iduser;
@@ -76,7 +82,15 @@ public class TelaInicial extends javax.swing.JFrame {
         txtAcesso.setText("Não está logado.");
         inicioAdm();
         ocultaMenus(false);
+        insereIcone();
+//        infoRede();
     }
+    
+//    public void infoRede(){
+//        config = new Configuracoes();
+//        config.inforRede();
+//        JOptionPane.showMessageDialog(null, config.getIpLocal());
+//    }
     
     public void inicioAdm(){
         panelLogin.setVisible(true);
@@ -147,6 +161,12 @@ public class TelaInicial extends javax.swing.JFrame {
         return data;        
     }
     
+    public void insereIcone(){
+        
+        config = new Configuracoes();
+        config.insereIconePrincipal(this);
+    }
+    
     public void sair(){
         
         if(JOptionPane.showConfirmDialog(null, "Deseja sair ?", "ATENÇÃO", JOptionPane.YES_NO_OPTION) == 0){
@@ -156,8 +176,12 @@ public class TelaInicial extends javax.swing.JFrame {
             config = new Configuracoes();
             //String dataHoje = config.retornaData();
            // String pathAtividades = "C:\\sistejm\\dados\\" + this.user + "." + dataHoje + ".txt";
+           
+//           if(this.user.equals(null)){
+//               this.user = "SemUsuario";
+//           }
 
-            config.gravaAtividades("Saída do", this.user, "Sistema");
+            config.gravaAtividades("Saída do Sistema", this.user, "");
             
             config.extendNew(pathBanco);
             config.extendNew(pathUser);
@@ -235,6 +259,9 @@ public class TelaInicial extends javax.swing.JFrame {
         subMenuBaixa = new javax.swing.JMenuItem();
         subMenuTrabalho = new javax.swing.JMenuItem();
         subMenuCoroa = new javax.swing.JMenuItem();
+        subMenuCarteira = new javax.swing.JMenu();
+        subCImpressosao = new javax.swing.JMenuItem();
+        subCAnos = new javax.swing.JMenuItem();
         menuTesouraria = new javax.swing.JMenu();
         subMenuPagamentos = new javax.swing.JMenuItem();
         subMenuRecebimentos = new javax.swing.JMenuItem();
@@ -250,7 +277,7 @@ public class TelaInicial extends javax.swing.JFrame {
         subMenuRelEventos = new javax.swing.JMenuItem();
         subMenuRelAgenda = new javax.swing.JMenuItem();
         subMenuRelLivros = new javax.swing.JMenuItem();
-        subMenuRelTesouraria = new javax.swing.JMenuItem();
+        subMenuRelMensalidades = new javax.swing.JMenuItem();
         subMenuRelSaidas = new javax.swing.JMenuItem();
         subMenuConsultas = new javax.swing.JMenuItem();
         menuConfiguracoes = new javax.swing.JMenu();
@@ -515,6 +542,11 @@ public class TelaInicial extends javax.swing.JFrame {
         );
 
         menuArquivo.setText("Arquivo");
+        menuArquivo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuArquivoActionPerformed(evt);
+            }
+        });
 
         subMenuLogin.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F2, 0));
         subMenuLogin.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/sistejm/images/icon16x16Cadeado.png"))); // NOI18N
@@ -644,6 +676,27 @@ public class TelaInicial extends javax.swing.JFrame {
         });
         menuAdm.add(subMenuCoroa);
 
+        subMenuCarteira.setText("Carteira");
+
+        subCImpressosao.setText("Impressão");
+        subCImpressosao.setPreferredSize(new java.awt.Dimension(150, 22));
+        subCImpressosao.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                subCImpressosaoActionPerformed(evt);
+            }
+        });
+        subMenuCarteira.add(subCImpressosao);
+
+        subCAnos.setText("Anos (traseira)");
+        subCAnos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                subCAnosActionPerformed(evt);
+            }
+        });
+        subMenuCarteira.add(subCAnos);
+
+        menuAdm.add(subMenuCarteira);
+
         menu.add(menuAdm);
 
         menuTesouraria.setText("Tesouraria");
@@ -662,6 +715,11 @@ public class TelaInicial extends javax.swing.JFrame {
         subMenuMensalidades.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F7, 0));
         subMenuMensalidades.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/sistejm/images/icon16x16Relatorio.png"))); // NOI18N
         subMenuMensalidades.setText("Mensalidades");
+        subMenuMensalidades.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                subMenuMensalidadesActionPerformed(evt);
+            }
+        });
         menuTesouraria.add(subMenuMensalidades);
 
         subMenuDepositos.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_D, java.awt.event.InputEvent.CTRL_MASK));
@@ -713,9 +771,14 @@ public class TelaInicial extends javax.swing.JFrame {
         subMenuRelLivros.setText("Livros");
         menuRelatorios.add(subMenuRelLivros);
 
-        subMenuRelTesouraria.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_T, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
-        subMenuRelTesouraria.setText("Tesouraria");
-        menuRelatorios.add(subMenuRelTesouraria);
+        subMenuRelMensalidades.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_T, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        subMenuRelMensalidades.setText("Mensalidades");
+        subMenuRelMensalidades.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                subMenuRelMensalidadesActionPerformed(evt);
+            }
+        });
+        menuRelatorios.add(subMenuRelMensalidades);
 
         subMenuRelSaidas.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
         subMenuRelSaidas.setText("Corôas - Saídas");
@@ -863,6 +926,15 @@ public class TelaInicial extends javax.swing.JFrame {
         config.extendOriginal(pathUser);
         
         boasVindas();
+        
+        try {
+            s = new ServerSocket(9581);
+        } catch (Exception e) {
+            if(JOptionPane.showConfirmDialog(null, "Há o mesmo aplicativo em aberto. Deseja fechar ?", "ERRO", JOptionPane.YES_NO_OPTION) == 0){
+                System.exit(0);
+            }
+//            JOptionPane.showMessageDialog(null, "Há o mesmo aplicativo em aberto. Feche ambos e tente novamente.");
+        }        
 
     }//GEN-LAST:event_formWindowOpened
 
@@ -928,7 +1000,7 @@ public class TelaInicial extends javax.swing.JFrame {
 //        DSelecionaOpMedium mediuns = new DSelecionaOpMedium(this, false);
         mediuns.setLocationRelativeTo(mediuns);
         mediuns.setTitle("SELECIONE O MÉDIUM");
-//        mediuns.recebeUsuario(iduser, user);
+        mediuns.recebeUsuario(user, iduser);
         mediuns.setVisible(true);
         mediuns.setAutoRequestFocus(true);
         preencheCampo("\nAbrindo seleção de operação dos Médiuns...");
@@ -1259,6 +1331,55 @@ public class TelaInicial extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_subMenuRelSaidasActionPerformed
 
+    private void subMenuMensalidadesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuMensalidadesActionPerformed
+
+        DMensalidadeMediuns mm = new DMensalidadeMediuns(this, false);
+        mm.setAutoRequestFocus(true);
+        mm.setTitle("MENSALIDADE DE MÉDIUNS");
+        mm.recebeInfo(this.iduser);
+        mm.setLocationRelativeTo(mm);
+        mm.setVisible(true);
+
+        // TODO add your handling code here:
+    }//GEN-LAST:event_subMenuMensalidadesActionPerformed
+
+    private void subMenuRelMensalidadesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuRelMensalidadesActionPerformed
+
+        DRelatorioMensalidade rm = new DRelatorioMensalidade(this, false);
+        rm.setAutoRequestFocus(true);
+        rm.setTitle("RELATÓRIO DE MENSALIDADES");
+        rm.recebeInfo(user);
+        rm.setLocationRelativeTo(rm);
+        rm.setVisible(true);
+    }//GEN-LAST:event_subMenuRelMensalidadesActionPerformed
+
+    private void subCImpressosaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subCImpressosaoActionPerformed
+
+        DImpressaoCarteira car = new DImpressaoCarteira(this, false);
+        car.setAutoRequestFocus(true);
+        car.setTitle("RELATÓRIO DE MENSALIDADES");
+//        car.recebeInfo(user);
+        car.setLocationRelativeTo(car);
+        car.setAutoRequestFocus(true);
+        car.setVisible(true);        // TODO add your handling code here:
+    }//GEN-LAST:event_subCImpressosaoActionPerformed
+
+    private void subCAnosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subCAnosActionPerformed
+
+        DAnosCarteira car = new DAnosCarteira(this, false);
+        car.setAutoRequestFocus(true);
+        car.setTitle(Constances.TITULO_DANOSCARTEIRA);
+//        car.recebeInfo(user);
+        car.setLocationRelativeTo(car);
+        car.setAutoRequestFocus(true);
+        car.setVisible(true);        
+// TODO add your handling code here:
+    }//GEN-LAST:event_subCAnosActionPerformed
+
+    private void menuArquivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuArquivoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_menuArquivoActionPerformed
+
     public void autorizaUsuario(){
         con = new Conexao();
         config = new Configuracoes();
@@ -1277,6 +1398,7 @@ public class TelaInicial extends javax.swing.JFrame {
                 this.setUser(rs.getString("nome"));
                 this.setIduser(rs.getInt("id_usuario"));
                 this.setAcesso(rs.getString("acesso"));
+
                 
                 txtAcesso.setText(this.user + " | " + this.acesso);
                 preencheCampo("\nBem-vindo(a), " + user);
@@ -1458,12 +1580,15 @@ public class TelaInicial extends javax.swing.JFrame {
     private javax.swing.JPanel panelLogin;
     private javax.swing.JPanel panelMeio;
     private javax.swing.JScrollPane scroll;
+    private javax.swing.JMenuItem subCAnos;
+    private javax.swing.JMenuItem subCImpressosao;
     private javax.swing.JMenuItem subMenuAcesso;
     private javax.swing.JMenuItem subMenuAgendaAnual;
     private javax.swing.JMenuItem subMenuAgendamentos;
     private javax.swing.JMenuItem subMenuBaixa;
     private javax.swing.JMenuItem subMenuBancoDados;
     private javax.swing.JMenuItem subMenuCaboclos;
+    private javax.swing.JMenu subMenuCarteira;
     private javax.swing.JMenuItem subMenuColabora;
     private javax.swing.JMenuItem subMenuConfigUsuarios;
     private javax.swing.JMenuItem subMenuConsultas;
@@ -1487,8 +1612,8 @@ public class TelaInicial extends javax.swing.JFrame {
     private javax.swing.JMenuItem subMenuRelEventos;
     private javax.swing.JMenuItem subMenuRelLivros;
     private javax.swing.JMenuItem subMenuRelMediuns;
+    private javax.swing.JMenuItem subMenuRelMensalidades;
     private javax.swing.JMenuItem subMenuRelSaidas;
-    private javax.swing.JMenuItem subMenuRelTesouraria;
     private javax.swing.JMenuItem subMenuRelUsuarios;
     private javax.swing.JMenuItem subMenuReservas;
     private javax.swing.JMenuItem subMenuSair;

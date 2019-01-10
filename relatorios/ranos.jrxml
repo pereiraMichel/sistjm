@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ranos" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="8c35ef7e-9a2d-4dfe-8e26-4cd7eeefa3fb">
+	<property name="ireport.zoom" value="1.7715610000000015"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="39"/>
+	<parameter name="ano1" class="java.lang.String"/>
+	<parameter name="ano2" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[]]>
+	</queryString>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<summary>
+		<band height="158">
+			<rectangle>
+				<reportElement x="137" y="2" width="126" height="20" uuid="814fceb1-25e1-4b71-a9a8-e731885016e2"/>
+				<graphicElement>
+					<pen lineStyle="Dotted"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="137" y="22" width="126" height="136" uuid="141becd6-f1b4-4521-b720-18a567611c06"/>
+				<graphicElement>
+					<pen lineStyle="Dotted"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="7" y="22" width="126" height="136" uuid="ba77c481-70aa-42c6-aedb-c52b3c30a951"/>
+				<graphicElement>
+					<pen lineStyle="Dotted"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="7" y="2" width="126" height="20" uuid="cb19b2a0-51ae-404f-be05-da1262911291"/>
+				<graphicElement>
+					<pen lineStyle="Dotted"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="8" y="87" width="56" height="20" uuid="ef082736-cb80-4ca0-aa29-1b282676f023"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Calibri" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ABRIL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="69" y="132" width="64" height="20" uuid="be7727b1-9ed5-401a-a3c8-43c8cb4d38cf"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Calibri" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DEZEMBRO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="69" y="109" width="64" height="20" uuid="1b3b5850-6bee-4698-a24f-5b8a49bb81c2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Calibri" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[NOVEMBRO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="69" y="41" width="64" height="20" uuid="33c26ff6-c53b-4c1b-86e4-6e4dd1631475"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Calibri" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[AGOSTO]]></text>
+			</staticText>
+			<line>
+				<reportElement x="7" y="66" width="126" height="1" uuid="98ba514a-7cd5-463b-9d08-c9f8b3036cac"/>
+				<graphicElement>
+					<pen lineStyle="Dotted"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="69" y="86" width="64" height="20" uuid="4f7ac6ed-baa3-495d-9565-9c67b5fd04fa"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Calibri" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[OUTUBRO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="8" y="67" width="56" height="20" uuid="ffcd5520-64ed-4652-ae25-6d2c2bf77025"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Calibri" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[MARÇO]]></text>
+			</staticText>
+			<line>
+				<reportElement x="7" y="91" width="126" height="1" uuid="fa569e54-752f-4b24-8eb0-c90d8b5f1db1"/>
+				<graphicElement>
+					<pen lineStyle="Dotted"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="7" y="45" width="126" height="1" uuid="54c123db-620d-4278-8952-5d921e6c9915"/>
+				<graphicElement>
+					<pen lineStyle="Dotted"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="8" y="41" width="56" height="20" uuid="334da38f-0528-422b-a86e-9d163b9703d9"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Calibri" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[FEVEREIRO]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="23" y="2" width="97" height="20" uuid="97c83aa0-0579-4aba-8a6f-54b48396bc62"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Calibri" size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{ano1}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="69" y="17" width="64" height="20" uuid="ca31b64c-075c-454f-a3b3-a298eede0b56"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Calibri" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[JULHO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="8" y="18" width="56" height="19" uuid="ec184bb7-ae51-4138-91ff-f3938ce95d5d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Calibri" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[JANEIRO]]></text>
+			</staticText>
+			<line>
+				<reportElement x="7" y="114" width="126" height="1" uuid="34405cf6-4bab-4ff9-ae8d-097883c3c933"/>
+				<graphicElement>
+					<pen lineStyle="Dotted"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="8" y="110" width="56" height="20" uuid="70ec537c-cf0d-495e-917b-62a1abe2ad87"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Calibri" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[MAIO]]></text>
+			</staticText>
+			<line>
+				<reportElement x="8" y="137" width="126" height="1" uuid="ce9e8281-0de3-4b5c-8ad7-8582cd0c5316"/>
+				<graphicElement>
+					<pen lineStyle="Dotted"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="8" y="132" width="56" height="20" uuid="77cbeb47-ec4e-4e76-a8ce-ae0c4ff24bcf"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Calibri" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[JUNHO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="69" y="61" width="64" height="20" uuid="3f0f0b5b-20a0-4e1f-8ec0-f868aeb19f34"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Calibri" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SETEMBRO]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="64" y="22" width="5" height="136" uuid="dbff26ba-8bc9-4eee-b98a-aa3790aff297"/>
+				<graphicElement>
+					<pen lineStyle="Dotted"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="138" y="18" width="56" height="19" uuid="0369478e-e0b9-479f-91a7-084dd8b917dc"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Calibri" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[JANEIRO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="199" y="17" width="64" height="20" uuid="4147c1e0-cea4-428d-bf9c-06c6cfd59245"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Calibri" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[JULHO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="138" y="87" width="56" height="20" uuid="56d1a6f4-1aa3-4220-846b-1dee0391eafe"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Calibri" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ABRIL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="199" y="41" width="64" height="20" uuid="89ef05f3-6e9a-411b-b8cb-095b838ca92c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Calibri" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[AGOSTO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="199" y="61" width="64" height="20" uuid="4c25ec9e-a0c4-4e1c-9a2d-213dedcd7c38"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Calibri" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SETEMBRO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="138" y="67" width="56" height="20" uuid="e4b2d5fb-18fc-49d1-a477-642b76112cda"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Calibri" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[MARÇO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="199" y="86" width="64" height="20" uuid="bf8c3994-a4b7-4118-89a3-35343dbdadaf"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Calibri" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[OUTUBRO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="138" y="132" width="56" height="20" uuid="c7ebc033-cc02-4a70-8655-685160ff4dc1"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Calibri" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[JUNHO]]></text>
+			</staticText>
+			<line>
+				<reportElement x="137" y="91" width="126" height="1" uuid="7b77da3c-0fe3-4144-81ab-f62d3570aae7"/>
+				<graphicElement>
+					<pen lineStyle="Dotted"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="137" y="114" width="126" height="1" uuid="eea0df12-9ee3-4baa-b022-a4bc63893f5d"/>
+				<graphicElement>
+					<pen lineStyle="Dotted"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="138" y="110" width="56" height="20" uuid="a309babb-d918-45e6-8885-0b75ad344891"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Calibri" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[MAIO]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="194" y="22" width="5" height="136" uuid="7edf79fb-5cf6-48ab-be91-554a279872a4"/>
+				<graphicElement>
+					<pen lineStyle="Dotted"/>
+				</graphicElement>
+			</rectangle>
+			<textField>
+				<reportElement x="153" y="2" width="97" height="20" uuid="f7e5d553-ccd4-4c4b-bc9d-e148ce8259fe"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Calibri" size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{ano2}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="199" y="109" width="64" height="20" uuid="f9e865c9-cf32-4163-8536-61f2f97afce2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Calibri" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[NOVEMBRO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="138" y="41" width="56" height="20" uuid="51724c85-8977-4afb-acff-67364f680584"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Calibri" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[FEVEREIRO]]></text>
+			</staticText>
+			<line>
+				<reportElement x="137" y="45" width="126" height="1" uuid="c4f82132-2baa-44fc-99e2-7b00234a4c48"/>
+				<graphicElement>
+					<pen lineStyle="Dotted"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="138" y="137" width="126" height="1" uuid="a952aafe-e648-46f9-a4c5-5f3d57e47067"/>
+				<graphicElement>
+					<pen lineStyle="Dotted"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="137" y="66" width="126" height="1" uuid="3cc02c30-7ccc-4e84-b729-e1aa58082474"/>
+				<graphicElement>
+					<pen lineStyle="Dotted"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="199" y="132" width="64" height="20" uuid="1c63efa7-e52f-4ad1-9366-8f780cd91ce4"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Calibri" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DEZEMBRO]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>

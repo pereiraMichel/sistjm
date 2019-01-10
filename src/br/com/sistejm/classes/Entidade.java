@@ -75,7 +75,7 @@ public class Entidade {
     }
     public void buscaTabEntidade(JTable tabela, JTextField texto){
 
-        String sql = "SELECT * FROM entidade WHERE nome LIKE '%" + texto + "'";
+        String sql = "SELECT * FROM entidade WHERE nome LIKE '%" + texto.getText() + "'";
         
         try{
             con = new Conexao();
@@ -86,16 +86,17 @@ public class Entidade {
             DefaultTableModel orixa = new DefaultTableModel();
             tabela.setModel(orixa);
 
-            orixa.addColumn("ID");
+//            orixa.addColumn("ID");
             orixa.addColumn("Entidade");
 
-            tabela.getColumnModel().getColumn(0).setPreferredWidth(5);
-            tabela.getColumnModel().getColumn(1).setPreferredWidth(110);
+            tabela.getColumnModel().getColumn(0).setPreferredWidth(110);
+//            tabela.getColumnModel().getColumn(1).setPreferredWidth(110);
 
             while(rs.next()){
-                int idEvento = rs.getInt("identidade");
+//                int idEvento = rs.getInt("identidade");
                 String nomeEvento = rs.getString("nome");
-                orixa.addRow(new Object[]{idEvento, nomeEvento});
+                orixa.addRow(new Object[]{nomeEvento});
+//                orixa.addRow(new Object[]{idEvento, nomeEvento});
             }
         }catch(Exception ex){
             config.gravaErroLog("Tentativa de busca da entidade. Erro: " + ex.getMessage(), "Entidade", "sistejm.entidade");

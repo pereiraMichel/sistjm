@@ -10,6 +10,7 @@ import br.com.sistejm.classes.Mensalidade;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import javax.swing.JCheckBox;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -137,7 +138,7 @@ public class DMensalidade extends javax.swing.JDialog {
     public DMensalidade(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        ocultaTex(true);
+        ocultaTex(false);
         preencheCampos();
     }
     
@@ -149,6 +150,7 @@ public class DMensalidade extends javax.swing.JDialog {
     
     
     public void recebeInfo(int idMedium, int codUsuario, String medium){
+//        JOptionPane.showMessageDialog(null, "Código Usuário: " + codUsuario, "ATENÇÃO", JOptionPane.WARNING_MESSAGE);
         m = new Mensalidade();
         
         cal = new GregorianCalendar();

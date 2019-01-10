@@ -567,7 +567,7 @@ public class DOrixa extends javax.swing.JDialog {
             break;
             case "caboclo":
                 cab = new Caboclos();
-                cab.buscaTabCaboclo(tabelaOrixa, txtNome.getText());
+                cab.buscaTabCaboclo(tabelaOrixa, txtNome);
             break;
         }
 

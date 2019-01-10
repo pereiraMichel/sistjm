@@ -105,6 +105,8 @@ public class Mensalidade {
         String sql = "SELECT ano FROM mensalidade WHERE ano = " + this.ano + " "
                 + "AND cod_medium = " + this.codMedium;
         
+        System.out.println(sql);
+        
         try{
             
             con = new Conexao();
@@ -179,8 +181,6 @@ public class Mensalidade {
             conn = con.getConnection();
             stmt = conn.createStatement();
             rs = stmt.executeQuery(sql);
-            
-//            rs.next();
 
             while(rs.next()){
                 if(rs.getString("pago").equals("s")){
@@ -220,7 +220,45 @@ public class Mensalidade {
                     if(rs.getInt("mes") == 12){
                         dez.setSelected(true);
                     }
+                }else if(rs.getString("pago").equals("n")){
+                    if(rs.getInt("mes") == 1){
+                        jan.setSelected(false);
+                    }
+                    if(rs.getInt("mes") == 2){
+                        fev.setSelected(false);
+                    }
+                    if(rs.getInt("mes") == 3){
+                        mar.setSelected(false);
+                    }
+                    if(rs.getInt("mes") == 4){
+                        abr.setSelected(false);
+                    }
+                    if(rs.getInt("mes") == 5){
+                        mai.setSelected(false);
+                    }
+                    if(rs.getInt("mes") == 6){
+                        jun.setSelected(false);
+                    }
+                    if(rs.getInt("mes") == 7){
+                        jul.setSelected(false);
+                    }
+                    if(rs.getInt("mes") == 8){
+                        ago.setSelected(false);
+                    }
+                    if(rs.getInt("mes") == 9){
+                        set.setSelected(false);
+                    }
+                    if(rs.getInt("mes") == 10){
+                        out.setSelected(false);
+                    }
+                    if(rs.getInt("mes") == 11){
+                        nov.setSelected(false);
+                    }
+                    if(rs.getInt("mes") == 12){
+                        dez.setSelected(false);
+                    }
                 }
+
 
             }
             
@@ -324,6 +362,175 @@ public class Mensalidade {
             
             if(rs.absolute(1)){
                 return rs.getString("ultimoPagamento");
+            }
+            
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
+        return null;
+    }
+    
+    public String quantMeses(String pago, int idMedium, int codperiodo, int mes1, int ano1, int mes2, int ano2){
+
+        String compPeriodo = null;
+
+        switch(codperiodo){
+            case 1: //por ano
+
+                compPeriodo = " AND me.ano = " + ano1 + " ";
+                break;
+            case 2: // pelo mes e ano
+                compPeriodo = " AND me.mes = " + mes1 +
+                        " AND me.ano = " + ano1 + " ";
+                break;
+            case 3: // pelo período de mes e ano a mes ano
+                compPeriodo = " AND me.mes BETWEEN " + mes1 + " AND " + mes2 +
+                        " AND me.ano BETWEEN " + ano1 + " AND " + ano2;
+                break;
+        }
+        
+        String sql = "SELECT COUNT(me.idmensalidade) AS quantidade FROM mensalidade me "
+                + "LEFT JOIN mediuns m ON m.idmedium = me.cod_medium "
+                + "WHERE me.pago = '" + pago + "' "
+                + "AND m.idmedium = " + idMedium + " "
+                + compPeriodo;
+        
+//        System.out.println(sql);
+        try{
+            con = new Conexao();
+            conn = con.getConnection();
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery(sql);
+            
+            rs.next();
+            
+            if(rs.absolute(1)){
+                return rs.getString("quantidade");
+            }
+            
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
+        return null;
+    }
+    
+    public String retornaQuantNPagosSintetico(){
+        
+        String compMedium = null;
+        
+        if(this.codMedium == 0){
+            compMedium = "";
+        }else{
+            compMedium = "AND me.cod_medium = " + this.codMedium;
+        }
+        String sql = "SELECT COUNT(me.idmensalidade) AS quantidadeNPagos " +
+                        "FROM mensalidade me " +
+                        "WHERE me.pago = 'n' " +
+                        "AND me.ano = " + this.ano + " " +
+                        compMedium;
+        try{
+            con = new Conexao();
+            conn = con.getConnection();
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery(sql);
+            
+            rs.next();
+            
+            if(rs.absolute(1)){
+                return rs.getString("quantidadeNPagos");
+            }
+            
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
+        return null;
+    }
+    public String retornaValoresNPagosSintetico(){
+        String compMedium = null;
+        
+        if(this.codMedium == 0){
+            compMedium = "";
+        }else{
+            compMedium = "AND me.cod_medium = " + this.codMedium;
+        }
+        
+        String sql = "SELECT REPLACE(CAST(SUM(me.valor) AS DECIMAL(15, 2)), '.', ',') AS valoresPendentes " +
+                        "FROM mensalidade me " +
+                        "WHERE me.pago = 'n' " +
+                        "AND me.ano = " + this.ano + " " +
+                        compMedium;
+        try{
+            con = new Conexao();
+            conn = con.getConnection();
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery(sql);
+            
+            rs.next();
+            
+            if(rs.absolute(1)){
+                return rs.getString("valoresPendentes");
+            }
+            
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
+        return null;
+    }
+    public String retornaQuantPagosSintetico(){
+        String compMedium = null;
+        
+        if(this.codMedium == 0){
+            compMedium = "";
+        }else{
+            compMedium = "AND me.cod_medium = " + this.codMedium;
+        }
+        
+        String sql = "SELECT COUNT(me.idmensalidade) AS quantidadePagos " +
+                    "FROM mensalidade me " +
+                    "WHERE me.pago = 's' " +
+                    "AND me.ano = " + this.ano + " " +
+                    compMedium;
+        try{
+            con = new Conexao();
+            conn = con.getConnection();
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery(sql);
+            
+            rs.next();
+            
+            if(rs.absolute(1)){
+                return rs.getString("quantidadePagos");
+            }
+            
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
+        return null;
+    }
+    public String retornaValoresPagosSintetico(){
+        String compMedium = null;
+        
+        if(this.codMedium == 0){
+            compMedium = "";
+        }else{
+            compMedium = "AND me.cod_medium = " + this.codMedium;
+        }
+        
+        String sql = "SELECT REPLACE(CAST(SUM(me.valor) AS DECIMAL(15, 2)), '.', ',') AS valoresPagos " +
+                        "FROM mensalidade me " +
+                        "WHERE me.pago = 's'" +
+                        "AND me.ano = " + this.ano + " " +
+                        compMedium;
+        try{
+            con = new Conexao();
+            conn = con.getConnection();
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery(sql);
+            
+            rs.next();
+            
+            if(rs.absolute(1)){
+                return rs.getString("valoresPagos");
             }
             
         }catch(Exception ex){

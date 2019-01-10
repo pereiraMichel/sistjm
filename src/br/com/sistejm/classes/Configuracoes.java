@@ -5,6 +5,8 @@
  */
 package br.com.sistejm.classes;
 
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -18,6 +20,7 @@ import java.net.InetAddress;
 import java.net.InterfaceAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
+import java.net.URL;
 import java.net.UnknownHostException;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
@@ -35,6 +38,12 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import br.com.sistejm.telas.TelaInicial;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.Icon;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
 
 /**
  *
@@ -52,6 +61,7 @@ public class Configuracoes {
     private String macFisico;    
     
     Properties prop;
+    TelaInicial inicial;    
 
     public String getNome() {
         return nome;
@@ -141,6 +151,7 @@ public class Configuracoes {
     public void geraPdf (){
         
     }
+
 
     
     public String mac(){
@@ -365,7 +376,18 @@ public class Configuracoes {
         int mes = cal.get(Calendar.MONTH);
         int ano = cal.get(Calendar.YEAR);
         
-        return String.valueOf(dia + "/" + mes + "/"+ ano);
+        String diaLongo = null;
+        String mesLongo = null;
+
+       if(dia < 10){
+            diaLongo = String.valueOf("0" + dia);
+        }
+        if(mes < 10){
+            mesLongo = String.valueOf("0" + mes);
+        }
+
+        
+        return String.valueOf(diaLongo + "/" + mesLongo + "/"+ ano);
     }
     
     public String retornaHora(){
@@ -373,6 +395,7 @@ public class Configuracoes {
         int h = cal.get(Calendar.HOUR_OF_DAY);
         int m = cal.get(Calendar.MINUTE);
         int s = cal.get(Calendar.SECOND);
+
         String horaCompleta = String.valueOf(h + ":" + m + ":" + s);
         
         return horaCompleta;
@@ -413,10 +436,12 @@ public class Configuracoes {
 
     } 
     public void gravaTituloAtividade(String usuario){
+        
         //Date data = new Date();
         String hora = retornaHora();
         String dataFormatada = retornaDataArquivo();
         String dataTradicional = retornaData();
+        
 
         try{
             File pastaPrincipal = new File("C:\\sistejm");
@@ -446,7 +471,7 @@ public class Configuracoes {
     }
     
     public void gravaAtividades(String dados, String usuario, String atividade){
-        
+
         String data = retornaDataArquivo();
         String hora = retornaHora();
         String dataTradicional = retornaData();
@@ -484,12 +509,14 @@ public class Configuracoes {
         String dirDados = "C:\\sistejm\\dados";
         String dirErro = "C:\\sistejm\\erro";
         String dirFotos = "C:\\sistejm\\fotos";
+        String dirImg = "C:\\sistejm\\images";
         
         File fp = new File(dirPrincipal);
         File fc = new File(dirConfig);
         File fd = new File(dirDados);
         File fe = new File(dirErro);
         File ff = new File(dirFotos);
+        File fi = new File(dirImg);
         
         if(!fp.exists()){
             fp.mkdir();
@@ -506,9 +533,26 @@ public class Configuracoes {
         if(!ff.exists()){
             ff.mkdir();
         }
+        if(!fi.exists()){
+            fi.mkdir();
+        }
         
         
     }
+
+    public void insereIconePrincipal(JFrame tela){
+        
+        URL url = this.getClass().getResource("/br/com/sistejm/images/icontejm.png");
+        Image imagemTitulo = Toolkit.getDefaultToolkit().getImage(url);
+        tela.setIconImage(imagemTitulo);        
+    }
+    
+    public void insereIconeDialog(JDialog tela){
+        
+        URL url = this.getClass().getResource("/br/com/sistejm/images/icontejm.png");
+        Image imagemTitulo = Toolkit.getDefaultToolkit().getImage(url);
+        tela.setIconImage(imagemTitulo);        
+    }    
     
     public void retornaSemana(int dia, int mes, int ano, JLabel label){
         
@@ -555,8 +599,51 @@ public class Configuracoes {
     }
 
     public void gravaErroLog(String msgErro, String menu, String nomeArq){
-        Date data = new Date();
-        Timer hora = new Timer();
+//        Date data = new Date();
+//        Timer hora = new Timer();
+        
+        Calendar c = new GregorianCalendar();
+        
+        String diaLongo = null;
+        String mesLongo = null;
+        String horaLonga = null;
+        String minLongo = null;
+        String secLongo = null;
+        
+        String dataCompleta = null;
+        String horaCompleta = null;
+        
+        int dia = c.get(Calendar.DAY_OF_MONTH);
+        int mes = c.get(Calendar.MONTH) + 1;
+        int ano = c.get(Calendar.YEAR);
+        
+        int hora = c.get(Calendar.HOUR_OF_DAY);
+        int min = c.get(Calendar.MINUTE);
+        int sec = c.get(Calendar.SECOND);
+
+        if(dia < 10){
+            diaLongo = "0" + dia;
+        }
+        
+        if(mes < 10){
+            mesLongo = "0" + mes;
+        }
+        
+        if(hora < 10){
+            horaLonga = "0" + hora;
+        }
+        
+        if(min < 10){
+            minLongo = "0" + min;
+        }
+        
+        if(sec < 10){
+            secLongo = "0" + sec;
+        }
+        
+        dataCompleta = diaLongo + "/" + mesLongo + "/" + ano;
+        horaCompleta = horaLonga + ":" + minLongo + ":" + secLongo;
+        
         String pathPrinc = "C:\\sistejm";
         String pathErro = "C:\\sistejm\\erro";
 
@@ -582,7 +669,7 @@ public class Configuracoes {
             p.append(System.getProperty("line.separator"));
             p.append("Menu do erro: " + menu); 
             p.append(System.getProperty("line.separator"));
-            p.append("Data: " + data + "  |  Hora: " + hora); 
+            p.append("Data: " + dataCompleta + "  |  Hora: " + horaCompleta); 
             p.append(System.getProperty("line.separator"));
             p.append(msgErro); 
             p.append(System.getProperty("line.separator"));

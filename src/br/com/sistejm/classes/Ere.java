@@ -74,7 +74,7 @@ public class Ere {
     }
     public void buscaTabEres(JTable tabela, JTextField texto){
 
-        String sql = "SELECT * FROM ere WHERE nome LIKE '%" + texto + "'";
+        String sql = "SELECT * FROM ere WHERE nome LIKE '%" + texto.getText() + "'";
         
         try{
             con = new Conexao();
@@ -85,16 +85,13 @@ public class Ere {
             DefaultTableModel orixa = new DefaultTableModel();
             tabela.setModel(orixa);
 
-            orixa.addColumn("ID");
             orixa.addColumn("Erê");
 
-            tabela.getColumnModel().getColumn(0).setPreferredWidth(5);
-            tabela.getColumnModel().getColumn(1).setPreferredWidth(110);
+            tabela.getColumnModel().getColumn(0).setPreferredWidth(110);
 
             while(rs.next()){
-                int idEvento = rs.getInt("idere");
                 String nomeEvento = rs.getString("nome");
-                orixa.addRow(new Object[]{idEvento, nomeEvento});
+                orixa.addRow(new Object[]{nomeEvento});
             }
         }catch(Exception ex){
             System.out.println("Erro em tabela de erês. Mensagem: " + ex.getMessage());
@@ -112,7 +109,7 @@ public class Ere {
             rs = stmt.executeQuery(sql);
             //System.out.println("SQL: " + sql);
             
-            //rs.next();
+            rs.next();
             if(rs.absolute(1)){
                 return true;
             }else{

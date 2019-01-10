@@ -162,8 +162,7 @@ public class MediumCaboclo {
             this.idMediumCaboclo = con.ultimoId("medium_caboclo", "idmedium_caboclo");
 
             String sql = "INSERT INTO medium_caboclo (idmedium_caboclo, cod_caboclo, codMedium) "
-                    + "VALUES (" + this.idMediumCaboclo + ", " + this.codCaboclo + ", " + this.codMedium + ", "
-                    + " " + this.codMedium + ")";
+                    + "VALUES (" + this.idMediumCaboclo + ", " + this.codCaboclo + ", " + this.codMedium + ")";
             
             try{
                 conn = con.getConnection();
@@ -201,7 +200,8 @@ public class MediumCaboclo {
     public boolean excluirMediumCaboclo(){
         config = new Configuracoes();
         
-        String sql = "DELETE FROM medium_caboclo WHERE codMedium = " + this.codMedium + " AND cod_caboclo = " + this.codCaboclo;
+        String sql = "DELETE FROM medium_caboclo WHERE codMedium = " + this.codMedium + " "
+                + "AND cod_caboclo = " + this.codCaboclo;
 
         try{
             con = new Conexao();
@@ -332,5 +332,45 @@ public class MediumCaboclo {
 //            System.out.println(" Erro: " + ex.getMessage());
         }        
         return 0;
-    }    
+    }
+    
+    @SuppressWarnings("null")
+    public void exibeTabMediumCabPorId(JTable tabela){
+        config = new Configuracoes();
+        String sql = "SELECT c.nome AS caboclo "
+                + "FROM mediuns m "
+                + "INNER JOIN medium_caboclo mc ON m.idmedium = mc.codMedium  "
+                + "LEFT JOIN caboclo c ON c.idcaboclo = mc.cod_caboclo "
+                + "WHERE m.idmedium = " + this.codMedium;
+
+//        System.out.println(sql);
+        try{
+            con = new Conexao();
+            conn = con.getConnection();
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery(sql);
+                
+            DefaultTableModel medium = new DefaultTableModel();
+            tabela.setModel(medium);
+
+            medium.addColumn("Nome");
+            tabela.getColumnModel().getColumn(0).setPreferredWidth(100);
+            String nome = null;
+
+            while(rs.next()){
+                nome = rs.getString("caboclo");
+                if(nome.isEmpty()){
+                    medium.addRow(new Object[]{"Sem informações"});
+                }else if (nome == null){
+                    medium.addRow(new Object[]{"Sem informações"});
+                }else{
+                    medium.addRow(new Object[]{nome});
+                }
+            }
+        }catch(Exception ex){
+            config.gravaErroLog("Tentativa de preenchimento da tabela de Caboclo do Médium. Erro: " + ex.getMessage(), "Caboclo", "sistejm.caboclomedium");
+        }            
+    }
+    
+    
 }

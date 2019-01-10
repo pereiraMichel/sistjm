@@ -174,6 +174,37 @@ public class MediumOrixa {
         return false;
     }
     
+    public int verificaQuantidade(){
+        config = new Configuracoes();
+        con = new Conexao();
+        int quant = 0;
+        
+        String sql = "SELECT COUNT(idmedium_ori) AS quantidade "
+                + "FROM medium_ori WHERE codMedium = " + this.codMedium;
+        
+        try{
+                conn = con.getConnection();
+                stmt = conn.createStatement();
+                rs = stmt.executeQuery(sql);
+                
+                rs.next();
+                
+                if(rs.absolute(1)){
+                    quant = Integer.valueOf(rs.getString("quantidade"));
+
+                    if(quant >= 4){
+                        return quant;
+                    }
+                }
+                
+
+            }catch(Exception ex){
+                config.gravaErroLog("Erro na quantidade de Orixás do Médium. Descrição: " + ex.getMessage(), "Quantidade de Orixá", "sistejm.verquantmo");
+            }
+        
+        return quant;
+    }
+    
     public boolean incluirMediumOrixa(){
         con = new Conexao();
         if(!this.verificaExistente()){
@@ -216,7 +247,7 @@ public class MediumOrixa {
         return false;
     }
     public boolean excluirMediumOrixa(){
-        String sql = "DELETE FROM medium_ori WHERE codMedium = " + this.codMedium + " AND cod_orixa = " + this.codOrixa;
+        String sql = "DELETE FROM medium_ori WHERE idmedium_ori = " + this.idMediumOrixa;
 
         try{
             con = new Conexao();
@@ -308,6 +339,48 @@ public class MediumOrixa {
         }            
     }
 
+    public void exibeTabMediumOriPorId(JTable tabela){
+        config = new Configuracoes();
+        String sql = "SELECT DISTINCT m.nome, m.idmedium, o.nome AS orixa, tp.tipo AS tipo FROM mediuns m "
+                + "INNER JOIN medium_ori mo ON m.idmedium = mo.codMedium  "
+                + "LEFT JOIN tipo_orixa tp ON tp.idtipo_orixa = mo.codTipo "
+                + "LEFT JOIN orixas o ON o.idorixa = mo.cod_orixa "
+                + "WHERE m.idmedium = " + this.codMedium;
+//        String sql = "SELECT m.nome, o.nome, tp.tipo, tp.idtipo_orixa FROM mediuns m "
+//                + "LEFT JOIN medium_ori mo ON m.idmedium = mo.codMedium  "
+//                + "LEFT JOIN tipo_orixa tp ON tp.idtipo_orixa = mo.codTipo "
+//                + "LEFT JOIN orixas o ON o.idorixa = mo.cod_orixa";
+        
+        try{
+            con = new Conexao();
+            conn = con.getConnection();
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery(sql);
+                
+            DefaultTableModel medium = new DefaultTableModel();
+            tabela.setModel(medium);
+
+            medium.addColumn("Nome");
+            medium.addColumn("Tipo");
+            tabela.getColumnModel().getColumn(0).setPreferredWidth(100);
+            tabela.getColumnModel().getColumn(1).setPreferredWidth(80);
+
+            while(rs.next()){
+                String nome = rs.getString("orixa");
+                String tipo = rs.getString("tipo");
+                if(nome.equals("")){
+                    medium.addRow(new Object[]{"Sem informações"});
+                }else{
+                    medium.addRow(new Object[]{nome, tipo});
+                }
+//
+//                medium.addRow(new Object[]{nome, tipo});
+            }
+        }catch(Exception ex){
+            config.gravaErroLog("Tentativa de preenchimento da tabela de Orixás do Médium. Erro: " + ex.getMessage(), "Orixá", "sistejm.orixamedium");
+        }            
+    }
+
     public void preencheTabMediumOriPorNome(JTable tabela, String nome){
         config = new Configuracoes();
         String sql = "SELECT m.nome AS nomeMedium, o.nome AS nomeOrixa, tp.tipo, tp.idtipo_orixa FROM mediuns m "
@@ -353,7 +426,13 @@ public class MediumOrixa {
     public int retornaIdMediumOrixa(String nome){
         config = new Configuracoes();
         try{
-            String sql = "SELECT * FROM tipo_orixa WHERE tipo = '" + nome + "'";
+            String sql = "SELECT * FROM medium_ori "
+                    + "WHERE codMedium = " + this.codMedium + " "
+                    + "AND cod_orixa = " + this.codOrixa + " "
+                    + "AND codTipo = " + this.codTipo;
+
+//            System.out.println(sql);
+
             
             con = new Conexao();
             conn = con.getConnection();
@@ -362,7 +441,7 @@ public class MediumOrixa {
             rs.next();
             
             if(rs.absolute(1)){
-                return rs.getInt("idtipo_orixa");
+                return rs.getInt("idmedium_ori");
             }
             
 

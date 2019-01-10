@@ -115,7 +115,7 @@
 			<staticText>
 				<reportElement x="0" y="31" width="47" height="20" uuid="c49fcc29-3d73-426d-8de1-8c451a8632a9"/>
 				<textElement>
-					<font fontName="Arial" size="12"/>
+					<font fontName="Arial" size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[NOME:]]></text>
 			</staticText>

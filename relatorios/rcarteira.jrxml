@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rcarteira" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="8c35ef7e-9a2d-4dfe-8e26-4cd7eeefa3fb">
+	<property name="ireport.zoom" value="1.6105100000000017"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="144"/>
+	<parameter name="foto" class="java.awt.Image" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+	</parameter>
+	<parameter name="funcao" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT m.nome, m.funcao, DATE_FORMAT(m.dataEntrada, '%d/%m%Y') AS dataEntrada, m.matricula, l.endereco, l.bairro, f.foto
+FROM mediuns m
+LEFT JOIN logradouro l ON l.cod_medium = m.idmedium
+LEFT JOIN foto f ON f.cod_medium = m.idmedium
+WHERE m.idmedium = 1
+AND m.ativo = 1]]>
+	</queryString>
+	<field name="nome" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="funcao" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="dataEntrada" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="matricula" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="endereco" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="bairro" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="foto" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="154">
+			<rectangle>
+				<reportElement x="0" y="0" width="264" height="151" uuid="141becd6-f1b4-4521-b720-18a567611c06"/>
+				<graphicElement>
+					<pen lineStyle="Dotted"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle radius="10">
+				<reportElement x="3" y="52" width="185" height="16" uuid="483d6743-ce97-4870-8d61-035bae66f5c7"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="8" y="46" width="41" height="10" forecolor="#FFFFFF" uuid="4b033e7a-084c-4e06-a933-0d3918056883"/>
+			</rectangle>
+			<rectangle radius="10">
+				<reportElement x="123" y="126" width="65" height="16" uuid="be5a764a-6220-4665-becb-311c58927d18"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="131" y="120" width="41" height="10" forecolor="#FFFFFF" uuid="2e06581d-2e21-4a19-8765-dc3e147bc54e"/>
+			</rectangle>
+			<rectangle radius="10">
+				<reportElement x="3" y="77" width="185" height="16" uuid="eca899a5-09b7-409c-a16f-19a4b997b17e"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="8" y="71" width="41" height="10" forecolor="#FFFFFF" uuid="ece023d1-d94e-4c34-96bc-794cf3f0d8ac"/>
+			</rectangle>
+			<rectangle radius="10">
+				<reportElement x="3" y="126" width="115" height="16" uuid="626bf8bb-2c10-459b-a3d8-4235841341f2"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="8" y="120" width="41" height="10" forecolor="#FFFFFF" uuid="43199576-ae77-49a7-ad1c-ce0c86bc5ded"/>
+			</rectangle>
+			<rectangle radius="10">
+				<reportElement x="3" y="101" width="185" height="16" uuid="85dd9342-fe57-425b-9671-43c49121a120"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="8" y="95" width="41" height="10" forecolor="#FFFFFF" uuid="55eb6443-4016-40b4-8c26-fac33009d028"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="190" y="48" width="72" height="71" uuid="c28b732c-5959-44af-acd9-a1edb8fc2484"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="52" y="0" width="171" height="30" forecolor="#0000CC" uuid="f9068bee-df36-4a38-99f8-24ca7c026437"/>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font fontName="Calibri" size="11" isBold="true" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[TENDA ESPÍRITA JORGE MIGUEL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="53" y="29" width="172" height="14" uuid="78703e81-8f59-4bd9-833c-24faf1438526"/>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font fontName="Calibri" size="8" isBold="true" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[PRESIDENTE: MOISÉS]]></text>
+			</staticText>
+			<image hAlign="Center">
+				<reportElement x="0" y="1" width="49" height="43" uuid="153f5ec7-2a47-46c2-96e6-890827d61298"/>
+				<imageExpression><![CDATA["C:\\Users\\Michel\\Documents\\NetBeansProjects\\SISTEJM\\src\\br\\com\\sistejm\\images\\logoTJM.jpg"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="11" y="46" width="32" height="9" uuid="c2bf7341-8684-4be0-bbde-56eaffaa6689"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Calibri" size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[NOME]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="11" y="53" width="147" height="13" uuid="6884c812-821d-41ea-aaa4-b44ea57d32ae"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Calibri" size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nome}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="8" y="101" width="123" height="15" uuid="52a4a63b-2410-4e4e-af88-9291b796ff2c"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Calibri" size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{endereco}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="11" y="95" width="38" height="9" uuid="3d397f4b-c580-4dc0-899a-897de4faeff9"/>
+				<textElement verticalAlignment="Top">
+					<font fontName="Calibri" size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ENDEREÇO]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="131" y="101" width="55" height="16" uuid="c1d66626-0336-4175-837f-8bfb5abef01a"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Calibri" size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bairro}.equals("")?"":" | " + $F{bairro}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="11" y="121" width="38" height="9" uuid="ac16cb26-ad7e-4d13-8c62-748df7a86b1d"/>
+				<textElement verticalAlignment="Top">
+					<font fontName="Calibri" size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CARGO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="11" y="71" width="38" height="9" uuid="ba8ad427-930b-43f5-b2d3-3317de854b34"/>
+				<textElement verticalAlignment="Top">
+					<font fontName="Calibri" size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[MATRÍCULA]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="11" y="80" width="100" height="11" uuid="68e6cb42-4303-416c-ad33-dbeb0754be9d"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Calibri" size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{matricula}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="123" y="130" width="63" height="10" uuid="a94f645d-41f2-4fa9-88a7-5155cc62c425"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font fontName="Calibri" size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{dataEntrada}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="139" y="120" width="33" height="9" uuid="c256faac-4b2f-4379-ae74-fc1707a54872"/>
+				<textElement verticalAlignment="Top">
+					<font fontName="Calibri" size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ENTRADA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="53" y="15" width="202" height="15" uuid="100cbbef-71c3-4d98-aaee-fa08be1888cd"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Calibri" size="8" isBold="true" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[RUA JAIME GOMES, 18 - SÃO JOÃO DE MERITI/ RJ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="203" y="115" width="59" height="15" uuid="ba358d55-1b35-4f81-89e9-a749e2feb5cc"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Calibri" size="5" isBold="true" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[DISTRIBUIÇÃO INTERNA]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="8" y="130" width="100" height="10" uuid="e6133ad2-3ba8-4175-bc4c-a90eddfa9cfa"/>
+				<textElement verticalAlignment="Top">
+					<font fontName="Calibri" size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{funcao}]]></textFieldExpression>
+			</textField>
+			<image scaleImage="FillFrame" hAlign="Center">
+				<reportElement x="193" y="51" width="65" height="66" uuid="da5cec69-e608-4d52-aba0-82108800de28"/>
+				<imageExpression><![CDATA[$F{foto}]]></imageExpression>
+			</image>
+		</band>
+	</detail>
+</jasperReport>

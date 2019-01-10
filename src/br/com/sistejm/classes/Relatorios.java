@@ -5,6 +5,8 @@
  */
 package br.com.sistejm.classes;
 
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -90,7 +92,7 @@ public class Relatorios {
         }
         
     }
-
+// Comprovante de agendamento
     public void geraComprovanteAtendimento(String comprovante){
         String sql = "SELECT *, DATE_FORMAT(data, '%d/%m/%Y') AS dataFormatada FROM agendamento WHERE codigo = '" + comprovante + "'";
         try{
@@ -117,6 +119,8 @@ public class Relatorios {
         }
         
     }
+
+// Saídas    
     public void relatorioSaidas(String confirmado, int idmedium, int periodo, int mes1, int ano1, int mes2, int ano2){
 
         cal = new GregorianCalendar();
@@ -195,5 +199,183 @@ public class Relatorios {
         }
         
     }
-    
+// Mensalidade    
+    public void relatorioMensalidade(String tipo, int idmedium, int periodo, int mes1, int ano1, int mes2, int ano2){
+
+        cal = new GregorianCalendar();
+        String path = null;
+        String sql = null;
+        
+        String compMedium = null;
+        String codMedium = null;
+        String compPeriodo = null;
+        String msgParametro = null;
+        
+        if(idmedium == 0){
+            compMedium = "";
+            codMedium = "";
+        }else{
+            compMedium = " AND m.idmedium = " + idmedium + " ";
+            codMedium = " AND me.cod_medium = " + idmedium + " ";
+        }
+        
+        switch(periodo){
+            case 1: //por ano
+
+                compPeriodo = " AND me.ano = " + ano1;
+                msgParametro = "Somente do ano";
+                break;
+            case 2: // pelo mes e ano
+                compPeriodo = " AND me.mes = " + mes1 +
+                        " AND me.ano = " + ano1;
+                msgParametro = "Somente do mês " + mes1 + " e do ano " + ano1;
+                break;
+            case 3: // pelo período de mes e ano a mes ano
+                compPeriodo = " AND me.mes BETWEEN " + mes1 + " AND " + mes2 +
+                        " AND me.ano BETWEEN " + ano1 + " AND " + ano2;
+                msgParametro = "Período de " + mes1 + "/" + ano1 + " a " + mes2 + "/" +ano2;
+                break;
+        }
+        
+        
+        if(tipo.equals("sintetico")){
+            path = "relatorios//reportmensalsintetico.jasper";
+            
+            sql = "SELECT " +
+                "(SELECT COUNT(me.idmensalidade) " +
+                    "FROM mensalidade me " +
+                    "WHERE me.pago = 'n' " +
+                    codMedium + 
+                    compPeriodo + " ) AS quantidadeNPagos, " +
+                "(SELECT COUNT(me.idmensalidade) " +
+                    "FROM mensalidade me " +
+                    "WHERE me.pago = 's' " +
+                    codMedium +
+                    compPeriodo + ") AS quantidadePagos, " +
+                "(SELECT REPLACE(CAST(SUM(me.valor) AS DECIMAL(15, 2)), '.', ',') " +
+                    "FROM mensalidade me " +
+                    "WHERE me.pago = 'n' " +
+                    codMedium +
+                    compPeriodo + ") AS valoresPendentes, " +
+                "(SELECT REPLACE(CAST(SUM(me.valor) AS DECIMAL(15, 2)), '.', ',') " +
+                    "FROM mensalidade me " +
+                    "WHERE me.pago = 's' " +
+                    codMedium + 
+                    compPeriodo + ") AS valoresPagos, " +
+                "(SELECT COUNT(m.isentoMensal) FROM mediuns m WHERE m.isentoMensal = 1) AS quantIsentos, " +
+                "me.ano " +
+                "FROM mensalidade me";
+            
+        }else if(tipo.equals("analitico")){
+            path = "relatorios//reportmensalidade.jasper";
+            
+            sql = "SELECT m.nome, m.matricula, me.mes, me.ano, me.pago, me.valor, "
+                    + "DATE_FORMAT(me.data_pagamento, '%d/%m/%Y') AS dataPago, "
+                    + "(SELECT COUNT(me.idmensalidade) "
+                    + "FROM mensalidade me "
+                    + "LEFT JOIN mediuns m ON m.idmedium = me.cod_medium "
+                    + "WHERE me.pago = 'n' "
+                    + compMedium
+                    + compPeriodo + ") AS quantidade " +
+                "FROM mensalidade me " +
+                "LEFT JOIN mediuns m ON m.idmedium = me.cod_medium " +
+                "WHERE me.pago = 's' " +
+                compPeriodo + 
+                compMedium;
+        }
+
+
+//        System.out.println(sql);
+
+        try{
+            con = new Conexao();
+            conn = con.getConnection();
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery(sql);
+
+            JRResultSetDataSource jr = new JRResultSetDataSource(rs); // Cria um resultset do banco de dados
+            Map param = new HashMap(); // Abre o parâmetro
+            
+            param.put("periodo", msgParametro);
+
+            JasperPrint print = JasperFillManager.fillReport(path, param, jr); // Junta as informações do banco e parâmetros
+            JasperViewer view = new JasperViewer(print, false);//Prepara a visualização do relatório - true, fecha aplicação | false, mantém aplicação aberto
+            view.setVisible(true); //Visualiza o relatório
+            view.toFront();//Puxa o relatório para frente do frame.
+
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
+        
+    }
+// Gera carteirinha do médium
+    public void geraCarteira(int idMedium, String funcao){
+        
+        String sql = "SELECT m.nome, m.funcao, DATE_FORMAT(m.dataEntrada, '%d/%m%Y') AS dataEntrada, " +
+                    "m.email, m.matricula, l.endereco, l.bairro, f.foto " +
+                    "FROM mediuns m " +
+                    "LEFT JOIN logradouro l ON l.cod_medium = m.idmedium " +
+                    "LEFT JOIN foto f ON f.cod_medium = m.idmedium " +
+                    "WHERE m.idmedium = " + idMedium + " " +
+                    "AND m.ativo = 1";
+
+//                System.out.println(sql);
+
+        try{
+            con = new Conexao();
+            conn = con.getConnection();
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery(sql);
+            
+            //Gera o relatório                
+            String path = "relatorios//rcarteira.jasper";
+            
+            JRResultSetDataSource jr = new JRResultSetDataSource(rs); // Cria um resultset do banco de dados
+
+            
+            Map param = new HashMap(); // Abre o parâmetro
+
+            param.put("funcao", funcao);
+            
+            JasperPrint print = JasperFillManager.fillReport(path, param, jr); // Junta as informações do banco e parâmetros
+            JasperViewer view = new JasperViewer(print, false);//Prepara a visualização do relatório - true, fecha aplicação | false, mantém aplicação aberto
+            view.setVisible(true); //Visualiza o relatório
+            view.toFront();//Puxa o relatório para frente do frame.
+
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
+        
+    }    
+    public void geraAnosCarteira(int ano1, int ano2){
+        
+//        String sql = "";
+
+        try{
+//            con = new Conexao();
+//            conn = con.getConnection();
+//            stmt = conn.createStatement();
+//            rs = stmt.executeQuery(sql);
+            
+            //Gera o relatório                
+            String path = "relatorios//ranos.jasper";
+            
+//            JRResultSetDataSource jr = new JRResultSetDataSource(rs); // Cria um resultset do banco de dados
+
+            
+            Map param = new HashMap(); // Abre o parâmetro
+
+            param.put("ano1", ano1);
+            param.put("ano2", ano2);
+            
+            JasperPrint print = JasperFillManager.fillReport(path, param); // Somente os parâmetros
+            JasperViewer view = new JasperViewer(print, false);//Prepara a visualização do relatório - true, fecha aplicação | false, mantém aplicação aberto
+            view.setVisible(true); //Visualiza o relatório
+            view.toFront();//Puxa o relatório para frente do frame.
+
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
+        
+    }    
 }

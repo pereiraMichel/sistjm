@@ -52,28 +52,26 @@ public class Caboclos {
             stmt = conn.createStatement();
             rs = stmt.executeQuery(sql);
                 
-            DefaultTableModel dtm = new DefaultTableModel();
-            tabela.setModel(dtm);
+            DefaultTableModel caboclo = new DefaultTableModel();
+            tabela.setModel(caboclo);
+            
+            caboclo.addColumn("Caboclo");
 
-//            ere.addColumn("ID");
-            dtm.addColumn("Caboclo");
-
-//            tabela.getColumnModel().getColumn(0).setPreferredWidth(5);
             tabela.getColumnModel().getColumn(0).setPreferredWidth(110);
 
             while(rs.next()){
 //                int idEvento = rs.getInt("idcaboclo");
                 String nomeEvento = rs.getString("nome");
-                dtm.addRow(new Object[]{nomeEvento});
-//                ere.addRow(new Object[]{idEvento, nomeEvento});
+                caboclo.addRow(new Object[]{nomeEvento});
+//                dtm.addRow(new Object[]{idEvento, nomeEvento});
             }
         }catch(Exception ex){
             System.out.println("Erro em tabela de Caboclo. Mensagem: " + ex.getMessage());
         }        
     }
-    public void buscaTabCaboclo(JTable tabela, String texto){
+    public void buscaTabCaboclo(JTable tabela, JTextField texto){
         
-        String sql = "SELECT * FROM caboclo WHERE nome LIKE '%" + texto + "'";
+        String sql = "SELECT * FROM caboclo WHERE nome LIKE '%" + texto.getText() + "'";
         
         try{
             con = new Conexao();
@@ -84,17 +82,13 @@ public class Caboclos {
             DefaultTableModel orixa = new DefaultTableModel();
             tabela.setModel(orixa);
 
-//            orixa.addColumn("ID");
             orixa.addColumn("Caboclo");
 
             tabela.getColumnModel().getColumn(0).setPreferredWidth(110);
-//            tabela.getColumnModel().getColumn(1).setPreferredWidth(110);
 
             while(rs.next()){
-//                int idEvento = rs.getInt("idcaboclo");
                 String nomeEvento = rs.getString("nome");
                 orixa.addRow(new Object[]{nomeEvento});
-//                orixa.addRow(new Object[]{idEvento, nomeEvento});
             }
         }catch(Exception ex){
             System.out.println("Erro em tabela de caboclo. Mensagem: " + ex.getMessage());

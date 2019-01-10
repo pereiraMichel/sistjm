@@ -3,6 +3,7 @@
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
+	<parameter name="periodo" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT
 (SELECT COUNT(me.idmensalidade)
@@ -69,6 +70,13 @@ FROM mensalidade me]]>
 					<font fontName="Calibri" size="14" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{ano}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="364" y="59" width="175" height="20" forecolor="#000000" uuid="2589beb6-22d1-4f3b-ad8c-c53c2d35c0ee"/>
+				<textElement textAlignment="Right">
+					<font fontName="Calibri" size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{periodo}]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>
@@ -147,7 +155,7 @@ FROM mensalidade me]]>
 				<text><![CDATA[QUANTIDADE DE ISENTOS:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="418" y="137" width="21" height="20" forecolor="#0000CC" uuid="d7560ccd-7737-4cd6-9cbc-a3cdccb8c3c9"/>
+				<reportElement x="418" y="136" width="21" height="20" forecolor="#0000CC" uuid="d7560ccd-7737-4cd6-9cbc-a3cdccb8c3c9"/>
 				<textElement>
 					<font fontName="Calibri" size="11" isBold="true"/>
 				</textElement>

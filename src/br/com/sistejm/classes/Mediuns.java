@@ -42,12 +42,21 @@ public class Mediuns {
     private String email;
     private int ativo;
     private String sexo;
+    private String funcao;
     
     Conexao con;
     Connection conn;
     Statement stmt;
     ResultSet rs;
     Configuracoes config;
+
+    public String getFuncao() {
+        return funcao;
+    }
+
+    public void setFuncao(String funcao) {
+        this.funcao = funcao;
+    }
 
     public String getEmail() {
         return email;
@@ -106,9 +115,9 @@ public class Mediuns {
 
     public void setDataNascimento(String dataNascimento) {
         config = new Configuracoes();
-        String novoFormato = config.retornaFormatoDataSQL(dataNascimento);
+        String novoFormatoNascimento = config.retornaFormatoDataSQL(dataNascimento);
         
-        this.dataNascimento = novoFormato;
+        this.dataNascimento = novoFormatoNascimento;
     }
 
     public String getDataCadastro() {
@@ -196,34 +205,6 @@ public class Mediuns {
             System.out.println("Erro em tabela de mediuns. Mensagem: " + ex.getMessage());
         }        
     }
-
-//    public Component prepareRenderer(TableCellRenderer renderer,
-//            int rowIndex, int vColIndex) {
-//         
-//        DefaultTableModel m = (DefaultTableModel) getModel();
-//        Component c = super.prepareRenderer(renderer, rowIndex, vColIndex);
-//         
-//        // altera a cor de background da linha para vermelho e foreground para branco
-//        // quando o valor da coluna 3 for igual a fechado 
-//        if (m.getValueAt(rowIndex, 2).toString().toLowerCase().equals("fechado")) {
-//            c.setBackground(new Color(192, 0, 0));
-//            c.setForeground(Color.white);
-//        } else {
-//            // mantem a cor padrão de foreground 
-//            c.setForeground(getForeground());
-//             
-//            // determina a cor de background da linha selecionada 
-//            if(isCellSelected(rowIndex, vColIndex)) {
-//                c.setBackground(new Color(184, 207, 229));
-//            } else {
-//                // linhas não selecionadas, manter cor de background padrão 
-//                c.setBackground(getBackground());
-//            }
-// 
-//        }           
-//        return c;
-////    }
-//};
     
     public class Renderer extends DefaultTableCellRenderer {
        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
@@ -361,8 +342,9 @@ public class Mediuns {
                 + "isentoMensal = " + this.isentoMensal + ", "
                 + "ativo = " + this.ativo + ", "
                 + "observacoes = '" + this.observacoes + "', "
-                + "email = '" + this.observacoes + "', "
-                + "sexo = '" + this.observacoes + "' "
+                + "email = '" + this.email + "', "
+                + "sexo = '" + this.sexo + "' "
+                + "funcao = '" + this.funcao + "' "
                 + " WHERE idmedium = " + this.idMedium;
         
 //        System.out.println(sql);
@@ -377,6 +359,119 @@ public class Mediuns {
             
         }catch(Exception ex){
             System.out.println("Catch alteração de Médium ativado. Erro: " + ex.getMessage());
+        }
+        return false;
+    }
+    
+    public boolean alterarFuncaoMedium(){
+        config = new Configuracoes();
+        
+        String sql = "UPDATE mediuns SET "
+                + "funcao = '" + this.funcao + "' "
+                + " WHERE idmedium = " + this.idMedium;
+        
+//        System.out.println(sql);
+        
+        try{
+            con = new Conexao();
+            conn = con.getConnection();
+            stmt = conn.createStatement();
+            stmt.executeUpdate(sql);
+            
+            return true;
+            
+        }catch(Exception ex){
+            config.gravaErroLog("Houve um erro ao alterara a função. Descrição: " + ex.getMessage(), "Alteração da função do médium", "sistejm.alterfunmedium");
+        }
+        return false;
+    }
+    public boolean alterarIsentoMedium(){
+        config = new Configuracoes();
+        
+        String sql = "UPDATE mediuns SET "
+                + "isentoMensal = " + this.isentoMensal + " "
+                + " WHERE idmedium = " + this.idMedium;
+        
+//        System.out.println(sql);
+        try{
+            con = new Conexao();
+            conn = con.getConnection();
+            stmt = conn.createStatement();
+            stmt.executeUpdate(sql);
+            
+            return true;
+            
+        }catch(Exception ex){
+            config.gravaErroLog("Houve um erro ao alterar a isenção de mensalidade. Descrição: " + ex.getMessage(), "Alteração da isenção de mensalidade do médium", "sistejm.altisenmedium");
+        }
+        return false;
+    }
+    public boolean alterarEmailMedium(){
+        config = new Configuracoes();
+        
+        String sql = "UPDATE mediuns SET "
+                + "email = '" + this.email + "' "
+                + " WHERE idmedium = " + this.idMedium;
+        
+//        System.out.println(sql);
+        
+        try{
+            con = new Conexao();
+            conn = con.getConnection();
+            stmt = conn.createStatement();
+            stmt.executeUpdate(sql);
+            
+            return true;
+            
+        }catch(Exception ex){
+            config.gravaErroLog("Houve um erro ao alterar o e-mail. Descrição: " + ex.getMessage(), "Alteração do E-mail do médium", "sistejm.altemamedium");
+        }
+        return false;
+    }
+    public boolean alterarSexoMedium(){
+        config = new Configuracoes();
+        
+        String sql = "UPDATE mediuns SET "
+                + "sexo = '" + this.sexo + "' "
+                + " WHERE idmedium = " + this.idMedium;
+        
+//        System.out.println(sql);
+        
+        try{
+            con = new Conexao();
+            conn = con.getConnection();
+            stmt = conn.createStatement();
+            stmt.executeUpdate(sql);
+            
+            return true;
+            
+        }catch(Exception ex){
+            config.gravaErroLog("Houve um erro ao alterar o e-mail. Descrição: " + ex.getMessage(), "Alteração do E-mail do médium", "sistejm.altemamedium");
+        }
+        return false;
+    }
+    public boolean alterarDataNascimentoMedium(){
+        config = new Configuracoes();
+        if(this.dataNascimento.equals("")){
+            this.setDataNascimento("01/01/1901");
+        }
+        
+        String sql = "UPDATE mediuns SET "
+                + "dataNascimento = '" + this.dataNascimento + "' "
+                + " WHERE idmedium = " + this.idMedium;
+        
+//        System.out.println(sql);
+        
+        try{
+            con = new Conexao();
+            conn = con.getConnection();
+            stmt = conn.createStatement();
+            stmt.executeUpdate(sql);
+            
+            return true;
+            
+        }catch(Exception ex){
+            config.gravaErroLog("Houve um erro ao alterar a data de nascimento. Descrição: " + ex.getMessage(), "Alteração da Data de Nascimento do médium", "sistejm.datanascmedium");
         }
         return false;
     }
@@ -403,6 +498,26 @@ public class Mediuns {
         String nome = null;
         try{
             String sql = "SELECT nome FROM mediuns";
+            con = new Conexao();
+            conn = con.getConnection();
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery(sql);
+//            rs.first();
+
+            while(rs.next()){
+                nome = rs.getString("nome");
+                combo.addItem(nome);
+            }
+
+        }catch(IOException | SQLException ex){
+            System.out.println(" Erro: " + ex.getMessage());
+        }
+    }
+    public void preencheComboMediumNIsentos(JComboBox combo){
+
+        String nome = null;
+        try{
+            String sql = "SELECT nome FROM mediuns WHERE isentoMensal = 0";
             con = new Conexao();
             conn = con.getConnection();
             stmt = conn.createStatement();
@@ -458,17 +573,20 @@ public class Mediuns {
     public void exibeCamposMedium(JTextField id, JTextField nome, JTextField matricula, JCheckBox isento, 
             JTextField dataNascimento, JTextField dtEntrada, JTextArea observacoes, JTextField endereco, 
             JTextField bairro, JTextField cidade, JTextField estado, JRadioButton ativoSim, JRadioButton ativoNao, 
-            JRadioButton rMasc, JRadioButton rFemin, JTextField email){
+            JRadioButton rMasc, JRadioButton rFemin, JTextField email, JTextField funcao){
+        
+        this.idMedium = Integer.valueOf(id.getText());
         
         config = new Configuracoes();
         
         String sql = "SELECT m.idmedium, m.matricula, m.nome, m.isentoMensal, "
-                + "DATE_FORMAT(m.dataNascimento, '%d/%m/%Y') AS dataNascimento, "
-                + "DATE_FORMAT(m.dataEntrada, '%d/%m/%Y') AS dataEntrada, m.observacoes, "
-                + "m.dataEntrada, m.ativo, m.email, m.sexo, l.* "
+                + "DATE_FORMAT(m.dataNascimento, '%d/%m/%Y') AS dtNasc, "
+                + "DATE_FORMAT(m.dataEntrada, '%d/%m/%Y') AS dtEnt, m.observacoes, "
+                + "m.ativo, m.email, m.sexo, m.funcao, l.endereco, l.bairro, l.cidade, l.estado "
                 + "FROM mediuns m "
                 + "LEFT JOIN logradouro l ON l.cod_medium = m.idmedium "
-                + "WHERE m.matricula = '" + this.matricula + "'";
+                + "WHERE m.idmedium = " + this.idMedium + " "
+                + "AND m.ativo = 1";
         
 //        System.out.println(sql);
         
@@ -481,70 +599,116 @@ public class Mediuns {
             
             rs.next();
             
-//            if(rs.absolute(1)){
+            if(rs.absolute(1)){
+                String idMedium = rs.getString("m.idmedium");
+                String n = rs.getString("m.nome");
+                String matr = rs.getString("m.matricula");
+                
                 int rIsentoMensal = rs.getInt("m.isentoMensal");
                 String sex = rs.getString("m.sexo");
-                id.setText(rs.getString("m.idmedium"));
-                nome.setText(rs.getString("m.nome"));
-                int ativo = rs.getInt("ativo");
-                //
-//                System.out.println(nome.getText());
-    
+                int mediumAtivo = rs.getInt("ativo");
+                String dtNasc = rs.getString("dtNasc");
+                String dtEnt = rs.getString("dtEnt");
+                String obs = rs.getString("m.observacoes");
+                String em = rs.getString("m.email");
+                String end = rs.getString("l.endereco");
+                String bair = rs.getString("l.bairro");
+                String cid = rs.getString("l.cidade");
+                String est = rs.getString("l.estado");
+                String fun = rs.getString("m.funcao");
                 
-                if(ativo == 1){
+                id.setText(idMedium);
+                nome.setText(n);
+                matricula.setText(matr);
+
+                if(mediumAtivo == 1){
                     ativoSim.setSelected(true);
                 }else{
                     ativoNao.setSelected(true);
                 }
-                
-                if(sex.equals("m")){
-                    rMasc.setSelected(true);
-                }else if(sex.equals("f")){
-                    rFemin.setSelected(true);
-                }else{
-                    rMasc.setSelected(false);
-                    rFemin.setSelected(false);
+                switch(sex){
+                    case "m":
+                        rMasc.setSelected(true);
+                        rFemin.setSelected(false);
+                        break;
+                    case "f":
+                        rMasc.setSelected(false);
+                        rFemin.setSelected(true);
+                        break;
+                    case " ":
+                        rMasc.setSelected(false);
+                        rFemin.setSelected(false);
+                        break;
+                    default:
+                        rMasc.setSelected(false);
+                        rFemin.setSelected(false);
+                        break;
+                        
                 }
-                
                 if(rIsentoMensal == 1){
                     isento.setSelected(true);
                 }else{
                     isento.setSelected(false);
                 }
-                matricula.setText(rs.getString("m.matricula"));
-                String dtNasc = rs.getString("dataNascimento");
+//                matricula.setText(rs.getString("m.matricula"));
                 if(dtNasc.equals("1901-01-01") || dtNasc.equals("")){
-//                    System.out.println("o valor está aqui");
-                    dataNascimento.setText("01/01/1901");
+                    dataNascimento.setText("");
                 }else{
                     dataNascimento.setText(dtNasc);
                 }
-//                System.out.println("Nascimento: " + dtNasc);
-                if(rs.getString("dataEntrada").equals("1901-01-01") || rs.getString("dataEntrada").equals("")){
-                    dtEntrada.setText("01/01/1901");
-                }else{
-                    dtEntrada.setText(rs.getString("dataEntrada"));
-                }
-//                System.out.println("Entrada: " + dtEntrada.getText());
-    
-                observacoes.setText(rs.getString("m.observacoes"));
-                email.setText(rs.getString("m.email"));
-                endereco.setText(rs.getString("l.endereco"));
-                bairro.setText(rs.getString("l.bairro"));
-                cidade.setText(rs.getString("l.cidade"));
-                estado.setText(rs.getString("l.estado"));
                 
-//            }
+                if(dtEnt.equals("1901-01-01") || dtEnt.equals("")){
+                    dtEntrada.setText("");
+                }else{
+                    dtEntrada.setText(dtEnt);
+                }
+                if(!obs.equals("")){
+                    observacoes.setText(obs);
+                }else{
+                    observacoes.setText("");
+                }
+                if(!em.equals(" ")){
+                    email.setText(rs.getString("email"));
+                }else{
+                    em = " ";
+                    email.setText(em);
+                }
+                if(!end.equals("")){
+                    endereco.setText(end);
+                }else{
+                    endereco.setText("");
+                }
+                if(!bair.equals("")){
+                    bairro.setText(bair);
+                }else{
+                    bairro.setText("");
+                }
+                if(!cid.equals("")){
+                    cidade.setText(cid);
+                }else{
+                    cidade.setText("");
+                }
+                if(!est.equals("")){
+                    estado.setText(est);
+                }else{
+                    estado.setText("");
+                }
+                if(!fun.equals("")){
+                    funcao.setText(fun);
+                }else{
+                    funcao.setText("");
+                }
+            }
             
         }catch(Exception ex){
             config.gravaErroLog("Houve um erro no campos do médium. Erro: " + ex.getMessage(), "Preenchimento dos campos do médium", "sistejm.campomedium");
-        }
+        }// + " SQL: " + sql
         
     }
 
     public void preencheTabNomeMedium(JTable tabela){
 
-        String sql = "SELECT DISTINCT * FROM mediuns m ";
+        String sql = "SELECT DISTINCT * FROM mediuns m  WHERE m.ativo = 1";
      
         try{
             con = new Conexao();
@@ -621,26 +785,63 @@ public class Mediuns {
             System.out.println("Erro em tabela de mediuns. Mensagem: " + ex.getMessage());
         }        
     }
-//    public int retornaIdMedium(JTable tabela, String texto){
-//        config = new Configuracoes();
-//
-//        String sql = "SELECT DISTINCT * FROM mediuns m WHERE nome = '" + texto + "'";
-//     
-//        try{
-//            con = new Conexao();
-//            conn = con.getConnection();
-//            stmt = conn.createStatement();
-//            rs = stmt.executeQuery(sql);
-//            rs.next();
-//
-//            if(rs.absolute(1)){
-//                return rs.getInt("idmedium");
-//            }
-//            
-//        }catch(Exception ex){
-//            config.gravaErroLog("Erro no retorno. Descrção: " + ex.getMessage(), "Retorno de Id do Médium", "sistejm.retornaidmedium");
-//        }
-//        return 0;        
-//    }
+
+    public void preencheTaMediumNIsentos(JTable tabela){
+        config = new Configuracoes();
+
+        String sql = "SELECT nome FROM mediuns WHERE isentoMensal = 0";
+     
+        try{
+            con = new Conexao();
+            conn = con.getConnection();
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery(sql);
+                
+            DefaultTableModel medium = new DefaultTableModel();
+            tabela.setModel(medium);
+
+            medium.addColumn("Médium");
+
+            tabela.getColumnModel().getColumn(0).setPreferredWidth(110);
+
+            while(rs.next()){
+                String nome = rs.getString("nome");
+
+                medium.addRow(new Object[]{nome});
+            }
+            
+        }catch(Exception ex){
+            config.gravaErroLog("Houve um erro na execução da tabela de médiuns na mensalidade. Erro: " + ex.getMessage(), "Tabela de Médiuns | Mensalidade", "sistejm.tabmensal");
+//            System.out.println("Erro em tabela de mediuns. Mensagem: " + ex.getMessage());
+        }        
+    }
+    public String retornaFuncao(String texto){
+        config = new Configuracoes();
+
+        String sql = "SELECT funcao, nome FROM mediuns WHERE nome = '" + texto + "'";
+     
+        String funcao = null;
+        try{
+            con = new Conexao();
+            conn = con.getConnection();
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery(sql);
+                
+            rs.next();
+
+            if(rs.absolute(1)){
+                funcao = rs.getString("funcao");
+
+            }else{
+                funcao = "MÉDIUM";
+            }
+            return funcao;
+            
+        }catch(Exception ex){
+            config.gravaErroLog("Houve um erro na pesquisa de função do médium. Erro: " + ex.getMessage(), "Função do Médiuns", "sistejm.funcaomedium");
+        }
+        return null;
+    }
+    
     
 }

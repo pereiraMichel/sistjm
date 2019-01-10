@@ -5,6 +5,7 @@
  */
 package br.com.sistejm.telas;
 
+import br.com.sistejm.classes.Configuracoes;
 import br.com.sistejm.classes.Fotos;
 import br.com.sistejm.classes.Logradouro;
 import br.com.sistejm.classes.MediumCaboclo;
@@ -36,10 +37,20 @@ public class DPesquisaMedium extends javax.swing.JDialog {
     MediumCaboclo mc;
     DMediumGeral med;
     TelaInicial inicial;
+    Configuracoes config;
     
     private int idMedium;
     private int idUser;
     private String selecao;
+    private String usuario;
+
+    public String getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
+    }
 
     public int getIdUser() {
         return idUser;
@@ -79,17 +90,28 @@ public class DPesquisaMedium extends javax.swing.JDialog {
     }
     
     public void bloqueiaButton(boolean valor){
-        btDesativar.setEnabled(valor);
+        btSelecionar.setEnabled(valor);
     }
     
     public void ocultaText(boolean valor){
         txtMatricula.setVisible(valor);
         txtIdMedium.setVisible(valor);
+        txtCodeUser.setVisible(valor);
+        txtAtivo.setVisible(valor);
+        txtObservacoes.setVisible(valor);
+        txtIsento.setVisible(valor);
+        txtDataNascimento.setVisible(valor);
+        txtDataEntrada.setVisible(valor);
     }
     
     public void exibeTabMedium(){
         m = new Mediuns();
         m.preencheTabMedium(tabelaMedium);
+    }
+    public void recebeUsuario(String user, int id){
+        this.idUser = id;
+        this.usuario = user;
+        txtCodeUser.setText(String.valueOf(this.idUser));
     }
     
 
@@ -113,7 +135,7 @@ public class DPesquisaMedium extends javax.swing.JDialog {
         radioMatricula = new javax.swing.JRadioButton();
         panelTop = new javax.swing.JPanel();
         labelTitulo = new javax.swing.JLabel();
-        btDesativar = new javax.swing.JButton();
+        btSelecionar = new javax.swing.JButton();
         btCancelar = new javax.swing.JButton();
         btExcluir = new javax.swing.JButton();
         btNovo = new javax.swing.JButton();
@@ -125,6 +147,7 @@ public class DPesquisaMedium extends javax.swing.JDialog {
         jScrollPane2 = new javax.swing.JScrollPane();
         txtObservacoes = new javax.swing.JTextArea();
         txtAtivo = new javax.swing.JTextField();
+        txtCodeUser = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -194,16 +217,16 @@ public class DPesquisaMedium extends javax.swing.JDialog {
         labelTitulo.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         labelTitulo.setText("PESQUISA DE MÉDIUNS");
 
-        btDesativar.setBackground(new java.awt.Color(255, 255, 255));
-        btDesativar.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
-        btDesativar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/sistejm/images/sim.png"))); // NOI18N
-        btDesativar.setText("Selecionar");
-        btDesativar.setToolTipText("Selecionar");
-        btDesativar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btDesativar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btDesativar.addActionListener(new java.awt.event.ActionListener() {
+        btSelecionar.setBackground(new java.awt.Color(255, 255, 255));
+        btSelecionar.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
+        btSelecionar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/sistejm/images/sim.png"))); // NOI18N
+        btSelecionar.setText("Selecionar");
+        btSelecionar.setToolTipText("Selecionar");
+        btSelecionar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btSelecionar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btSelecionar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btDesativarActionPerformed(evt);
+                btSelecionarActionPerformed(evt);
             }
         });
 
@@ -259,7 +282,7 @@ public class DPesquisaMedium extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btNovo, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btDesativar)
+                .addComponent(btSelecionar)
                 .addGap(10, 10, 10)
                 .addComponent(btExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -274,7 +297,7 @@ public class DPesquisaMedium extends javax.swing.JDialog {
                 .addGroup(panelTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(panelTopLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(btDesativar, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(btSelecionar, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(btExcluir, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelTopLayout.createSequentialGroup()
                         .addComponent(btCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -299,6 +322,8 @@ public class DPesquisaMedium extends javax.swing.JDialog {
         jScrollPane2.setViewportView(txtObservacoes);
 
         txtAtivo.setEditable(false);
+
+        txtCodeUser.setEditable(false);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -333,7 +358,9 @@ public class DPesquisaMedium extends javax.swing.JDialog {
                                 .addGap(18, 18, 18)
                                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(txtAtivo, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(txtAtivo, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtCodeUser, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(0, 265, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -361,7 +388,9 @@ public class DPesquisaMedium extends javax.swing.JDialog {
                                 .addComponent(txtIdMedium, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(txtDataNascimento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(txtIsento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addComponent(txtAtivo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(txtAtivo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtCodeUser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addComponent(panelDown, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -369,18 +398,21 @@ public class DPesquisaMedium extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btDesativarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btDesativarActionPerformed
+    private void btSelecionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btSelecionarActionPerformed
+        config = new Configuracoes();
+        
         inicial = new TelaInicial();
         med = new DMediumGeral(inicial, false);
         med.recebeNomeMedium(txtPesquisa.getText(), txtMatricula.getText(), txtIdMedium.getText(), 
                 String.valueOf(this.idUser), txtAtivo.getText());
+        config.gravaAtividades("Seleção do médium " + txtPesquisa.getText() + " para atividades.", this.usuario, "Seleção do Médium");
 //        med.setFocusableWindowState(true);
         med.setLocationRelativeTo(med);
         med.setAutoRequestFocus(true);
         med.setVisible(true);
         fechar();
         
-    }//GEN-LAST:event_btDesativarActionPerformed
+    }//GEN-LAST:event_btSelecionarActionPerformed
 
     public void recebeIdUsuario(String coduser){
         this.idUser = Integer.valueOf(coduser);
@@ -404,7 +436,7 @@ public class DPesquisaMedium extends javax.swing.JDialog {
         txtPesquisa.setText(nomeMedium);
         txtIdMedium.setText(id);
         txtMatricula.setText(matriculaMedium);
-        btDesativar.setEnabled(true);
+        btSelecionar.setEnabled(true);
         txtAtivo.setText(ativo);
         
 //        this.idMedium = m.retornaIdMediumPorMatricula(matriculaMedium);
@@ -535,9 +567,9 @@ public class DPesquisaMedium extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btCancelar;
-    private javax.swing.JButton btDesativar;
     private javax.swing.JButton btExcluir;
     private javax.swing.JButton btNovo;
+    private javax.swing.JButton btSelecionar;
     private javax.swing.ButtonGroup buttonGroup;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
@@ -550,6 +582,7 @@ public class DPesquisaMedium extends javax.swing.JDialog {
     private javax.swing.JRadioButton radioNome;
     private javax.swing.JTable tabelaMedium;
     private javax.swing.JTextField txtAtivo;
+    private javax.swing.JTextField txtCodeUser;
     private javax.swing.JTextField txtDataEntrada;
     private javax.swing.JTextField txtDataNascimento;
     private javax.swing.JTextField txtIdMedium;
