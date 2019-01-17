@@ -708,4 +708,49 @@ public class Configuracoes {
             
     }
     
+    public String retornaMesExtenso(int mes){
+        String mesExtenso = null;
+        
+        switch(mes){
+            case 1:
+                mesExtenso = "JAN";
+                break;
+            case 2:
+                mesExtenso = "FEV";
+                break;
+            case 3:
+                mesExtenso = "MAR";
+                break;
+            case 4:
+                mesExtenso = "ABR";
+                break;
+            case 5:
+                mesExtenso = "MAI";
+                break;
+            case 6:
+                mesExtenso = "JUN";
+                break;
+            case 7:
+                mesExtenso = "JUL";
+                break;
+            case 8:
+                mesExtenso = "AGO";
+                break;
+            case 9:
+                mesExtenso = "SET";
+                break;
+            case 10:
+                mesExtenso = "OUT";
+                break;
+            case 11:
+                mesExtenso = "NOV";
+                break;
+            case 12:
+                mesExtenso = "DEZ";
+                break;
+        }
+        return mesExtenso;
+        
+    }
+    
 }

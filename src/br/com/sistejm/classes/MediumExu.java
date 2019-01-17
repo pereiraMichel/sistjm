@@ -203,7 +203,7 @@ public class MediumExu {
     public boolean excluirMediumExu(){
         config = new Configuracoes();
         
-        String sql = "DELETE FROM medium_exu WHERE codMedium = " + this.codMedium + " AND cod_exu = " + this.codExu;
+        String sql = "DELETE FROM medium_exu WHERE idmedium_exu = " + this.idMediumExu;
 
         try{
             con = new Conexao();
@@ -311,10 +311,12 @@ public class MediumExu {
         
     }
 
-    public int retornaIdMediumExu(String nome){
+    public int retornaIdMediumExu(){
         config = new Configuracoes();
         try{
-            String sql = "SELECT * FROM exu WHERE nome = '" + nome + "'";
+            String sql = "SELECT * FROM medium_exu "
+                    + "WHERE codMedium = " + this.codMedium + " "
+                    + "AND cod_exu = " + this.codExu;
             
             con = new Conexao();
             conn = con.getConnection();
@@ -323,7 +325,7 @@ public class MediumExu {
             rs.next();
             
             if(rs.absolute(1)){
-                return rs.getInt("nome");
+                return rs.getInt("idmedium_exu");
             }
             
 

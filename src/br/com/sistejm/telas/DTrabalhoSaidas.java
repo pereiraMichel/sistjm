@@ -171,8 +171,10 @@ public class DTrabalhoSaidas extends javax.swing.JDialog {
 
         btColocar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/sistejm/images/setaInsere16x16.png"))); // NOI18N
 
+        labelMedium.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         labelMedium.setText("MÉDIUM:");
 
+        labelNomeMedium.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         labelNomeMedium.setText("Aguardando...");
 
         labelFilho.setText("Filho(a) de:");
@@ -303,7 +305,7 @@ public class DTrabalhoSaidas extends javax.swing.JDialog {
                                 .addComponent(btTirar))))
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 111, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 108, Short.MAX_VALUE)
                 .addComponent(panelDown, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 

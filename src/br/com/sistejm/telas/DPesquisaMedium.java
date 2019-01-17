@@ -102,6 +102,7 @@ public class DPesquisaMedium extends javax.swing.JDialog {
         txtIsento.setVisible(valor);
         txtDataNascimento.setVisible(valor);
         txtDataEntrada.setVisible(valor);
+        scroolObs.setVisible(valor);
     }
     
     public void exibeTabMedium(){
@@ -144,7 +145,7 @@ public class DPesquisaMedium extends javax.swing.JDialog {
         txtIdMedium = new javax.swing.JTextField();
         txtDataNascimento = new javax.swing.JTextField();
         txtIsento = new javax.swing.JTextField();
-        jScrollPane2 = new javax.swing.JScrollPane();
+        scroolObs = new javax.swing.JScrollPane();
         txtObservacoes = new javax.swing.JTextArea();
         txtAtivo = new javax.swing.JTextField();
         txtCodeUser = new javax.swing.JTextField();
@@ -319,7 +320,7 @@ public class DPesquisaMedium extends javax.swing.JDialog {
         txtObservacoes.setEditable(false);
         txtObservacoes.setColumns(20);
         txtObservacoes.setRows(5);
-        jScrollPane2.setViewportView(txtObservacoes);
+        scroolObs.setViewportView(txtObservacoes);
 
         txtAtivo.setEditable(false);
 
@@ -356,7 +357,7 @@ public class DPesquisaMedium extends javax.swing.JDialog {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(txtIsento, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(scroolObs, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(txtAtivo, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
@@ -381,7 +382,7 @@ public class DPesquisaMedium extends javax.swing.JDialog {
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(16, 16, 16)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(scroolObs, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(txtDataEntrada, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(txtMatricula, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -572,7 +573,6 @@ public class DPesquisaMedium extends javax.swing.JDialog {
     private javax.swing.JButton btSelecionar;
     private javax.swing.ButtonGroup buttonGroup;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel labelPesquisa;
     private javax.swing.JLabel labelTitulo;
     private javax.swing.JLabel labelVersao;
@@ -580,6 +580,7 @@ public class DPesquisaMedium extends javax.swing.JDialog {
     private javax.swing.JPanel panelTop;
     private javax.swing.JRadioButton radioMatricula;
     private javax.swing.JRadioButton radioNome;
+    private javax.swing.JScrollPane scroolObs;
     private javax.swing.JTable tabelaMedium;
     private javax.swing.JTextField txtAtivo;
     private javax.swing.JTextField txtCodeUser;

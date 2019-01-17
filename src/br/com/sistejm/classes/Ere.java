@@ -177,9 +177,9 @@ public class Ere {
         }
         return false;
     }
-    public int retornaIdEre(String texto){
+    public int retornaIdEre(){
         config = new Configuracoes();
-        String sql = "SELECT * FROM ere WHERE nome = '" + texto + "'";
+        String sql = "SELECT * FROM ere WHERE nome = '" + this.nome + "'";
         
         try{
             con = new Conexao();

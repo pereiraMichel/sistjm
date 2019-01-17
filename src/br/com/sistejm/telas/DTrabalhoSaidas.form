@@ -112,7 +112,7 @@
                   <Component id="jScrollPane2" min="-2" pref="171" max="-2" attributes="0"/>
                   <Component id="jScrollPane3" min="-2" pref="171" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="111" max="32767" attributes="0"/>
+              <EmptySpace pref="108" max="32767" attributes="0"/>
               <Component id="panelDown" min="-2" max="-2" attributes="0"/>
           </Group>
       </Group>
@@ -290,11 +290,17 @@
     </Component>
     <Component class="javax.swing.JLabel" name="labelMedium">
       <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Arial" size="14" style="1"/>
+        </Property>
         <Property name="text" type="java.lang.String" value="M&#xc9;DIUM:"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="labelNomeMedium">
       <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Arial" size="14" style="1"/>
+        </Property>
         <Property name="text" type="java.lang.String" value="Aguardando..."/>
       </Properties>
     </Component>

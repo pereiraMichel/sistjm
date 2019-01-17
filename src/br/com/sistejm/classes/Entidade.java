@@ -184,9 +184,9 @@ public class Entidade {
         }
         return false;
     }    
-    public int retornaIdEntidade(String texto){
+    public int retornaIdEntidade(){
         config = new Configuracoes();
-        String sql = "SELECT * FROM entidade WHERE nome = '" + texto + "'";
+        String sql = "SELECT * FROM entidade WHERE nome = '" + this.nome + "'";
         
         try{
             con = new Conexao();

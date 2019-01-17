@@ -4,13 +4,12 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Users/Michel/Documents/NetBeansProjects/SISTEJM/src/br/com/sistejm/classes/Relatorios.java</file>
+            <file>file:/C:/Users/Michel/Documents/NetBeansProjects/SISTEJM/src/br/com/sistejm/telas/DRelMediuns.java</file>
             <file>file:/C:/Users/Michel/Documents/NetBeansProjects/SISTEJM/src/br/com/sistejm/classes/Configuracoes.java</file>
-            <file>file:/C:/Users/Michel/Documents/NetBeansProjects/SISTEJM/src/br/com/sistejm/classes/MediumOrixa.java</file>
-            <file>file:/C:/Users/Michel/Documents/NetBeansProjects/SISTEJM/src/br/com/sistejm/classes/Orixas.java</file>
-            <file>file:/C:/Users/Michel/Documents/NetBeansProjects/SISTEJM/src/br/com/sistejm/telas/DOrixasMedium.java</file>
-            <file>file:/C:/Users/Michel/Documents/NetBeansProjects/SISTEJM/src/br/com/sistejm/classes/Caboclos.java</file>
             <file>file:/C:/Users/Michel/Documents/NetBeansProjects/SISTEJM/src/br/com/sistejm/telas/DMediumGeral.java</file>
             <file>file:/C:/Users/Michel/Documents/NetBeansProjects/SISTEJM/src/br/com/sistejm/telas/TelaInicial.java</file>
+            <file>file:/C:/Users/Michel/Documents/NetBeansProjects/SISTEJM/src/br/com/sistejm/classes/Constances.java</file>
+            <file>file:/C:/Users/Michel/Documents/NetBeansProjects/SISTEJM/src/br/com/sistejm/telas/DPesquisaMedium.java</file>
         </group>
     </open-files>
 </project-private>

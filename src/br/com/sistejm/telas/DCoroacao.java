@@ -57,6 +57,7 @@ public class DCoroacao extends javax.swing.JDialog {
     public DCoroacao(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        ocultaText(false);
     }
 
     public void tabelaMediuns(){
@@ -65,6 +66,10 @@ public class DCoroacao extends javax.swing.JDialog {
         m.preencheTabNomeMediumRestrito(tabMedium, codemedium);
     }
 
+    public void ocultaText(boolean valor){
+        txtCodMedium.setVisible(valor);
+        txtCodUser.setVisible(valor);
+    }
     
     public void consultaMedium(){
         coroa = new Coroa();
@@ -124,6 +129,7 @@ public class DCoroacao extends javax.swing.JDialog {
         txt7Anos = new javax.swing.JTextField();
         txt21Anos = new javax.swing.JTextField();
         txt14Anos = new javax.swing.JTextField();
+        jDateChooser1 = new com.toedter.calendar.JDateChooser();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -322,12 +328,6 @@ public class DCoroacao extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(txtBatismo, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                    .addComponent(labelCoroacao)
-                                    .addGap(33, 33, 33)
-                                    .addComponent(txtCoroacao, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 409, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(labelConfirmacao)
                             .addGroup(layout.createSequentialGroup()
@@ -341,7 +341,16 @@ public class DCoroacao extends javax.swing.JDialog {
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(labelPadrinho)
                                         .addGap(20, 20, 20)
-                                        .addComponent(txtPadrinho, javax.swing.GroupLayout.PREFERRED_SIZE, 285, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addComponent(txtPadrinho, javax.swing.GroupLayout.PREFERRED_SIZE, 285, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(txtBatismo, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                                .addComponent(labelCoroacao)
+                                                .addGap(33, 33, 33)
+                                                .addComponent(txtCoroacao, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addGap(66, 66, 66)
+                                        .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(radioPadrinho)
@@ -416,9 +425,11 @@ public class DCoroacao extends javax.swing.JDialog {
                                     .addComponent(radioMadrinha)
                                     .addComponent(txtMadrinha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(17, 17, 17)))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(labelBatismo)
-                            .addComponent(txtBatismo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(labelBatismo)
+                                .addComponent(txtBatismo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(labelCoroacao)
@@ -581,38 +592,44 @@ public class DCoroacao extends javax.swing.JDialog {
         
         coroa.setMes(this.mes);
         coroa.setCodmedium(Integer.valueOf(txtCodMedium.getText()));
-        String mesLongo = retornaMesLongo(this.mes);
+//        String mesLongo = retornaMesLongo(this.mes);
         
         coroa.setCodtipocoroa(2);
         coroa.setAno(this.ano);
+        coroa.setConfirma("s");
         coroa.setDataRealizacao(txtCoroacao.getText());
         coroa.marcaCoroa();
         
-        txt1Ano.setText(String.valueOf(mesLongo + " - " + valor1Ano + " | A confirmar"));
+        txt1Ano.setText(String.valueOf(this.mes + " - " + valor1Ano + " | A confirmar"));
         coroa.setCodtipocoroa(3);
+        coroa.setConfirma("n");
         coroa.setAno(valor1Ano);
         coroa.setDataRealizacao("01/" + this.mes + "/" + valor1Ano);
         coroa.desmarcaCoroa();
         
-        txt3Anos.setText(String.valueOf(mesLongo + " - " + valor3Anos + " | A confirmar"));
+        txt3Anos.setText(String.valueOf(this.mes + " - " + valor3Anos + " | A confirmar"));
+        coroa.setConfirma("n");
         coroa.setCodtipocoroa(4);
         coroa.setAno(valor3Anos);
         coroa.setDataRealizacao("01/" + this.mes + "/" + valor3Anos);
         coroa.desmarcaCoroa();
 
-        txt7Anos.setText(String.valueOf(mesLongo + " - " + valor7Anos + " | A confirmar"));
+        txt7Anos.setText(String.valueOf(this.mes + " - " + valor7Anos + " | A confirmar"));
+        coroa.setConfirma("n");
         coroa.setCodtipocoroa(5);
         coroa.setAno(valor7Anos);
         coroa.setDataRealizacao("01/" + this.mes + "/" + valor7Anos);
         coroa.desmarcaCoroa();
 
-        txt14Anos.setText(String.valueOf(mesLongo + " - " + valor14Anos + " | A confirmar"));
+        txt14Anos.setText(String.valueOf(this.mes + " - " + valor14Anos + " | A confirmar"));
+        coroa.setConfirma("n");
         coroa.setCodtipocoroa(6);
         coroa.setAno(valor14Anos);
         coroa.setDataRealizacao("01/" + this.mes + "/" + valor14Anos);
         coroa.desmarcaCoroa();
 
-        txt21Anos.setText(String.valueOf(mesLongo + " - " + valor21Anos + " | A confirmar"));
+        txt21Anos.setText(String.valueOf(this.mes + " - " + valor21Anos + " | A confirmar"));
+        coroa.setConfirma("n");
         coroa.setCodtipocoroa(7);
         coroa.setAno(valor21Anos);
         coroa.setDataRealizacao("01/" + this.mes + "/" + valor21Anos);
@@ -742,6 +759,7 @@ public class DCoroacao extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btCancelar;
     private javax.swing.ButtonGroup buttonGroup;
+    private com.toedter.calendar.JDateChooser jDateChooser1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;

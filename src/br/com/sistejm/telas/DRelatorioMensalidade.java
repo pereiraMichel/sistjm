@@ -114,7 +114,14 @@ public class DRelatorioMensalidade extends javax.swing.JDialog {
     public void campoAnoLetivo(boolean valor){
         txtAnoLetivo.setText("");
         txtAnoLetivo.setEditable(valor);
-    }    
+    }
+    
+    public void camposPadrao(){
+        labelTipo.setText("ANALÍTICO");
+        txtNomeMedium.setText("Todos");
+        this.idMedium = 0;
+        this.tipo = "analitico";
+    }
     
     /**
      * Creates new form DRelatorioMensalidade
@@ -126,7 +133,16 @@ public class DRelatorioMensalidade extends javax.swing.JDialog {
         campoAnoLetivo(false);
         campoMesAno(false);
         campoPeriodo(false);
+        camposPadrao();
         exibeQuantidade();
+        ocultaText(false);
+    }
+    
+    public void ocultaText(boolean valor){
+        txtData.setVisible(valor);
+        txtCodMedium.setVisible(valor);
+        txtAno.setVisible(valor);
+        txtMes.setVisible(valor);
     }
     
     public void exibeTabMediuns(){
@@ -142,7 +158,7 @@ public class DRelatorioMensalidade extends javax.swing.JDialog {
             labelQuantAtrasado.setText("0");
 
         }else if (radioSintetico.isSelected()){
-            this.tipo = "analitico";
+            this.tipo = "sintetico";
             camposSintetico(true);
         }
     }
@@ -469,7 +485,7 @@ public class DRelatorioMensalidade extends javax.swing.JDialog {
         txtCodMedium.setEditable(false);
         txtCodMedium.setToolTipText("codMedium");
 
-        labelFotoCoroa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/sistejm/images/BtCoroa.png"))); // NOI18N
+        labelFotoCoroa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/sistejm/images/BtFinaceiro1.png"))); // NOI18N
 
         txtMes.setEditable(false);
         txtMes.setToolTipText("Mes");

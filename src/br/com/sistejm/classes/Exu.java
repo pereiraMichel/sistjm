@@ -197,10 +197,10 @@ public class Exu {
         return false;
     }
     
-    public int retornaIdExu(String nome){
+    public int retornaIdExu(){
         config = new Configuracoes();
         try{
-            String sql = "SELECT * FROM exu WHERE nome = '" + nome + "'";
+            String sql = "SELECT * FROM exu WHERE nome = '" + this.nome + "'";
             
             con = new Conexao();
             conn = con.getConnection();

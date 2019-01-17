@@ -19,7 +19,14 @@ public class Constances {
     
     public static final String TITULO_DMEDIUMGERAL = "TELA INDIVIDUAL DE MÉDIUNS";
     public static final String TITULO_DANOSCARTEIRA = "TELA DE IMPRESSÃO DE ANOS | CARTEIRA";
+    public static final String TITULO_DORIXASMEDIUM = "TELA DE ORIXÁS E ENTIDADES DIVINAS DO MÉDIUM";
+    public static final String TITULO_DMENSALIDADESMEDIUM = "TELA DE MENSALIDADES DO MÉDIUM";
+    public static final String TITULO_DFICHASSMEDIUM = "TELA DE FICHAS DO MÉDIUM";
     
-    
+    public static final String SORI = "orixas";
+    public static final String SENT = "entidade";
+    public static final String SERE = "ere";
+    public static final String SEXU = "exu";
+    public static final String SCAB = "caboclo";
     
 }

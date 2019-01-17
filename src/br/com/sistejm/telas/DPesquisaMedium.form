@@ -56,7 +56,7 @@
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
                               <Component id="txtIsento" min="-2" pref="41" max="-2" attributes="0"/>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="jScrollPane2" min="-2" pref="75" max="-2" attributes="0"/>
+                              <Component id="scroolObs" min="-2" pref="75" max="-2" attributes="0"/>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Component id="txtAtivo" min="-2" pref="41" max="-2" attributes="0"/>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
@@ -88,7 +88,7 @@
                       <Component id="jScrollPane1" min="-2" pref="171" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jScrollPane2" alignment="1" min="-2" pref="20" max="-2" attributes="0"/>
+                          <Component id="scroolObs" alignment="1" min="-2" pref="20" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="txtDataEntrada" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="txtMatricula" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -385,7 +385,7 @@
         <Property name="editable" type="boolean" value="false"/>
       </Properties>
     </Component>
-    <Container class="javax.swing.JScrollPane" name="jScrollPane2">
+    <Container class="javax.swing.JScrollPane" name="scroolObs">
       <AuxValues>
         <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
       </AuxValues>

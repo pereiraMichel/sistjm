@@ -200,8 +200,7 @@ public class MediumCaboclo {
     public boolean excluirMediumCaboclo(){
         config = new Configuracoes();
         
-        String sql = "DELETE FROM medium_caboclo WHERE codMedium = " + this.codMedium + " "
-                + "AND cod_caboclo = " + this.codCaboclo;
+        String sql = "DELETE FROM medium_caboclo WHERE idmedium_caboclo = " + this.idMediumCaboclo;
 
         try{
             con = new Conexao();

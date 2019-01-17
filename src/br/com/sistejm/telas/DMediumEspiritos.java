@@ -981,7 +981,8 @@ public class DMediumEspiritos extends javax.swing.JDialog {
         ori = new Orixas();
         String nomeOrixa = String.valueOf(tabelaEscolha.getValueAt(tabelaEscolha.getSelectedRow(), 0));
         
-        txtId.setText(String.valueOf(ori.retornaIdOrixa(nomeOrixa)));
+        ori.setOrixa(nomeOrixa);
+        txtId.setText(String.valueOf(ori.retornaIdOrixa()));
         labelSantoSelect.setText(nomeOrixa.toUpperCase());
         tabelaEscolha.setVisible(false);
 //        labelSantoSelect.setText(nomeOrixa);
@@ -1022,7 +1023,8 @@ public class DMediumEspiritos extends javax.swing.JDialog {
         
         switch(this.selecao){
             case "orixas":
-                txtCodMediumSanto.setText(String.valueOf(ori.retornaIdOrixa(codSanto)));
+                ori.setOrixa(codSanto);
+                txtCodMediumSanto.setText(String.valueOf(ori.retornaIdOrixa()));
                 break;
         }
         // TODO add your handling code here:

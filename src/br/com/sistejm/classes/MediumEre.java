@@ -38,7 +38,7 @@ public class MediumEre {
         return idMediumEre;
     }
 
-    public void setIdMediumExu(int idMediumEre) {
+    public void setIdMediumEre(int idMediumEre) {
         this.idMediumEre = idMediumEre;
     }
 
@@ -90,7 +90,7 @@ public class MediumEre {
                 medium.addRow(new Object[]{id, matricula, nome});
             }
         }catch(Exception ex){
-            config.gravaErroLog("Tentativa de exibir a tabela de Exu. Erro: " + ex.getMessage(), "Tabela de Exu", "sistejm.mexu");
+            config.gravaErroLog("Tentativa de exibir a tabela de Exu. Erro: " + ex.getMessage(), "Tabela de Exu", "sistejm.mere");
         }        
     }
     public void buscaTabEreMatricula(JTable tabela, JTextField texto){
@@ -161,12 +161,14 @@ public class MediumEre {
         con = new Conexao();
         config = new Configuracoes();
         
-        if(!this.verificaExistente()){
+//        if(!this.verificaExistente()){
             
             this.idMediumEre = con.ultimoId("medium_ere", "idmedium_ere");
 
-            String sql = "INSERT INTO medium_exu (idmedium_ere, cod_ere, codMedium) "
+            String sql = "INSERT INTO medium_ere (idmedium_ere, cod_ere, codMedium) "
                     + "VALUES (" + this.idMediumEre + ", " + this.codEre + ", " + this.codMedium + ")";
+            
+//            System.out.println(sql);
             
             try{
                 conn = con.getConnection();
@@ -178,7 +180,7 @@ public class MediumEre {
                 config.gravaErroLog("Tentativa de inclusão de Erê do Médium. Erro: " + ex.getMessage(), "Inclusão de Erê", "sistejm.mere");
 //                System.out.println("Catch inclusão de Entidade do Médium ativado. Erro: " + ex.getMessage());
             }
-        }
+//        }
         return false;
     }
     
@@ -204,7 +206,7 @@ public class MediumEre {
     public boolean excluirMediumEre(){
         config = new Configuracoes();
         
-        String sql = "DELETE FROM medium_exu WHERE codMedium = " + this.codMedium + " AND cod_ere = " + this.codEre;
+        String sql = "DELETE FROM medium_ere WHERE idmedium_ere = " + this.idMediumEre;
 
         try{
             con = new Conexao();
@@ -216,7 +218,7 @@ public class MediumEre {
             return true;
             
         }catch(Exception ex){
-            config.gravaErroLog("Tentativa de exclusão do Exu do Médium. Erro: " + ex.getMessage(), "Exclusão do Exu", "sistejm.mexu");
+            config.gravaErroLog("Tentativa de exclusão do Erê do Médium. Erro: " + ex.getMessage(), "Exclusão do Erê", "sistejm.excmere");
         }
         return false;
     }
@@ -224,8 +226,8 @@ public class MediumEre {
     public void preencheTabMediumEre(JTable tabela){
         config = new Configuracoes();
         String sql = "SELECT DISTINCT m.nome FROM mediuns m "
-                + "LEFT JOIN medium_exu me ON m.idmedium = mec.codMedium  "
-                + "LEFT JOIN exu e ON e.idexu = me.cod_exu";
+                + "LEFT JOIN medium_ere me ON m.idmedium = me.codMedium  "
+                + "LEFT JOIN ere e ON e.idere = me.cod_ere";
         
         try{
             con = new Conexao();
@@ -247,18 +249,23 @@ public class MediumEre {
                 medium.addRow(new Object[]{nome});
             }
         }catch(Exception ex){
-            config.gravaErroLog("Tentativa de preenchimento da tabela geral do Médium | Exu. Erro: " + ex.getMessage(), "Exu", "sistejm.mexu");
+            config.gravaErroLog("Tentativa de preenchimento da tabela geral do Médium | Erê. Erro: " + ex.getMessage(), "Erê", "sistejm.mere");
         }            
     }
 
     public int retornaIdMediumEre(){
         config = new Configuracoes();
         try{
-            String sql = "SELECT me.idmedium_ere, m.nome, e.nome AS ere FROM medium_ere me "
-                    + "LEFT JOIN ere e ON e.idere = me.cod_ere "
-                    + "LEFT JOIN mediuns m ON m.idmedium = me.codMedium "
-                    + "WHERE me.codMedium = " + this.codMedium + " "
-                    + "AND e.idere = " + this.codEre;
+            String sql = "SELECT * FROM medium_ere "
+                    + "WHERE codMedium = " + this.codMedium + " "
+                    + "AND cod_ere = " + this.codEre;
+//            String sql = "SELECT me.idmedium_ere, m.nome, e.nome AS ere FROM medium_ere me "
+//                    + "LEFT JOIN ere e ON e.idere = me.cod_ere "
+//                    + "LEFT JOIN mediuns m ON m.idmedium = me.codMedium "
+//                    + "WHERE me.codMedium = " + this.codMedium + " "
+//                    + "AND e.idere = " + this.codEre;
+
+//            System.out.println(sql);
             
             con = new Conexao();
             conn = con.getConnection();

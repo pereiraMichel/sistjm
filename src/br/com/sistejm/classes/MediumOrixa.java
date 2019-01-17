@@ -423,7 +423,7 @@ public class MediumOrixa {
         
     }
 
-    public int retornaIdMediumOrixa(String nome){
+    public int retornaIdMediumOrixa(){
         config = new Configuracoes();
         try{
             String sql = "SELECT * FROM medium_ori "

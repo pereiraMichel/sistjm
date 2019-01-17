@@ -2,6 +2,7 @@ package br.com.sistejm.telas;
 
 import br.com.sistejm.classes.Caboclos;
 import br.com.sistejm.classes.Configuracoes;
+import br.com.sistejm.classes.Constances;
 import br.com.sistejm.classes.Entidade;
 import br.com.sistejm.classes.Ere;
 import br.com.sistejm.classes.Exu;
@@ -90,7 +91,8 @@ public class DOrixasMedium extends javax.swing.JDialog {
     public DOrixasMedium(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        ocultaText(true);
+        ocultaText(false);
+        tabelaTeste.setVisible(false);
     }
     
     public void ocultaText(boolean valor){
@@ -106,9 +108,10 @@ public class DOrixasMedium extends javax.swing.JDialog {
         this.codMedium = idMedium;
         
         txtCodMedium.setText(String.valueOf(this.codMedium));
-        labelNomeMedium.setText(nomeMedium);
+        labelNomeMedium.setText(nomeMedium.toUpperCase());
         preparaTabelasMedium();
         tabInicial();
+        this.setTitle(Constances.TITULO_DORIXASMEDIUM);
     }
     
     public void fechar(){
@@ -117,11 +120,15 @@ public class DOrixasMedium extends javax.swing.JDialog {
     }
     
     public void tabInicial(){
-        radioOrixas.setSelected(true);
-        preparaTabelasMedium(); // Prepara a tabela do Médium com Orixás cadastrados.
-        preparaCamposOrixas(); // Prepara os campos labels
-        preparaTabelaOrixa(); // Prepara a tabela escolha do Orixá
-        preencheTipoOrixa(); // Prepara a tabela do tipo de Orixa
+        
+        preparaTabelasMedium();
+
+        
+//        radioOrixas.setSelected(true);
+//        preparaTabelasMedium(); // Prepara a tabela do Médium com Orixás cadastrados.
+//        preparaCamposOrixas(); // Prepara os campos labels
+//        preparaTabelaOrixa(); // Prepara a tabela escolha do Orixá
+//        preencheTipoOrixa(); // Prepara a tabela do tipo de Orixa
         
         preparaCampoPesquisa();
         
@@ -129,36 +136,51 @@ public class DOrixasMedium extends javax.swing.JDialog {
 
     
     public void preparaTabelasMedium(){
-        
+        config = new Configuracoes();
         if(!txtCodMedium.getText().equals("")){
             switch(this.selecao){
-                case "orixas":
+                case Constances.SORI:
+                    config.limpaTabela(tabelaEscolha);
                     mo = new MediumOrixa();
                     mo.setCodMedium(this.codMedium);
                     mo.exibeTabMediumOriPorId(tabelaMediumOri);
+                    preparaCamposOrixas(); // Prepara os campos labels
+                    preparaTabelaOrixa(); // Prepara a tabela escolha do Orixá
+                    preencheTipoOrixa(); // Prepara a tabela do tipo de Orixa 
                     break;
-                case "caboclo":
+                case Constances.SCAB:
+                    config.limpaTabela(tabelaEscolha);
                     mc = new MediumCaboclo();
                     mc.setCodMedium(this.codMedium);
                     mc.exibeTabMediumCabPorId(tabelaMediumOri);
+                    preparaCamposCaboclo(); // Prepara os campos labels
+                    preparaTabelaCaboclo(); // Prepara tabela escolha
                     break;
-                case "entidade":
+                case Constances.SENT:
+                    config.limpaTabela(tabelaEscolha);
                     ment = new MediumEntidade();
                     ment.setCodMedium(this.codMedium);
                     ment.exibeTabMediumEntPorId(tabelaMediumOri);
+                    preparaCamposEntidade();
+                    preparaTabelaEntidade();
                     break;
-                case "ere":
+                case Constances.SERE:
+                    config.limpaTabela(tabelaEscolha);
                     mere = new MediumEre();
                     mere.setCodMedium(this.codMedium);
                     mere.exibeTabMediumErePorId(tabelaMediumOri);
+                    preparaCamposEre();
+                    preparaTabelaEre();
                     break;
-                case "exu":
+                case Constances.SEXU:
+                    config.limpaTabela(tabelaEscolha);
                     mexu = new MediumExu();
                     mexu.setCodMedium(this.codMedium);
                     mexu.exibeTabMediumExuPorId(tabelaMediumOri);
+                    preparaCamposExu();
+                    preparaTabelaExu();
                     break;
             }
-            
         }else{
             JOptionPane.showMessageDialog(null, "Identificação do médium não localizada. Saia e tente novamente", "ATENÇÃO", JOptionPane.WARNING_MESSAGE);
         }
@@ -180,6 +202,7 @@ public class DOrixasMedium extends javax.swing.JDialog {
     public void preparaTabelaCaboclo(){
         cab = new Caboclos();
         cab.preencheTabCaboclo(tabelaEscolha);
+        cab.preencheTabCaboclo(tabelaTeste);
     }
     public void preparaTabelaEre(){
         ere = new Ere();
@@ -245,8 +268,6 @@ public class DOrixasMedium extends javax.swing.JDialog {
         jSeparator4 = new javax.swing.JToolBar.Separator();
         radioExu = new javax.swing.JRadioButton();
         jSeparator5 = new javax.swing.JToolBar.Separator();
-        scrollTabelaEscolha = new javax.swing.JScrollPane();
-        tabelaEscolha = new javax.swing.JTable();
         panelTabela = new javax.swing.JPanel();
         labelMedium = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -272,6 +293,10 @@ public class DOrixasMedium extends javax.swing.JDialog {
         labelNomeMedium = new javax.swing.JLabel();
         labelMedium1 = new javax.swing.JLabel();
         txtEntidade = new javax.swing.JTextField();
+        scrollTabelaEscolha1 = new javax.swing.JScrollPane();
+        tabelaEscolha = new javax.swing.JTable();
+        scrollTabelaEscolha2 = new javax.swing.JScrollPane();
+        tabelaTeste = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -344,23 +369,6 @@ public class DOrixasMedium extends javax.swing.JDialog {
         });
         toolbar.add(radioExu);
         toolbar.add(jSeparator5);
-
-        tabelaEscolha.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
-        tabelaEscolha.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-
-            }
-        ));
-        tabelaEscolha.setRequestFocusEnabled(false);
-        tabelaEscolha.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tabelaEscolhaMouseClicked(evt);
-            }
-        });
-        scrollTabelaEscolha.setViewportView(tabelaEscolha);
 
         panelTabela.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
         panelTabela.setForeground(new java.awt.Color(153, 153, 153));
@@ -440,12 +448,12 @@ public class DOrixasMedium extends javax.swing.JDialog {
             .addGroup(panelTipoLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(panelTipoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(scrollTabelaEscolhaTipo, javax.swing.GroupLayout.DEFAULT_SIZE, 313, Short.MAX_VALUE)
+                    .addComponent(scrollTabelaEscolhaTipo, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addGroup(panelTipoLayout.createSequentialGroup()
                         .addComponent(labelTipo)
                         .addGap(18, 18, 18)
-                        .addComponent(txtTipoOrixa, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addComponent(txtTipoOrixa, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 62, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         panelTipoLayout.setVerticalGroup(
@@ -559,21 +567,23 @@ public class DOrixasMedium extends javax.swing.JDialog {
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(labelTitulo)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(txtCodMedium, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(txtIdTP, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(txtCodMediumSanto, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 97, Short.MAX_VALUE)
+                .addGroup(panelTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelTopLayout.createSequentialGroup()
+                        .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtCodMedium, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(panelTopLayout.createSequentialGroup()
+                        .addComponent(txtCodMediumSanto, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(txtIdTP, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(82, 82, 82)
                 .addComponent(btSalvar, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGap(81, 81, 81))
         );
         panelTopLayout.setVerticalGroup(
             panelTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -581,18 +591,19 @@ public class DOrixasMedium extends javax.swing.JDialog {
             .addGroup(panelTopLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(panelTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(btExcluir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btSalvar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btCancelar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(panelTopLayout.createSequentialGroup()
-                        .addGroup(panelTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(panelTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(txtCodMediumSanto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(txtCodMedium, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(txtIdTP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(btExcluir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btSalvar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btCancelar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(panelTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtCodMedium, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(panelTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtCodMediumSanto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtIdTP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap())
         );
 
@@ -611,6 +622,40 @@ public class DOrixasMedium extends javax.swing.JDialog {
             }
         });
 
+        tabelaEscolha.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        tabelaEscolha.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+
+            }
+        ));
+        tabelaEscolha.setRequestFocusEnabled(false);
+        tabelaEscolha.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tabelaEscolhaMouseClicked(evt);
+            }
+        });
+        scrollTabelaEscolha1.setViewportView(tabelaEscolha);
+
+        tabelaTeste.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        tabelaTeste.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+
+            }
+        ));
+        tabelaTeste.setRequestFocusEnabled(false);
+        tabelaTeste.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tabelaTesteMouseClicked(evt);
+            }
+        });
+        scrollTabelaEscolha2.setViewportView(tabelaTeste);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -621,26 +666,27 @@ public class DOrixasMedium extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(toolbar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addContainerGap()
                                 .addComponent(labelMedium1)
                                 .addGap(18, 18, 18)
                                 .addComponent(labelNomeMedium)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(scrollTabelaEscolha1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(labelSanto)
                                         .addGap(18, 18, 18)
-                                        .addComponent(txtEntidade, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(panelTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(18, 18, 18)))
-                        .addComponent(scrollTabelaEscolha, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(txtEntidade)))
+                                .addGap(35, 35, 35)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(panelTipo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(scrollTabelaEscolha2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(panelTabela, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(15, 15, 15))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -648,6 +694,7 @@ public class DOrixasMedium extends javax.swing.JDialog {
                 .addComponent(panelTop, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(5, 5, 5)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(panelTabela, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(toolbar, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(20, 20, 20)
@@ -655,16 +702,18 @@ public class DOrixasMedium extends javax.swing.JDialog {
                             .addComponent(labelMedium1)
                             .addComponent(labelNomeMedium))
                         .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(labelSanto)
                                     .addComponent(txtEntidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(panelTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(scrollTabelaEscolha, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
-                    .addComponent(panelTabela, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(18, 18, 18)
+                                .addComponent(scrollTabelaEscolha1, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(panelTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(scrollTabelaEscolha2, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
                 .addComponent(panelDown, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
@@ -672,96 +721,82 @@ public class DOrixasMedium extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void radioOrixasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioOrixasActionPerformed
-        this.selecao = "orixas";
+        this.selecao = Constances.SORI;
         preparaTabelasMedium(); // Prepara a tabela do Médium com Orixás cadastrados.
-        preparaCamposOrixas(); // Prepara os campos labels
-        preparaTabelaOrixa(); // Prepara a tabela escolha do Orixá
-        preencheTipoOrixa(); // Prepara a tabela do tipo de Orixa
+
     }//GEN-LAST:event_radioOrixasActionPerformed
 
     private void radioCabocloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioCabocloActionPerformed
-        this.selecao = "caboclo";
+        this.selecao = Constances.SCAB;
         preparaTabelasMedium(); // Prepara a tabela dos caboclos do médium
-        preparaCamposCaboclo(); // Prepara os campos labels
-        preparaTabelaCaboclo(); // Prepara a tabela escolha  dos Caboclos
     }//GEN-LAST:event_radioCabocloActionPerformed
 
     private void radioEntidadesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioEntidadesActionPerformed
-        this.selecao = "entidade";
+        this.selecao = Constances.SENT;
         preparaTabelasMedium();
-        preparaCamposEntidade();
-        preparaTabelaEntidade();
     }//GEN-LAST:event_radioEntidadesActionPerformed
 
     private void radioEreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioEreActionPerformed
-        this.selecao = "ere";
+        this.selecao = Constances.SERE;
         preparaTabelasMedium();
-        preparaCamposEre();
-        preparaTabelaEre();
     }//GEN-LAST:event_radioEreActionPerformed
 
     private void radioExuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioExuActionPerformed
-        this.selecao = "exu";
+        this.selecao = Constances.SEXU;
         preparaTabelasMedium();
-        preparaCamposExu();
-        preparaTabelaExu();
     }//GEN-LAST:event_radioExuActionPerformed
-
-    private void tabelaEscolhaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaEscolhaMouseClicked
-
-        ori = new Orixas();
-        ent = new Entidade();
-        cab = new Caboclos();
-        ere = new Ere();
-        exu = new Exu();
-        
-        String escolha = null;
-        
-        switch(this.selecao){
-            case "orixas":
-                    escolha = String.valueOf(tabelaEscolha.getValueAt(tabelaEscolha.getSelectedRow(), 0));
-                    txtId.setText(String.valueOf(ori.retornaIdOrixa(escolha)));
-                break;
-            case "caboclo":
-                    escolha = String.valueOf(tabelaEscolha.getValueAt(tabelaEscolha.getSelectedRow(), 0));
-                    txtId.setText(String.valueOf(cab.retornaIdCaboclo(escolha)));
-                break;
-            case "entidade":
-                    escolha = String.valueOf(tabelaEscolha.getValueAt(tabelaEscolha.getSelectedRow(), 0));
-                    txtId.setText(String.valueOf(ent.retornaIdEntidade(escolha)));
-                break;
-            case "ere":
-                    escolha = String.valueOf(tabelaEscolha.getValueAt(tabelaEscolha.getSelectedRow(), 0));
-                    txtId.setText(String.valueOf(ere.retornaIdEre(escolha)));
-                break;
-            case "exu":
-                    escolha = String.valueOf(tabelaEscolha.getValueAt(tabelaEscolha.getSelectedRow(), 0));
-                    txtId.setText(String.valueOf(exu.retornaIdExu(escolha)));
-                break;
-        }
-        txtEntidade.setText(escolha.toUpperCase());
-//        tabelaEscolha.setVisible(false);
-//        labelSantoSelect.setText(nomeOrixa);
-    }//GEN-LAST:event_tabelaEscolhaMouseClicked
 
     private void tabelaMediumOriMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaMediumOriMouseClicked
 
-        mo = new MediumOrixa();
-        ori = new Orixas();
-        to = new TipoOrixa();
         String codSanto = String.valueOf(tabelaMediumOri.getValueAt(tabelaMediumOri.getSelectedRow(), 0));
         String codTipoSanto = null;
 
         switch(this.selecao){
-            case "orixas":
+            case Constances.SORI:
+                mo = new MediumOrixa();
+                ori = new Orixas();
+                to = new TipoOrixa();
                 codTipoSanto = String.valueOf(tabelaMediumOri.getValueAt(tabelaMediumOri.getSelectedRow(), 1));
                 mo.setCodMedium(Integer.valueOf(txtCodMedium.getText()));
-                mo.setCodOrixa(ori.retornaIdOrixa(codSanto));
+                ori.setOrixa(codSanto);
+                mo.setCodOrixa(ori.retornaIdOrixa());
                 mo.setCodTipo(to.retornaIdTipoOrixa(codTipoSanto));
-                txtCodMediumSanto.setText(String.valueOf(mo.retornaIdMediumOrixa(codSanto)));
+                txtCodMediumSanto.setText(String.valueOf(mo.retornaIdMediumOrixa()));
+            break;
+            case Constances.SCAB:
+                mc = new MediumCaboclo();
+                cab = new Caboclos();
+                cab.setNome(codSanto);
+                mc.setCodMedium(Integer.valueOf(txtCodMedium.getText()));
+                mc.setCodCaboclo(cab.retornaIdCaboclo());
+                txtCodMediumSanto.setText(String.valueOf(mc.retornaIdMediumCaboclo(codSanto)));
+            break;
+            case Constances.SENT:
+                ment = new MediumEntidade();
+                ent = new Entidade();
+                ent.setNome(codSanto);
+                ment.setCodMedium(Integer.valueOf(txtCodMedium.getText()));
+                ment.setCodEntidade(ent.retornaIdEntidade());
+                txtCodMediumSanto.setText(String.valueOf(ment.retornaIdMediumEntidade()));
+            break;
+            case Constances.SERE:
+                mere = new MediumEre();
+                ere = new Ere();
+                ere.setNome(codSanto);
+                mere.setCodMedium(Integer.valueOf(txtCodMedium.getText()));
+                mere.setCodEre(ere.retornaIdEre());
+                txtCodMediumSanto.setText(String.valueOf(mere.retornaIdMediumEre()));
+            break;
+            case Constances.SEXU:
+                mexu = new MediumExu();
+                exu = new Exu();
+                exu.setNome(codSanto);
+                mexu.setCodMedium(Integer.valueOf(txtCodMedium.getText()));
+                mexu.setCodExu(exu.retornaIdExu());
+                txtCodMediumSanto.setText(String.valueOf(mexu.retornaIdMediumExu()));
             break;
         }
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_tabelaMediumOriMouseClicked
 
     private void tabelaEscolhaTipoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaEscolhaTipoMouseClicked
@@ -777,7 +812,7 @@ public class DOrixasMedium extends javax.swing.JDialog {
     private void btSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btSalvarActionPerformed
 
         switch(this.selecao){
-            case "orixas":
+            case Constances.SORI:
                 mo = new MediumOrixa();
                 if(txtCodMedium.getText().equals("")){
                     JOptionPane.showMessageDialog(null, "Selecione o Médium", "ERRO", JOptionPane.ERROR_MESSAGE);
@@ -791,21 +826,19 @@ public class DOrixasMedium extends javax.swing.JDialog {
                 mo.setCodMedium(Integer.valueOf(txtCodMedium.getText()));
                 mo.setCodOrixa(Integer.valueOf(txtId.getText()));
                 mo.setCodTipo(Integer.valueOf(txtIdTP.getText()));
-//                if(mo.verificaQuantidade() >= 4){
-
-                    JOptionPane.showMessageDialog(null, mo.verificaQuantidade());
-                    JOptionPane.showMessageDialog(null, "A PORRA DA QUANTIDADE É MAIOR QUE 4");
-//                    if(!mo.verificaExistente()){
-//                        mo.incluirMediumOrixa();
-//                    }else{
-//                        JOptionPane.showMessageDialog(null, "Dados já existente. Exclua para incluir outro.", "ERRO", JOptionPane.ERROR_MESSAGE);
-//                    }
-//                }
-            mo.exibeTabMediumOriPorId(tabelaMediumOri);
-            limpaCamposOrixa();
+                if(mo.verificaQuantidade() >= 4){
+                    if(!mo.verificaExistente()){
+                        mo.incluirMediumOrixa();
+                    }else{
+                        JOptionPane.showMessageDialog(null, "Dados já existente. Exclua para incluir outro.", "ERRO", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+                mo.exibeTabMediumOriPorId(tabelaMediumOri);
+                limpaCamposOrixa();
+                
             break;
             
-            case "caboclo":
+            case Constances.SCAB:
             mc = new  MediumCaboclo();
             mc.setCodMedium(Integer.valueOf(txtCodMedium.getText()));
             mc.setCodCaboclo(Integer.valueOf(txtId.getText()));
@@ -817,7 +850,7 @@ public class DOrixasMedium extends javax.swing.JDialog {
             mc.exibeTabMediumCabPorId(tabelaMediumOri);
             break;
             
-            case "entidade":
+            case Constances.SENT:
             ment = new  MediumEntidade();
             ment.setCodMedium(Integer.valueOf(txtCodMedium.getText()));
             ment.setCodEntidade(Integer.valueOf(txtId.getText()));
@@ -829,7 +862,7 @@ public class DOrixasMedium extends javax.swing.JDialog {
             ment.exibeTabMediumEntPorId(tabelaMediumOri);
             break;
             
-            case "ere":
+            case Constances.SERE:
             mere = new  MediumEre();
             mere.setCodMedium(Integer.valueOf(txtCodMedium.getText()));
             mere.setCodEre(Integer.valueOf(txtId.getText()));
@@ -841,7 +874,7 @@ public class DOrixasMedium extends javax.swing.JDialog {
             mere.exibeTabMediumErePorId(tabelaMediumOri);
             break;
             
-            case "exu":
+            case Constances.SEXU:
             mexu = new  MediumExu();
             mexu.setCodMedium(Integer.valueOf(txtCodMedium.getText()));
             mexu.setCodExu(Integer.valueOf(txtId.getText()));
@@ -870,48 +903,40 @@ public class DOrixasMedium extends javax.swing.JDialog {
                     case "orixas":
                         mo = new MediumOrixa();
                         mo.setIdMediumOrixa(Integer.valueOf(txtCodMediumSanto.getText()));
-                        if(mo.excluirMediumOrixa()){
-//                            mo.setCodMedium(Integer.valueOf(txtCodMedium.getText()));
-                            mo.preencheTabMediumOri(tabelaMediumOri);
-                        }
+                        mo.excluirMediumOrixa();
+
+                        preparaTabelasMedium();
                     break;
                     case "entidade":
                         ment = new MediumEntidade();
-                        ment.setCodMedium(Integer.valueOf(txtCodMedium.getText()));
-                        ment.setCodEntidade(Integer.valueOf(txtCodMediumSanto.getText()));
-                        if(ment.excluirMediumEntidade()){
-                            ment.setCodMedium(Integer.valueOf(txtCodMedium.getText()));
-                            ment.exibeTabMediumEntPorId(tabelaMediumOri);
-                        }
+                        ment.setIdMediumEntidade(Integer.valueOf(txtCodMediumSanto.getText()));
+                        ment.excluirMediumEntidade();
+
+                        preparaTabelasMedium();
                     break;
                     case "caboclo":
                         mc = new MediumCaboclo();
-                        mc.setCodMedium(Integer.valueOf(txtCodMedium.getText()));
-                        mc.setCodCaboclo(Integer.valueOf(txtCodMediumSanto.getText()));
-                        if(mc.excluirMediumCaboclo()){
-                            mc.setCodMedium(Integer.valueOf(txtCodMedium.getText()));
-                            mc.exibeTabMediumCabPorId(tabelaMediumOri);
-                        }
+                        mc.setIdMediumCaboclo(Integer.valueOf(txtCodMediumSanto.getText()));
+                        mc.excluirMediumCaboclo();
+
+                        preparaTabelasMedium();
                     break;
                     case "ere":
                         mere = new MediumEre();
-                        mere.setCodMedium(Integer.valueOf(txtCodMedium.getText()));
-                        mere.setCodEre(Integer.valueOf(txtCodMediumSanto.getText()));
-                        if(mere.excluirMediumEre()){
-                            mere.setCodMedium(Integer.valueOf(txtCodMedium.getText()));
-                            mere.exibeTabMediumErePorId(tabelaMediumOri);
-                        }
+                        mere.setIdMediumEre(Integer.valueOf(txtCodMediumSanto.getText()));
+                        mere.excluirMediumEre();
+
+                        preparaTabelasMedium();
                     break;
                     case "exu":
                         mexu = new MediumExu();
-                        mexu.setCodMedium(Integer.valueOf(txtCodMedium.getText()));
-                        mexu.setCodExu(Integer.valueOf(txtCodMediumSanto.getText()));
-                        if(mexu.excluirMediumExu()){
-                            mexu.setCodMedium(Integer.valueOf(txtCodMedium.getText()));
-                            mexu.exibeTabMediumExuPorId(tabelaMediumOri);
-                        }
+                        mexu.setIdMediumExu(Integer.valueOf(txtCodMediumSanto.getText()));
+                        mexu.excluirMediumExu();
+
+                        preparaTabelasMedium();
                     break;
                 }
+                preparaCampoPesquisa();
                 tabInicial();// fazer de acordo com a seleção
                 // Preencher código para exclusão de todas as informações
             }
@@ -932,22 +957,62 @@ public class DOrixasMedium extends javax.swing.JDialog {
             case "orixa":
                 ori = new Orixas();
                 ori.buscaTabOrixas(tabelaEscolha, txtEntidade);
+                
+                ori.setOrixa(txtEntidade.getText());
+                if(!ori.verificaExistente()){
+                    if(JOptionPane.showConfirmDialog(null, "Orixá não existente. Deseja cadastrar ?", "ERRO", JOptionPane.YES_NO_OPTION) == 0){
+                        ori.setOrixa(txtEntidade.getText());
+                        ori.incluirOrixa();
+                    }
+                }
                 break;
             case "entidade":
                 ent = new Entidade();
                 ent.buscaTabEntidade(tabelaEscolha, txtEntidade);
+                
+                ent.setNome(txtEntidade.getText());
+                if(!ent.verificaExistente()){
+                    if(JOptionPane.showConfirmDialog(null, "Entidade não existente. Deseja cadastrar ?", "ERRO", JOptionPane.YES_NO_OPTION) == 0){
+                        ent.setNome(txtEntidade.getText());
+                        ent.incluirEntidade();
+                    }
+                }
                 break;
             case "caboclo":
                 cab = new Caboclos();
                 cab.buscaTabCaboclo(tabelaEscolha, txtEntidade);
+                
+                cab.setNome(txtEntidade.getText());
+                if(!cab.verificaExistente()){
+                    if(JOptionPane.showConfirmDialog(null, "Caboclo(a) não existente. Deseja cadastrar ?", "ERRO", JOptionPane.YES_NO_OPTION) == 0){
+                        cab.setNome(txtEntidade.getText());
+                        cab.incluirCaboclo();
+                    }
+                }
                 break;
             case "ere":
                 ere = new Ere();
                 ere.buscaTabEres(tabelaEscolha, txtEntidade);
+                
+                ere.setNome(txtEntidade.getText());
+                if(!ere.verificaExistente()){
+                    if(JOptionPane.showConfirmDialog(null, "Erê não existente. Deseja cadastrar ?", "ERRO", JOptionPane.YES_NO_OPTION) == 0){
+                        ere.setNome(txtEntidade.getText());
+                        ere.incluirEre();
+                    }
+                }
                 break;
             case "exu":
                 exu = new Exu();
                 exu.buscaTabExus(tabelaEscolha, txtEntidade);
+                
+                exu.setNome(txtEntidade.getText());
+                if(!exu.verificaExistente()){
+                    if(JOptionPane.showConfirmDialog(null, "Exu/ Pomba(o)-gira não existente. Deseja cadastrar ?", "ERRO", JOptionPane.YES_NO_OPTION) == 0){
+                        exu.setNome(txtEntidade.getText());
+                        exu.incluirExu();
+                    }
+                }
                 break;
         }
 
@@ -958,7 +1023,7 @@ public class DOrixasMedium extends javax.swing.JDialog {
 
         if(evt.getKeyCode() == KeyEvent.VK_ENTER){
             switch(this.selecao){
-                case "orixas":
+                case Constances.SORI:
                     ori = new Orixas();
                     ori.setOrixa(txtEntidade.getText());
                     if(!ori.verificaExistente()){
@@ -969,7 +1034,7 @@ public class DOrixasMedium extends javax.swing.JDialog {
                     }
                     ori.buscaTabOrixas(tabelaEscolha, txtEntidade);
                     break;
-                case "entidade":
+                case Constances.SENT:
                     ent = new Entidade();
                     ent.setNome(txtEntidade.getText());
                     if(!ent.verificaExistente()){
@@ -980,7 +1045,7 @@ public class DOrixasMedium extends javax.swing.JDialog {
                     }
                     ent.buscaTabEntidade(tabelaEscolha, txtEntidade);
                     break;
-                case "caboclo":
+                case Constances.SCAB:
                     cab = new Caboclos();
                     cab.setNome(txtEntidade.getText());
                     if(!cab.verificaExistente()){
@@ -991,7 +1056,7 @@ public class DOrixasMedium extends javax.swing.JDialog {
                     }
                     cab.buscaTabCaboclo(tabelaEscolha, txtEntidade);
                     break;
-                case "ere":
+                case Constances.SERE:
                     ere = new Ere();
                     ere.setNome(txtEntidade.getText());
                     if(!ere.verificaExistente()){
@@ -1002,23 +1067,158 @@ public class DOrixasMedium extends javax.swing.JDialog {
                     }
                     ere.buscaTabEres(tabelaEscolha, txtEntidade);
                     break;
-                case "exu":
+                case Constances.SEXU:
                     exu = new Exu();
                     exu.setNome(txtEntidade.getText());
                     if(!exu.verificaExistente()){
-                        if(JOptionPane.showConfirmDialog(null, "Entidade não existente. Deseja cadastrar ?", "ERRO", JOptionPane.YES_NO_OPTION) == 0){
+                        if(JOptionPane.showConfirmDialog(null, "Exu não existente. Deseja cadastrar ?", "ERRO", JOptionPane.YES_NO_OPTION) == 0){
                             ent.setNome(txtEntidade.getText());
                             ent.incluirEntidade();
                         }
                     }
                     exu.buscaTabExus(tabelaEscolha, txtEntidade);
                     break;
-            }
-            
-        }
+            }// fecha switch
+        } //fecha if
         // TODO add your handling code here:
     }//GEN-LAST:event_txtEntidadeKeyPressed
 
+    private void tabelaEscolhaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaEscolhaMouseClicked
+
+        String campo = String.valueOf(tabelaEscolha.getValueAt(tabelaEscolha.getSelectedRow(), 0));
+        txtEntidade.setText(campo.toUpperCase());
+
+        switch(this.selecao){
+            case Constances.SORI:
+                mo = new MediumOrixa();
+                
+                ori = new Orixas();
+                ori.setOrixa(campo);
+                txtId.setText(String.valueOf(ori.retornaIdOrixa())); // Pego o id do orixa
+
+                mo.setCodMedium(Integer.valueOf(txtCodMedium.getText()));
+                mo.setCodOrixa(Integer.valueOf(txtId.getText()));
+                mo.setCodTipo(Integer.valueOf(txtIdTP.getText()));
+                
+                if(JOptionPane.showConfirmDialog(null, "Confirma transação ?", "INCLUSÃO", JOptionPane.YES_NO_OPTION) == 0){
+                    if(!mo.verificaExistente()){
+                        mo.incluirMediumOrixa();
+                        limpaCamposOrixa();
+                    }else{
+                        JOptionPane.showMessageDialog(null, "Já existente.");
+                    }
+                }
+                preparaTabelasMedium();
+//                ori.buscaTabOrixas(tabelaEscolha, txtEntidade);
+                break;
+                
+            case Constances.SENT:
+                ment = new MediumEntidade();
+                
+                ent = new Entidade();
+                ent.setNome(campo);
+                txtId.setText(String.valueOf(ent.retornaIdEntidade())); // Pego o id da entidade
+                
+                ment.setCodMedium(Integer.valueOf(txtCodMedium.getText()));
+                ment.setCodEntidade(Integer.valueOf(txtId.getText()));
+                
+                if(JOptionPane.showConfirmDialog(null, "Confirma transação ?", "INCLUSÃO", JOptionPane.YES_NO_OPTION) == 0){
+                    if(!ment.verificaExistente()){
+                        ment.incluirMediumEntidade();
+                        limpaCamposOrixa();
+                    }else{
+                        JOptionPane.showMessageDialog(null, "Já existente.");
+                    }
+                }
+                preparaTabelasMedium();
+        //        ent.buscaTabEntidade(tabelaEscolha, txtEntidade);
+                break;
+                
+            case Constances.SCAB:
+                mc = new MediumCaboclo();
+                
+                cab = new Caboclos();
+                cab.setNome(campo);
+                txtId.setText(String.valueOf(cab.retornaIdCaboclo())); // Pego o id do caboclo
+                
+                mc.setCodMedium(Integer.valueOf(txtCodMedium.getText()));
+                mc.setCodCaboclo(Integer.valueOf(txtId.getText()));
+                
+                if(JOptionPane.showConfirmDialog(null, "Confirma transação ?", "INCLUSÃO", JOptionPane.YES_NO_OPTION) == 0){
+                    if(!mc.verificaExistente()){
+                        mc.incluirMediumCaboclo();
+                        limpaCamposOrixa();
+                    }else{
+                        JOptionPane.showMessageDialog(null, "Já existente.");
+                    }
+                }
+                preparaTabelasMedium();
+        //        cab.buscaTabCaboclo(tabelaEscolha, txtEntidade);
+                break;
+                
+            case Constances.SERE:
+                mere = new MediumEre();
+                
+                ere = new Ere();
+                ere.setNome(campo);
+                txtId.setText(String.valueOf(ere.retornaIdEre())); // Pego o id do erê
+                
+                mere.setCodMedium(Integer.valueOf(txtCodMedium.getText()));
+                mere.setCodEre(Integer.valueOf(txtId.getText()));
+
+                if(JOptionPane.showConfirmDialog(null, "Confirma transação ?", "INCLUSÃO", JOptionPane.YES_NO_OPTION) == 0){
+                    if(!mere.verificaExistente()){
+                        mere.incluirMediumEre();
+                        limpaCamposOrixa();
+                    }else{
+                        JOptionPane.showMessageDialog(null, "Já existente.");
+                    }
+                }
+                preparaTabelasMedium();
+        //        ere.buscaTabEres(tabelaEscolha, txtEntidade);
+                break;
+            case Constances.SEXU:
+                mexu = new MediumExu();
+                exu = new Exu();
+                exu.setNome(campo);
+                txtId.setText(String.valueOf(exu.retornaIdExu())); // Pego o id do erê
+                
+                mexu.setCodMedium(Integer.valueOf(txtCodMedium.getText()));
+                mexu.setCodExu(Integer.valueOf(txtId.getText()));
+                
+                if(JOptionPane.showConfirmDialog(null, "Confirma transação ?", "INCLUSÃO", JOptionPane.YES_NO_OPTION) == 0){
+                    if(!mexu.verificaExistente()){
+                        mexu.incluirMediumExu();
+                        limpaCamposOrixa();
+                    }else{
+                        JOptionPane.showMessageDialog(null, "Já existente.");
+                    }
+                }
+                preparaTabelasMedium();
+        //        exu.buscaTabExus(tabelaEscolha, txtEntidade);
+                break;
+        }
+        
+    }//GEN-LAST:event_tabelaEscolhaMouseClicked
+
+    public void incluiEntidadesMedium(){
+        
+    }
+    
+    private void tabelaTesteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaTesteMouseClicked
+        String campo = String.valueOf(tabelaEscolha.getValueAt(tabelaEscolha.getSelectedRow(), 0));
+        
+        txtEntidade.setText(campo.toUpperCase());
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tabelaTesteMouseClicked
+
+    public void methodVazio(){
+        String campo = String.valueOf(tabelaEscolha.getValueAt(tabelaEscolha.getSelectedRow(), 0));
+        
+        txtEntidade.setText(campo.toUpperCase());
+        
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -1090,11 +1290,13 @@ public class DOrixasMedium extends javax.swing.JDialog {
     private javax.swing.JRadioButton radioEre;
     private javax.swing.JRadioButton radioExu;
     private javax.swing.JRadioButton radioOrixas;
-    private javax.swing.JScrollPane scrollTabelaEscolha;
+    private javax.swing.JScrollPane scrollTabelaEscolha1;
+    private javax.swing.JScrollPane scrollTabelaEscolha2;
     private javax.swing.JScrollPane scrollTabelaEscolhaTipo;
     private javax.swing.JTable tabelaEscolha;
     private javax.swing.JTable tabelaEscolhaTipo;
     private javax.swing.JTable tabelaMediumOri;
+    private javax.swing.JTable tabelaTeste;
     private javax.swing.JToolBar toolbar;
     private javax.swing.JTextField txtCodMedium;
     private javax.swing.JTextField txtCodMediumSanto;

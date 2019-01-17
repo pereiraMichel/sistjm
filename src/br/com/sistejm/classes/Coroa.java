@@ -121,7 +121,7 @@ public class Coroa {
             }
             
         }catch(Exception ex){
-            config.gravaErroLog("Erro: " + ex.getMessage() + ". SQL: " + sql, "Inclusão de Padrão de Corôa", "sistejm.incluicoroa");
+            config.gravaErroLog("Erro: " + ex.getMessage() + ". SQL: " + sql, "Verificação de Padrão de Corôa", "sistejm.incluicoroa");
             JOptionPane.showMessageDialog(null, "Erro na coroa. Verifique o arquivo sistejm > erro > sistejm.incluicoroa.log no C");
         }
         return false;
@@ -754,5 +754,55 @@ public class Coroa {
         return null;
     }
     
-    
+    public int quantSaidasMes(){
+        String sql = "SELECT COUNT(idcoroa) AS quantMes " +
+                     "FROM coroa c " +
+                     "LEFT JOIN mediuns m ON m.idmedium = c.codmedium " +
+                     "WHERE c.mes = " + this.mes + " " +
+                     "AND c.confirma ='n' " +
+                     "AND c.ano = " + this.ano;
+
+        try{
+            con = new Conexao();
+            conn = con.getConnection();
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery(sql);
+            
+            rs.next();
+            
+            if(rs.absolute(1)){
+                return rs.getInt("quantMes");
+            }
+            
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
+        return 0;
+    }
+    public int quantSaidasAno(){
+        String sql = "SELECT COUNT(idcoroa) AS quantAno "
+                        + "FROM coroa c "
+                        + "LEFT JOIN mediuns m ON m.idmedium = c.codmedium "
+                        + "WHERE c.ano = " + this.ano + " "
+                        + "AND c.confirma ='n' ";
+        
+//        System.out.println(sql);
+
+        try{
+            con = new Conexao();
+            conn = con.getConnection();
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery(sql);
+            
+            rs.next();
+            
+            if(rs.absolute(1)){
+                return rs.getInt("quantAno");
+            }
+            
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
+        return 0;
+    }
 }

@@ -8,6 +8,7 @@ package br.com.sistejm.telas;
 import br.com.sistejm.classes.Conexao;
 import br.com.sistejm.classes.Configuracoes;
 import br.com.sistejm.classes.Constances;
+import br.com.sistejm.classes.Coroa;
 import br.com.sistejm.classes.Usuario;
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -40,6 +41,7 @@ public class TelaInicial extends javax.swing.JFrame {
     Usuario usuario;
     Configuracoes config;
     Calendar cal = new GregorianCalendar();
+    Coroa coroa;
     
     private String user;
     private int iduser;
@@ -83,14 +85,8 @@ public class TelaInicial extends javax.swing.JFrame {
         inicioAdm();
         ocultaMenus(false);
         insereIcone();
-//        infoRede();
+        panelSaidas.setVisible(false);
     }
-    
-//    public void infoRede(){
-//        config = new Configuracoes();
-//        config.inforRede();
-//        JOptionPane.showMessageDialog(null, config.getIpLocal());
-//    }
     
     public void inicioAdm(){
         panelLogin.setVisible(true);
@@ -106,7 +102,6 @@ public class TelaInicial extends javax.swing.JFrame {
     
     public void fechaTestes(){
         labelEsqueciSenha.setVisible(false);
-        panelEsqueciSenha.setVisible(false);
     }
     
     public void bloqueiaLogoff(boolean valor){
@@ -125,7 +120,6 @@ public class TelaInicial extends javax.swing.JFrame {
         
         String mesLongo = null;
         String semanaExtensa = null;
-        
         switch(semana){
             case 1:
                 semanaExtensa = "Domingo";
@@ -149,15 +143,12 @@ public class TelaInicial extends javax.swing.JFrame {
                 semanaExtensa = "Sábado";
                 break;
         }
-        
         if(mes < 10){
             mesLongo = "0" + mes;
         }else{
             mesLongo = String.valueOf(mes);
         }
-        
         String data = semanaExtensa + ", dia " + dia + "/" + mesLongo + "/" + ano;
-        
         return data;        
     }
     
@@ -168,12 +159,12 @@ public class TelaInicial extends javax.swing.JFrame {
     }
     
     public void sair(){
+        config = new Configuracoes();
         
         if(JOptionPane.showConfirmDialog(null, "Deseja sair ?", "ATENÇÃO", JOptionPane.YES_NO_OPTION) == 0){
             String pathBanco = "C:\\sistejm\\config\\banco.properties";
             String pathUser = "C:\\sistejm\\config\\datauser.properties";
 
-            config = new Configuracoes();
             //String dataHoje = config.retornaData();
            // String pathAtividades = "C:\\sistejm\\dados\\" + this.user + "." + dataHoje + ".txt";
            
@@ -186,8 +177,6 @@ public class TelaInicial extends javax.swing.JFrame {
             config.extendNew(pathBanco);
             config.extendNew(pathUser);
             //config.extendNew(pathAtividades);
-
-            //preencheCampo("\nFechando...");
 
             this.dispose();
             System.exit(0);
@@ -218,6 +207,7 @@ public class TelaInicial extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        groupSaidas = new javax.swing.ButtonGroup();
         panelMeio = new javax.swing.JPanel();
         labelImage = new javax.swing.JLabel();
         scroll = new javax.swing.JScrollPane();
@@ -228,14 +218,13 @@ public class TelaInicial extends javax.swing.JFrame {
         txtSenha = new javax.swing.JPasswordField();
         labelUsuario = new javax.swing.JLabel();
         labelSenha = new javax.swing.JLabel();
+        btAcessar = new javax.swing.JButton();
+        panelSaidas = new javax.swing.JPanel();
+        labelDesteMesAno = new javax.swing.JLabel();
+        labelDesteAno = new javax.swing.JLabel();
+        labelValorMesAno = new javax.swing.JLabel();
+        labelValorAno = new javax.swing.JLabel();
         labelEsqueciSenha = new javax.swing.JLabel();
-        panelEsqueciSenha = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
-        txtConfirmaUsuario = new javax.swing.JTextField();
-        labelEmail = new javax.swing.JLabel();
-        txtEmail = new javax.swing.JTextField();
-        labelCodigo = new javax.swing.JLabel();
-        txtCode = new javax.swing.JTextField();
         toolbar = new javax.swing.JToolBar();
         btLogin = new javax.swing.JButton();
         panelBaixo = new javax.swing.JPanel();
@@ -250,45 +239,49 @@ public class TelaInicial extends javax.swing.JFrame {
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
         subMenuSair = new javax.swing.JMenuItem();
         menuAdm = new javax.swing.JMenu();
-        subMenuMediuns = new javax.swing.JMenuItem();
+        subMenuAgendaAnual = new javax.swing.JMenuItem();
+        subMenuAtividades = new javax.swing.JMenu();
         aubMenuEventos = new javax.swing.JMenuItem();
         subMenuProdutos = new javax.swing.JMenuItem();
         subMenuColabora = new javax.swing.JMenuItem();
-        subMenuAgendaAnual = new javax.swing.JMenuItem();
-        subMenuAgendamentos = new javax.swing.JMenuItem();
         subMenuBaixa = new javax.swing.JMenuItem();
-        subMenuTrabalho = new javax.swing.JMenuItem();
-        subMenuCoroa = new javax.swing.JMenuItem();
         subMenuCarteira = new javax.swing.JMenu();
         subCImpressosao = new javax.swing.JMenuItem();
         subCAnos = new javax.swing.JMenuItem();
+        subMenuAgendamentos = new javax.swing.JMenuItem();
+        subMenuCortes = new javax.swing.JMenu();
+        subMenuCRelacao = new javax.swing.JMenuItem();
+        subMenuCComprom = new javax.swing.JMenuItem();
+        subMenuCoroa = new javax.swing.JMenuItem();
+        subMenuMediuns = new javax.swing.JMenuItem();
+        subMenuTrabalho = new javax.swing.JMenuItem();
         menuTesouraria = new javax.swing.JMenu();
+        subMenuMensalidades = new javax.swing.JMenuItem();
         subMenuPagamentos = new javax.swing.JMenuItem();
         subMenuRecebimentos = new javax.swing.JMenuItem();
-        subMenuMensalidades = new javax.swing.JMenuItem();
-        subMenuDepositos = new javax.swing.JMenuItem();
         menuBiblioteca = new javax.swing.JMenu();
         subMenuLivros = new javax.swing.JMenuItem();
         subMenuPatente = new javax.swing.JMenuItem();
         subMenuReservas = new javax.swing.JMenuItem();
         menuRelatorios = new javax.swing.JMenu();
+        subMenuRelAgenda = new javax.swing.JMenuItem();
+        subMenuConsultas = new javax.swing.JMenuItem();
         subMenuRelUsuarios = new javax.swing.JMenuItem();
         subMenuRelMediuns = new javax.swing.JMenuItem();
+        subMenuRelSaidas = new javax.swing.JMenuItem();
+        subMenuRelCortes = new javax.swing.JMenuItem();
         subMenuRelEventos = new javax.swing.JMenuItem();
-        subMenuRelAgenda = new javax.swing.JMenuItem();
         subMenuRelLivros = new javax.swing.JMenuItem();
         subMenuRelMensalidades = new javax.swing.JMenuItem();
-        subMenuRelSaidas = new javax.swing.JMenuItem();
-        subMenuConsultas = new javax.swing.JMenuItem();
         menuConfiguracoes = new javax.swing.JMenu();
-        subMenuBancoDados = new javax.swing.JMenuItem();
-        subMenuConfigUsuarios = new javax.swing.JMenuItem();
         subMenuAcesso = new javax.swing.JMenuItem();
-        subMenuOrixas = new javax.swing.JMenuItem();
-        subMenuEntidades = new javax.swing.JMenuItem();
-        subMenuExu = new javax.swing.JMenuItem();
-        subMenuEres = new javax.swing.JMenuItem();
+        subMenuBancoDados = new javax.swing.JMenuItem();
         subMenuCaboclos = new javax.swing.JMenuItem();
+        subMenuEntidades = new javax.swing.JMenuItem();
+        subMenuEres = new javax.swing.JMenuItem();
+        subMenuExu = new javax.swing.JMenuItem();
+        subMenuOrixas = new javax.swing.JMenuItem();
+        subMenuConfigUsuarios = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
@@ -353,9 +346,16 @@ public class TelaInicial extends javax.swing.JFrame {
         labelSenha.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         labelSenha.setText("Senha:");
 
-        labelEsqueciSenha.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        labelEsqueciSenha.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        labelEsqueciSenha.setText("Esqueci minha senha");
+        btAcessar.setBackground(new java.awt.Color(255, 255, 255));
+        btAcessar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/sistejm/images/Oks16x16.png"))); // NOI18N
+        btAcessar.setText("Acessar");
+        btAcessar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btAcessar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btAcessar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btAcessarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout panelLoginLayout = new javax.swing.GroupLayout(panelLogin);
         panelLogin.setLayout(panelLoginLayout);
@@ -371,9 +371,10 @@ public class TelaInicial extends javax.swing.JFrame {
                     .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtSenha, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(33, Short.MAX_VALUE))
-            .addGroup(panelLoginLayout.createSequentialGroup()
-                .addComponent(labelEsqueciSenha, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelLoginLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btAcessar, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         panelLoginLayout.setVerticalGroup(
             panelLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -382,63 +383,64 @@ public class TelaInicial extends javax.swing.JFrame {
                 .addGroup(panelLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labelUsuario)
                     .addComponent(txtUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, 21, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
                 .addGroup(panelLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtSenha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(labelSenha))
                 .addGap(18, 18, 18)
-                .addComponent(labelEsqueciSenha, javax.swing.GroupLayout.DEFAULT_SIZE, 31, Short.MAX_VALUE)
+                .addComponent(btAcessar)
                 .addContainerGap())
         );
 
-        panelEsqueciSenha.setBackground(new java.awt.Color(255, 255, 255));
-        panelEsqueciSenha.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
+        panelSaidas.setBackground(new java.awt.Color(255, 255, 255));
+        panelSaidas.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 204)));
 
-        jLabel2.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        jLabel2.setText("Usuário:");
+        labelDesteMesAno.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        labelDesteMesAno.setText("Deste mês e ano:");
 
-        labelEmail.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        labelEmail.setText("E-mail:");
+        labelDesteAno.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        labelDesteAno.setText("Deste ano:");
 
-        labelCodigo.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        labelCodigo.setText("Código:");
+        labelValorMesAno.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        labelValorMesAno.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        labelValorMesAno.setText("0");
 
-        txtCode.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        labelValorAno.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        labelValorAno.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        labelValorAno.setText("0");
 
-        javax.swing.GroupLayout panelEsqueciSenhaLayout = new javax.swing.GroupLayout(panelEsqueciSenha);
-        panelEsqueciSenha.setLayout(panelEsqueciSenhaLayout);
-        panelEsqueciSenhaLayout.setHorizontalGroup(
-            panelEsqueciSenhaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelEsqueciSenhaLayout.createSequentialGroup()
+        javax.swing.GroupLayout panelSaidasLayout = new javax.swing.GroupLayout(panelSaidas);
+        panelSaidas.setLayout(panelSaidasLayout);
+        panelSaidasLayout.setHorizontalGroup(
+            panelSaidasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelSaidasLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(panelEsqueciSenhaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2)
-                    .addComponent(labelEmail)
-                    .addComponent(labelCodigo))
-                .addGap(18, 18, 18)
-                .addGroup(panelEsqueciSenhaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(txtConfirmaUsuario)
-                    .addComponent(txtEmail)
-                    .addComponent(txtCode, javax.swing.GroupLayout.DEFAULT_SIZE, 168, Short.MAX_VALUE))
+                .addGroup(panelSaidasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(labelDesteMesAno)
+                    .addComponent(labelDesteAno))
+                .addGap(68, 68, 68)
+                .addGroup(panelSaidasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(labelValorAno, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(labelValorMesAno, javax.swing.GroupLayout.DEFAULT_SIZE, 47, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        panelEsqueciSenhaLayout.setVerticalGroup(
-            panelEsqueciSenhaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelEsqueciSenhaLayout.createSequentialGroup()
+        panelSaidasLayout.setVerticalGroup(
+            panelSaidasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelSaidasLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(panelEsqueciSenhaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(txtConfirmaUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(panelSaidasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(labelDesteMesAno)
+                    .addComponent(labelValorMesAno))
                 .addGap(18, 18, 18)
-                .addGroup(panelEsqueciSenhaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(labelEmail)
-                    .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(26, 26, 26)
-                .addGroup(panelEsqueciSenhaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(labelCodigo)
-                    .addComponent(txtCode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(39, Short.MAX_VALUE))
+                .addGroup(panelSaidasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(labelDesteAno)
+                    .addComponent(labelValorAno))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+
+        labelEsqueciSenha.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        labelEsqueciSenha.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        labelEsqueciSenha.setText("Esqueci minha senha");
 
         javax.swing.GroupLayout panelMeioLayout = new javax.swing.GroupLayout(panelMeio);
         panelMeio.setLayout(panelMeioLayout);
@@ -449,15 +451,18 @@ public class TelaInicial extends javax.swing.JFrame {
                 .addGroup(panelMeioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(labelImagemOrixas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(labelImage, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 92, Short.MAX_VALUE)
                 .addGroup(panelMeioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panelMeioLayout.createSequentialGroup()
-                        .addComponent(panelEsqueciSenha, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(136, 136, 136))
-                    .addGroup(panelMeioLayout.createSequentialGroup()
-                        .addGap(0, 92, Short.MAX_VALUE)
-                        .addComponent(panelLogin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(28, 28, 28)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelMeioLayout.createSequentialGroup()
+                        .addGroup(panelMeioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(panelLogin, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelMeioLayout.createSequentialGroup()
+                                .addComponent(panelSaidas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(40, 40, 40)))
+                        .addGap(15, 15, 15))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelMeioLayout.createSequentialGroup()
+                        .addComponent(labelEsqueciSenha, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)))
                 .addComponent(scroll, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -467,18 +472,23 @@ public class TelaInicial extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(panelMeioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelMeioLayout.createSequentialGroup()
-                        .addComponent(scroll)
-                        .addContainerGap())
-                    .addGroup(panelMeioLayout.createSequentialGroup()
-                        .addComponent(panelLogin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(panelEsqueciSenha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(304, 304, 304))
-                    .addGroup(panelMeioLayout.createSequentialGroup()
                         .addComponent(labelImage)
                         .addGap(119, 119, 119)
                         .addComponent(labelImagemOrixas)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addContainerGap(29, Short.MAX_VALUE))
+                    .addGroup(panelMeioLayout.createSequentialGroup()
+                        .addGap(162, 162, 162)
+                        .addComponent(labelEsqueciSenha, javax.swing.GroupLayout.DEFAULT_SIZE, 31, Short.MAX_VALUE)
+                        .addGap(209, 209, 209)
+                        .addComponent(panelSaidas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(70, 70, 70))
+                    .addGroup(panelMeioLayout.createSequentialGroup()
+                        .addGroup(panelMeioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(scroll)
+                            .addGroup(panelMeioLayout.createSequentialGroup()
+                                .addComponent(panelLogin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addContainerGap())))
         );
 
         toolbar.setBackground(new java.awt.Color(153, 204, 255));
@@ -542,11 +552,6 @@ public class TelaInicial extends javax.swing.JFrame {
         );
 
         menuArquivo.setText("Arquivo");
-        menuArquivo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuArquivoActionPerformed(evt);
-            }
-        });
 
         subMenuLogin.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F2, 0));
         subMenuLogin.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/sistejm/images/icon16x16Cadeado.png"))); // NOI18N
@@ -593,44 +598,6 @@ public class TelaInicial extends javax.swing.JFrame {
 
         menuAdm.setText("Administração");
 
-        subMenuMediuns.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_M, java.awt.event.InputEvent.CTRL_MASK));
-        subMenuMediuns.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/sistejm/images/icon16x16HM.png"))); // NOI18N
-        subMenuMediuns.setText("Médiuns");
-        subMenuMediuns.setPreferredSize(new java.awt.Dimension(150, 22));
-        subMenuMediuns.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                subMenuMediunsActionPerformed(evt);
-            }
-        });
-        menuAdm.add(subMenuMediuns);
-
-        aubMenuEventos.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.CTRL_MASK));
-        aubMenuEventos.setText("Eventos");
-        aubMenuEventos.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                aubMenuEventosActionPerformed(evt);
-            }
-        });
-        menuAdm.add(aubMenuEventos);
-
-        subMenuProdutos.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.CTRL_MASK));
-        subMenuProdutos.setText("Produtos");
-        subMenuProdutos.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                subMenuProdutosActionPerformed(evt);
-            }
-        });
-        menuAdm.add(subMenuProdutos);
-
-        subMenuColabora.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.CTRL_MASK));
-        subMenuColabora.setText("Colaborações");
-        subMenuColabora.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                subMenuColaboraActionPerformed(evt);
-            }
-        });
-        menuAdm.add(subMenuColabora);
-
         subMenuAgendaAnual.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.CTRL_MASK));
         subMenuAgendaAnual.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/sistejm/images/icon16x16Agendamento.png"))); // NOI18N
         subMenuAgendaAnual.setText("Agenda Anual");
@@ -641,14 +608,36 @@ public class TelaInicial extends javax.swing.JFrame {
         });
         menuAdm.add(subMenuAgendaAnual);
 
-        subMenuAgendamentos.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_G, java.awt.event.InputEvent.CTRL_MASK));
-        subMenuAgendamentos.setText("Agendamento (Consultas)");
-        subMenuAgendamentos.addActionListener(new java.awt.event.ActionListener() {
+        subMenuAtividades.setText("Atividades");
+
+        aubMenuEventos.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.CTRL_MASK));
+        aubMenuEventos.setText("Eventos");
+        aubMenuEventos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                subMenuAgendamentosActionPerformed(evt);
+                aubMenuEventosActionPerformed(evt);
             }
         });
-        menuAdm.add(subMenuAgendamentos);
+        subMenuAtividades.add(aubMenuEventos);
+
+        subMenuProdutos.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.CTRL_MASK));
+        subMenuProdutos.setText("Produtos");
+        subMenuProdutos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                subMenuProdutosActionPerformed(evt);
+            }
+        });
+        subMenuAtividades.add(subMenuProdutos);
+
+        subMenuColabora.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.CTRL_MASK));
+        subMenuColabora.setText("Colaborações");
+        subMenuColabora.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                subMenuColaboraActionPerformed(evt);
+            }
+        });
+        subMenuAtividades.add(subMenuColabora);
+
+        menuAdm.add(subMenuAtividades);
 
         subMenuBaixa.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_G, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
         subMenuBaixa.setText("Baixa Agendamento");
@@ -658,23 +647,6 @@ public class TelaInicial extends javax.swing.JFrame {
             }
         });
         menuAdm.add(subMenuBaixa);
-
-        subMenuTrabalho.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_T, java.awt.event.InputEvent.CTRL_MASK));
-        subMenuTrabalho.setText("Trabalhos");
-        subMenuTrabalho.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                subMenuTrabalhoActionPerformed(evt);
-            }
-        });
-        menuAdm.add(subMenuTrabalho);
-
-        subMenuCoroa.setText("Coroa");
-        subMenuCoroa.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                subMenuCoroaActionPerformed(evt);
-            }
-        });
-        menuAdm.add(subMenuCoroa);
 
         subMenuCarteira.setText("Carteira");
 
@@ -697,20 +669,56 @@ public class TelaInicial extends javax.swing.JFrame {
 
         menuAdm.add(subMenuCarteira);
 
+        subMenuAgendamentos.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_G, java.awt.event.InputEvent.CTRL_MASK));
+        subMenuAgendamentos.setText("Consultas | Atendimentos");
+        subMenuAgendamentos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                subMenuAgendamentosActionPerformed(evt);
+            }
+        });
+        menuAdm.add(subMenuAgendamentos);
+
+        subMenuCortes.setText("Cortes");
+
+        subMenuCRelacao.setText("Relação");
+        subMenuCortes.add(subMenuCRelacao);
+
+        subMenuCComprom.setText("Comprometidos");
+        subMenuCortes.add(subMenuCComprom);
+
+        menuAdm.add(subMenuCortes);
+
+        subMenuCoroa.setText("Corôa");
+        subMenuCoroa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                subMenuCoroaActionPerformed(evt);
+            }
+        });
+        menuAdm.add(subMenuCoroa);
+
+        subMenuMediuns.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_M, java.awt.event.InputEvent.CTRL_MASK));
+        subMenuMediuns.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/sistejm/images/icon16x16HM.png"))); // NOI18N
+        subMenuMediuns.setText("Médiuns");
+        subMenuMediuns.setPreferredSize(new java.awt.Dimension(150, 22));
+        subMenuMediuns.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                subMenuMediunsActionPerformed(evt);
+            }
+        });
+        menuAdm.add(subMenuMediuns);
+
+        subMenuTrabalho.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_T, java.awt.event.InputEvent.CTRL_MASK));
+        subMenuTrabalho.setText("Trabalhos");
+        subMenuTrabalho.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                subMenuTrabalhoActionPerformed(evt);
+            }
+        });
+        menuAdm.add(subMenuTrabalho);
+
         menu.add(menuAdm);
 
         menuTesouraria.setText("Tesouraria");
-
-        subMenuPagamentos.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F5, 0));
-        subMenuPagamentos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/sistejm/images/calculadoraIcon.png"))); // NOI18N
-        subMenuPagamentos.setText("Pagamentos");
-        subMenuPagamentos.setPreferredSize(new java.awt.Dimension(150, 22));
-        menuTesouraria.add(subMenuPagamentos);
-
-        subMenuRecebimentos.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F6, 0));
-        subMenuRecebimentos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/sistejm/images/icon16x16Fechamento.png"))); // NOI18N
-        subMenuRecebimentos.setText("Recebimentos");
-        menuTesouraria.add(subMenuRecebimentos);
 
         subMenuMensalidades.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F7, 0));
         subMenuMensalidades.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/sistejm/images/icon16x16Relatorio.png"))); // NOI18N
@@ -722,10 +730,16 @@ public class TelaInicial extends javax.swing.JFrame {
         });
         menuTesouraria.add(subMenuMensalidades);
 
-        subMenuDepositos.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_D, java.awt.event.InputEvent.CTRL_MASK));
-        subMenuDepositos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/sistejm/images/iconCalendar.png"))); // NOI18N
-        subMenuDepositos.setText("Depósitos");
-        menuTesouraria.add(subMenuDepositos);
+        subMenuPagamentos.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F5, 0));
+        subMenuPagamentos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/sistejm/images/calculadoraIcon.png"))); // NOI18N
+        subMenuPagamentos.setText("Pagamentos");
+        subMenuPagamentos.setPreferredSize(new java.awt.Dimension(150, 22));
+        menuTesouraria.add(subMenuPagamentos);
+
+        subMenuRecebimentos.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F6, 0));
+        subMenuRecebimentos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/sistejm/images/icon16x16Fechamento.png"))); // NOI18N
+        subMenuRecebimentos.setText("Recebimentos");
+        menuTesouraria.add(subMenuRecebimentos);
 
         menu.add(menuTesouraria);
 
@@ -749,6 +763,20 @@ public class TelaInicial extends javax.swing.JFrame {
 
         menuRelatorios.setText("Relatórios");
 
+        subMenuRelAgenda.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        subMenuRelAgenda.setText("Agenda");
+        menuRelatorios.add(subMenuRelAgenda);
+
+        subMenuConsultas.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        subMenuConsultas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/sistejm/images/icon16x16RelatorioGrupo2.png"))); // NOI18N
+        subMenuConsultas.setText("Agendamentos (Consultas)");
+        subMenuConsultas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                subMenuConsultasActionPerformed(evt);
+            }
+        });
+        menuRelatorios.add(subMenuConsultas);
+
         subMenuRelUsuarios.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_U, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
         subMenuRelUsuarios.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/sistejm/images/icon16x16RelatorioGrupo.png"))); // NOI18N
         subMenuRelUsuarios.setText("Usuários");
@@ -756,16 +784,29 @@ public class TelaInicial extends javax.swing.JFrame {
         menuRelatorios.add(subMenuRelUsuarios);
 
         subMenuRelMediuns.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_M, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
-        subMenuRelMediuns.setText("Médiuns");
+        subMenuRelMediuns.setText("Ficha dos Médiuns");
+        subMenuRelMediuns.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                subMenuRelMediunsActionPerformed(evt);
+            }
+        });
         menuRelatorios.add(subMenuRelMediuns);
+
+        subMenuRelSaidas.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        subMenuRelSaidas.setText("Corôas - Saídas");
+        subMenuRelSaidas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                subMenuRelSaidasActionPerformed(evt);
+            }
+        });
+        menuRelatorios.add(subMenuRelSaidas);
+
+        subMenuRelCortes.setText("Cortes");
+        menuRelatorios.add(subMenuRelCortes);
 
         subMenuRelEventos.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
         subMenuRelEventos.setText("Eventos");
         menuRelatorios.add(subMenuRelEventos);
-
-        subMenuRelAgenda.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
-        subMenuRelAgenda.setText("Agenda");
-        menuRelatorios.add(subMenuRelAgenda);
 
         subMenuRelLivros.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
         subMenuRelLivros.setText("Livros");
@@ -780,28 +821,18 @@ public class TelaInicial extends javax.swing.JFrame {
         });
         menuRelatorios.add(subMenuRelMensalidades);
 
-        subMenuRelSaidas.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
-        subMenuRelSaidas.setText("Corôas - Saídas");
-        subMenuRelSaidas.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                subMenuRelSaidasActionPerformed(evt);
-            }
-        });
-        menuRelatorios.add(subMenuRelSaidas);
-
-        subMenuConsultas.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
-        subMenuConsultas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/sistejm/images/icon16x16RelatorioGrupo2.png"))); // NOI18N
-        subMenuConsultas.setText("Agendamentos (Consultas)");
-        subMenuConsultas.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                subMenuConsultasActionPerformed(evt);
-            }
-        });
-        menuRelatorios.add(subMenuConsultas);
-
         menu.add(menuRelatorios);
 
         menuConfiguracoes.setText("Configurações");
+
+        subMenuAcesso.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F9, 0));
+        subMenuAcesso.setText("Acesso");
+        subMenuAcesso.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                subMenuAcessoActionPerformed(evt);
+            }
+        });
+        menuConfiguracoes.add(subMenuAcesso);
 
         subMenuBancoDados.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F8, 0));
         subMenuBancoDados.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/sistejm/images/config.jpg"))); // NOI18N
@@ -815,32 +846,13 @@ public class TelaInicial extends javax.swing.JFrame {
         });
         menuConfiguracoes.add(subMenuBancoDados);
 
-        subMenuConfigUsuarios.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_U, java.awt.event.InputEvent.CTRL_MASK));
-        subMenuConfigUsuarios.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/sistejm/images/icon16x16Grupo2.png"))); // NOI18N
-        subMenuConfigUsuarios.setText("Usuários");
-        subMenuConfigUsuarios.addActionListener(new java.awt.event.ActionListener() {
+        subMenuCaboclos.setText("Caboclos");
+        subMenuCaboclos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                subMenuConfigUsuariosActionPerformed(evt);
+                subMenuCaboclosActionPerformed(evt);
             }
         });
-        menuConfiguracoes.add(subMenuConfigUsuarios);
-
-        subMenuAcesso.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F9, 0));
-        subMenuAcesso.setText("Acesso");
-        subMenuAcesso.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                subMenuAcessoActionPerformed(evt);
-            }
-        });
-        menuConfiguracoes.add(subMenuAcesso);
-
-        subMenuOrixas.setText("Orixás");
-        subMenuOrixas.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                subMenuOrixasActionPerformed(evt);
-            }
-        });
-        menuConfiguracoes.add(subMenuOrixas);
+        menuConfiguracoes.add(subMenuCaboclos);
 
         subMenuEntidades.setText("Entidades");
         subMenuEntidades.addActionListener(new java.awt.event.ActionListener() {
@@ -850,14 +862,6 @@ public class TelaInicial extends javax.swing.JFrame {
         });
         menuConfiguracoes.add(subMenuEntidades);
 
-        subMenuExu.setText("Exu");
-        subMenuExu.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                subMenuExuActionPerformed(evt);
-            }
-        });
-        menuConfiguracoes.add(subMenuExu);
-
         subMenuEres.setText("Erês");
         subMenuEres.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -866,13 +870,31 @@ public class TelaInicial extends javax.swing.JFrame {
         });
         menuConfiguracoes.add(subMenuEres);
 
-        subMenuCaboclos.setText("Caboclos");
-        subMenuCaboclos.addActionListener(new java.awt.event.ActionListener() {
+        subMenuExu.setText("Exu");
+        subMenuExu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                subMenuCaboclosActionPerformed(evt);
+                subMenuExuActionPerformed(evt);
             }
         });
-        menuConfiguracoes.add(subMenuCaboclos);
+        menuConfiguracoes.add(subMenuExu);
+
+        subMenuOrixas.setText("Orixás");
+        subMenuOrixas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                subMenuOrixasActionPerformed(evt);
+            }
+        });
+        menuConfiguracoes.add(subMenuOrixas);
+
+        subMenuConfigUsuarios.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_U, java.awt.event.InputEvent.CTRL_MASK));
+        subMenuConfigUsuarios.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/sistejm/images/icon16x16Grupo2.png"))); // NOI18N
+        subMenuConfigUsuarios.setText("Usuários");
+        subMenuConfigUsuarios.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                subMenuConfigUsuariosActionPerformed(evt);
+            }
+        });
+        menuConfiguracoes.add(subMenuConfigUsuarios);
 
         menu.add(menuConfiguracoes);
 
@@ -900,21 +922,16 @@ public class TelaInicial extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void subMenuSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuSairActionPerformed
-
         this.sair();
-        // TODO add your handling code here:
     }//GEN-LAST:event_subMenuSairActionPerformed
 
     public void abreBanco(){
         con = new Conexao();
-        
         try {
             con.getConnection();
-            
         } catch (IOException ex) {
             Logger.getLogger(TelaInicial.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
     }
     
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
@@ -933,7 +950,6 @@ public class TelaInicial extends javax.swing.JFrame {
             if(JOptionPane.showConfirmDialog(null, "Há o mesmo aplicativo em aberto. Deseja fechar ?", "ERRO", JOptionPane.YES_NO_OPTION) == 0){
                 System.exit(0);
             }
-//            JOptionPane.showMessageDialog(null, "Há o mesmo aplicativo em aberto. Feche ambos e tente novamente.");
         }        
 
     }//GEN-LAST:event_formWindowOpened
@@ -968,14 +984,11 @@ public class TelaInicial extends javax.swing.JFrame {
 //            if (!con.getConnection().equals(null)){
 //                usuario.verificaPrimeiroUsuario();
 //            }
-//Houve um erro na tentativa de conexão. Descrição: null (usuários)
 
         }catch (IOException ex) {
             config.gravaErroLog("Descrição do erro: " + ex.getMessage(), "Conexão Banco de dados", "sistejm.conexao");
             preencheCampo("Banco desconectado.");
-        }        
-        // TODO add your handling code here:
-        //preencheCampo("\nVerificação concluída");        
+        }       
     }
     
     public void chamaBD(){
@@ -985,50 +998,34 @@ public class TelaInicial extends javax.swing.JFrame {
         banco.setLocationRelativeTo(banco);
         banco.setTitle("Banco de Dados");
         banco.setVisible(true);
-        preencheCampo("\nAbrindo banco de dados...");        
+//        preencheCampo("\nAbrindo banco de dados...");        
     }
     
     private void subMenuBancoDadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuBancoDadosActionPerformed
         chamaBD();
-
-        // TODO add your handling code here:
     }//GEN-LAST:event_subMenuBancoDadosActionPerformed
 
     private void subMenuMediunsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuMediunsActionPerformed
 
         DPesquisaMedium mediuns = new DPesquisaMedium(this, false);
-//        DSelecionaOpMedium mediuns = new DSelecionaOpMedium(this, false);
         mediuns.setLocationRelativeTo(mediuns);
         mediuns.setTitle("SELECIONE O MÉDIUM");
         mediuns.recebeUsuario(user, iduser);
         mediuns.setVisible(true);
         mediuns.setAutoRequestFocus(true);
-        preencheCampo("\nAbrindo seleção de operação dos Médiuns...");
+//        preencheCampo("\nAbrindo seleção de operação dos Médiuns...");
         config = new Configuracoes();
         config.gravaAtividades("Médiuns", this.user, "Seleção de operação de médiuns");
-//        DMediumGeral mediuns = new DMediumGeral(this, false);
-////        DSelecionaOpMedium mediuns = new DSelecionaOpMedium(this, false);
-//        mediuns.setLocationRelativeTo(mediuns);
-//        mediuns.setTitle("MÉDIUNS");
-//        mediuns.recebeUsuario(iduser, user);
-//        mediuns.setVisible(true);
-//        preencheCampo("\nAbrindo seleção de operação dos Médiuns...");
-//        config = new Configuracoes();
-//        config.gravaAtividades("Médiuns", this.user, "Seleção de operação de médiuns");
-        
-        // TODO add your handling code here:
     }//GEN-LAST:event_subMenuMediunsActionPerformed
 
     private void subMenuOrixasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuOrixasActionPerformed
-
         DOrixa orixa = new DOrixa(this, false);
         orixa.setLocationRelativeTo(orixa);
         orixa.tipoDialog("orixas");
         orixa.setTitle("Orixás");
         orixa.setNomeUsuario(this.user);
         orixa.setVisible(true);
-        preencheCampo("\nAbrindo Orixás...");
-        // TODO add your handling code here:
+//        preencheCampo("\nAbrindo Orixás...");
     }//GEN-LAST:event_subMenuOrixasActionPerformed
 
     private void subMenuEntidadesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuEntidadesActionPerformed
@@ -1038,8 +1035,7 @@ public class TelaInicial extends javax.swing.JFrame {
         entidade.setTitle("Entidade das almas");
         entidade.setNomeUsuario(user);
         entidade.setVisible(true);
-        preencheCampo("\nAbrindo Entidades...");
-        // TODO add your handling code here:
+//        preencheCampo("\nAbrindo Entidades...");
     }//GEN-LAST:event_subMenuEntidadesActionPerformed
 
     private void subMenuExuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuExuActionPerformed
@@ -1049,75 +1045,60 @@ public class TelaInicial extends javax.swing.JFrame {
         exu.setTitle("Exu");
         exu.setNomeUsuario(user);
         exu.setVisible(true);
-        preencheCampo("\nAbrindo Exu...");
+//        preencheCampo("\nAbrindo Exu...");
         // TODO add your handling code here:
     }//GEN-LAST:event_subMenuExuActionPerformed
 
     private void subMenuLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuLoginActionPerformed
-
         abrePanelLogin();
-        // TODO add your handling code here:
     }//GEN-LAST:event_subMenuLoginActionPerformed
 
     private void btLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btLoginActionPerformed
-
         abrePanelLogin();
-        // TODO add your handling code here:
     }//GEN-LAST:event_btLoginActionPerformed
 
     private void subMenuAgendamentosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuAgendamentosActionPerformed
-
         DAgendamento agendamento = new DAgendamento(this, false);
         agendamento.setLocationRelativeTo(agendamento);
         agendamento.setTitle("Atendimento (Consultas)");
         agendamento.recebeUsuario(iduser, user);
         agendamento.setVisible(true);
-        preencheCampo("\nAbrindo Atendimento - Consultas...");
-        // TODO add your handling code here:
+//        preencheCampo("\nAbrindo Atendimento - Consultas...");
     }//GEN-LAST:event_subMenuAgendamentosActionPerformed
 
     private void aubMenuEventosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aubMenuEventosActionPerformed
-
         DEventos evento = new DEventos(this, false);
         evento.setLocationRelativeTo(evento);
         evento.identificaOperacao("evento");
         evento.setTitle("Evento");
         evento.setVisible(true);
         evento.recebeCodUser(this.iduser, this.user);
-        preencheCampo("\nAbrindo Eventos...");
-        
-        // TODO add your handling code here:
+//        preencheCampo("\nAbrindo Eventos...");
     }//GEN-LAST:event_aubMenuEventosActionPerformed
 
     private void subMenuProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuProdutosActionPerformed
-
         DEventos produto = new DEventos(this, false);
         produto.setTitle("Produtos");
         produto.setLocationRelativeTo(produto);
         produto.identificaOperacao("produto");
         produto.setVisible(true);
         produto.recebeCodUser(this.iduser, this.user);
-        preencheCampo("\nAbrindo Produtos...");
-        // TODO add your handling code here:
+//        preencheCampo("\nAbrindo Produtos...");
     }//GEN-LAST:event_subMenuProdutosActionPerformed
 
     private void subMenuAgendaAnualActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuAgendaAnualActionPerformed
-
         DAgenda agenda = new DAgenda(this, false);
         agenda.setLocationRelativeTo(agenda);
         agenda.setVisible(true);
-        preencheCampo("\nAbrindo Agenda Anual...");
-        // TODO add your handling code here:
+//        preencheCampo("\nAbrindo Agenda Anual...");
     }//GEN-LAST:event_subMenuAgendaAnualActionPerformed
 
     private void subMenuColaboraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuColaboraActionPerformed
-
         DColaboracoes colab = new DColaboracoes(this, false);
         colab.setLocationRelativeTo(colab);
         colab.setTitle("Colaborações");
         colab.setVisible(true);
-        preencheCampo("\nAbrindo Colaborações...");
-        // TODO add your handling code here:
+//        preencheCampo("\nAbrindo Colaborações...");
     }//GEN-LAST:event_subMenuColaboraActionPerformed
 
     private void subMenuConfigUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuConfigUsuariosActionPerformed
@@ -1213,18 +1194,24 @@ public class TelaInicial extends javax.swing.JFrame {
                         autorizaUsuario();
                         limpaPanelLogin();
                         fechaPanelLogin();
+                        desativaInoperantes();
 
                     }else{
                         preencheCampo("\nUsuário inexistente");
                     }
-                }else{
-                    preencheCampo("\nO campo não pode ficar vazio.");
+//                }else{
+//                    preencheCampo("\nO campo não pode ficar vazio.");
                 }
             }
-        
-        // TODO add your handling code here:
     }//GEN-LAST:event_txtSenhaKeyPressed
 
+    public void desativaInoperantes(){
+        menuBiblioteca.setEnabled(false);
+        subMenuPagamentos.setEnabled(false);
+        subMenuRecebimentos.setEnabled(false);
+        subMenuAgendaAnual.setEnabled(false);
+    }
+    
     private void subMenuLogoffActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuLogoffActionPerformed
         config = new Configuracoes();
         if(JOptionPane.showConfirmDialog(null, "Deseja efetuar o logoff?", "ATENÇÃO", JOptionPane.YES_NO_OPTION) == 0){
@@ -1237,7 +1224,7 @@ public class TelaInicial extends javax.swing.JFrame {
             bloqueiaMenus(false);
             btLogin.setEnabled(true);
             config.gravaAtividades("Logoff do", this.user, "Sistema");
-
+            panelSaidas.setVisible(false);
         }
         // TODO add your handling code here:
     }//GEN-LAST:event_subMenuLogoffActionPerformed
@@ -1319,7 +1306,6 @@ public class TelaInicial extends javax.swing.JFrame {
     }//GEN-LAST:event_subMenuCoroaActionPerformed
 
     private void subMenuRelSaidasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuRelSaidasActionPerformed
-
         config = new Configuracoes();
         DRelatorioCoroa relcoroa = new DRelatorioCoroa(this, false);
         relcoroa.setTitle("RELATÓRIO COROAÇÃO | SAÍDAS");
@@ -1328,19 +1314,15 @@ public class TelaInicial extends javax.swing.JFrame {
         relcoroa.setLocationRelativeTo(relcoroa);
         config.gravaAtividades("Corôa", this.user, "Abertura de relatório de Corôas");
         relcoroa.setVisible(true);
-        // TODO add your handling code here:
     }//GEN-LAST:event_subMenuRelSaidasActionPerformed
 
     private void subMenuMensalidadesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuMensalidadesActionPerformed
-
         DMensalidadeMediuns mm = new DMensalidadeMediuns(this, false);
         mm.setAutoRequestFocus(true);
         mm.setTitle("MENSALIDADE DE MÉDIUNS");
         mm.recebeInfo(this.iduser);
         mm.setLocationRelativeTo(mm);
         mm.setVisible(true);
-
-        // TODO add your handling code here:
     }//GEN-LAST:event_subMenuMensalidadesActionPerformed
 
     private void subMenuRelMensalidadesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuRelMensalidadesActionPerformed
@@ -1354,31 +1336,82 @@ public class TelaInicial extends javax.swing.JFrame {
     }//GEN-LAST:event_subMenuRelMensalidadesActionPerformed
 
     private void subCImpressosaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subCImpressosaoActionPerformed
-
         DImpressaoCarteira car = new DImpressaoCarteira(this, false);
-        car.setAutoRequestFocus(true);
         car.setTitle("RELATÓRIO DE MENSALIDADES");
 //        car.recebeInfo(user);
         car.setLocationRelativeTo(car);
         car.setAutoRequestFocus(true);
-        car.setVisible(true);        // TODO add your handling code here:
+        car.setVisible(true);
     }//GEN-LAST:event_subCImpressosaoActionPerformed
 
     private void subCAnosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subCAnosActionPerformed
 
         DAnosCarteira car = new DAnosCarteira(this, false);
-        car.setAutoRequestFocus(true);
         car.setTitle(Constances.TITULO_DANOSCARTEIRA);
 //        car.recebeInfo(user);
         car.setLocationRelativeTo(car);
         car.setAutoRequestFocus(true);
-        car.setVisible(true);        
-// TODO add your handling code here:
+        car.setVisible(true);
     }//GEN-LAST:event_subCAnosActionPerformed
 
-    private void menuArquivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuArquivoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_menuArquivoActionPerformed
+    private void btAcessarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btAcessarActionPerformed
+        usuario = new Usuario();
+        config = new Configuracoes();
+        
+        if(txtUsuario.getText().equals("")){
+            preencheCampo("\nUsuário vazio. Digite o nome do usuário");
+        }else{
+            if(txtSenha.getText().equals("")){
+                preencheCampo("\nSenha vazia. Digite sua senha");
+            }else{
+                usuario.setNome(txtUsuario.getText());
+                usuario.setSenha(txtSenha.getText());
+
+                this.setIduser(usuario.consultaLoginUsuario());
+                if(this.iduser > 0){
+                    //System.out.println(this.getIduser());
+    //                        preencheCampo("\nUsuário localizado.");
+                    autorizaUsuario();
+                    limpaPanelLogin();
+                    fechaPanelLogin();
+                    desativaInoperantes();
+
+                }else{
+                    preencheCampo("\nUsuário inexistente");
+                }
+            }
+            
+        }
+
+        if(txtSenha.getText().length() > 0){
+
+            usuario.setNome(txtUsuario.getText());
+            usuario.setSenha(txtSenha.getText());
+
+            this.setIduser(usuario.consultaLoginUsuario());
+            if(this.iduser > 0){
+                //System.out.println(this.getIduser());
+//                        preencheCampo("\nUsuário localizado.");
+                autorizaUsuario();
+                limpaPanelLogin();
+                fechaPanelLogin();
+                desativaInoperantes();
+
+            }else{
+                preencheCampo("\nUsuário inexistente");
+            }
+        }else{
+            preencheCampo("\nO campo não pode ficar vazio.");
+        }
+    }//GEN-LAST:event_btAcessarActionPerformed
+
+    private void subMenuRelMediunsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuRelMediunsActionPerformed
+
+        DRelMediuns relMed = new DRelMediuns(this, false);
+        relMed.setLocationRelativeTo(relMed);
+        relMed.setAutoRequestFocus(true);
+        relMed.setVisible(true);
+    }//GEN-LAST:event_subMenuRelMediunsActionPerformed
 
     public void autorizaUsuario(){
         con = new Conexao();
@@ -1456,6 +1489,8 @@ public class TelaInicial extends javax.swing.JFrame {
     
     public void acessoAministrador(){
         bloqueiaMenus(true);
+        panelSaidas.setVisible(true);
+        divulgaSaidas();
     }
     public void acessoAministracao(){
         bloqueiaMenus(true);
@@ -1470,6 +1505,27 @@ public class TelaInicial extends javax.swing.JFrame {
         bloqueiaMenus(true);
     }
 
+    public void divulgaSaidas(){
+        Calendar cal = new GregorianCalendar();
+        coroa = new Coroa();
+        config = new Configuracoes();
+        
+        int mesCorrente = cal.get(Calendar.MONTH) + 1;
+        int anoCorrente = cal.get(Calendar.YEAR);
+        coroa.setMes(mesCorrente);
+        coroa.setAno(anoCorrente);
+        
+        labelDesteMesAno.setText("Saídas de " + config.retornaMesExtenso(mesCorrente) + "/ " + anoCorrente + ": ");
+        labelValorMesAno.setText(String.valueOf(coroa.quantSaidasMes()));
+//        System.out.println("Saídas do mês: " + coroa.quantSaidasMes());
+        
+        labelDesteAno.setText("Saídas do ano " + anoCorrente + ": ");
+        labelValorAno.setText(String.valueOf(coroa.quantSaidasAno()));
+//        System.out.println("Saídas do ano: " + coroa.quantSaidasAno());
+
+        
+        
+    }
     
     public void recebeDados(String userLogado, String acessoLogado, int idUsuario){
         this.acesso = acessoLogado;
@@ -1556,18 +1612,21 @@ public class TelaInicial extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem aubMenuEventos;
+    private javax.swing.JButton btAcessar;
     private javax.swing.JButton btLogin;
     private javax.swing.JTextArea campoTexto;
-    private javax.swing.JLabel jLabel2;
+    private javax.swing.ButtonGroup groupSaidas;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JLabel labelAcesso;
-    private javax.swing.JLabel labelCodigo;
-    private javax.swing.JLabel labelEmail;
+    private javax.swing.JLabel labelDesteAno;
+    private javax.swing.JLabel labelDesteMesAno;
     private javax.swing.JLabel labelEsqueciSenha;
     private javax.swing.JLabel labelImage;
     private javax.swing.JLabel labelImagemOrixas;
     private javax.swing.JLabel labelSenha;
     private javax.swing.JLabel labelUsuario;
+    private javax.swing.JLabel labelValorAno;
+    private javax.swing.JLabel labelValorMesAno;
     private javax.swing.JMenuBar menu;
     private javax.swing.JMenu menuAdm;
     private javax.swing.JMenu menuArquivo;
@@ -1576,24 +1635,27 @@ public class TelaInicial extends javax.swing.JFrame {
     private javax.swing.JMenu menuRelatorios;
     private javax.swing.JMenu menuTesouraria;
     private javax.swing.JPanel panelBaixo;
-    private javax.swing.JPanel panelEsqueciSenha;
     private javax.swing.JPanel panelLogin;
     private javax.swing.JPanel panelMeio;
+    private javax.swing.JPanel panelSaidas;
     private javax.swing.JScrollPane scroll;
     private javax.swing.JMenuItem subCAnos;
     private javax.swing.JMenuItem subCImpressosao;
     private javax.swing.JMenuItem subMenuAcesso;
     private javax.swing.JMenuItem subMenuAgendaAnual;
     private javax.swing.JMenuItem subMenuAgendamentos;
+    private javax.swing.JMenu subMenuAtividades;
     private javax.swing.JMenuItem subMenuBaixa;
     private javax.swing.JMenuItem subMenuBancoDados;
+    private javax.swing.JMenuItem subMenuCComprom;
+    private javax.swing.JMenuItem subMenuCRelacao;
     private javax.swing.JMenuItem subMenuCaboclos;
     private javax.swing.JMenu subMenuCarteira;
     private javax.swing.JMenuItem subMenuColabora;
     private javax.swing.JMenuItem subMenuConfigUsuarios;
     private javax.swing.JMenuItem subMenuConsultas;
     private javax.swing.JMenuItem subMenuCoroa;
-    private javax.swing.JMenuItem subMenuDepositos;
+    private javax.swing.JMenu subMenuCortes;
     private javax.swing.JMenuItem subMenuEntidades;
     private javax.swing.JMenuItem subMenuEres;
     private javax.swing.JMenuItem subMenuExu;
@@ -1609,6 +1671,7 @@ public class TelaInicial extends javax.swing.JFrame {
     private javax.swing.JMenuItem subMenuProdutos;
     private javax.swing.JMenuItem subMenuRecebimentos;
     private javax.swing.JMenuItem subMenuRelAgenda;
+    private javax.swing.JMenuItem subMenuRelCortes;
     private javax.swing.JMenuItem subMenuRelEventos;
     private javax.swing.JMenuItem subMenuRelLivros;
     private javax.swing.JMenuItem subMenuRelMediuns;
@@ -1620,10 +1683,7 @@ public class TelaInicial extends javax.swing.JFrame {
     private javax.swing.JMenuItem subMenuTrabalho;
     private javax.swing.JToolBar toolbar;
     private javax.swing.JTextField txtAcesso;
-    private javax.swing.JTextField txtCode;
-    private javax.swing.JTextField txtConfirmaUsuario;
     private javax.swing.JTextField txtData;
-    private javax.swing.JTextField txtEmail;
     private javax.swing.JPasswordField txtSenha;
     private javax.swing.JTextField txtUsuario;
     // End of variables declaration//GEN-END:variables

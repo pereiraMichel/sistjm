@@ -173,8 +173,6 @@ public class Relatorios {
                 compMedium +
                 compPeriodo;
         
-//        System.out.println(sql);
-
         try{
             con = new Conexao();
             conn = con.getConnection();
@@ -276,15 +274,13 @@ public class Relatorios {
                     + "LEFT JOIN mediuns m ON m.idmedium = me.cod_medium "
                     + "WHERE me.pago = 'n' "
                     + compMedium
-                    + compPeriodo + ") AS quantidade " +
+                    + compPeriodo + ") AS quantidadePago " +
                 "FROM mensalidade me " +
                 "LEFT JOIN mediuns m ON m.idmedium = me.cod_medium " +
                 "WHERE me.pago = 's' " +
                 compPeriodo + 
                 compMedium;
         }
-
-
 //        System.out.println(sql);
 
         try{
@@ -349,20 +345,10 @@ public class Relatorios {
     }    
     public void geraAnosCarteira(int ano1, int ano2){
         
-//        String sql = "";
-
         try{
-//            con = new Conexao();
-//            conn = con.getConnection();
-//            stmt = conn.createStatement();
-//            rs = stmt.executeQuery(sql);
-            
-            //Gera o relatório                
             String path = "relatorios//ranos.jasper";
             
 //            JRResultSetDataSource jr = new JRResultSetDataSource(rs); // Cria um resultset do banco de dados
-
-            
             Map param = new HashMap(); // Abre o parâmetro
 
             param.put("ano1", ano1);
@@ -376,6 +362,102 @@ public class Relatorios {
         }catch(Exception ex){
             ex.printStackTrace();
         }
+    }
+    
+    public void relatorioFichaMedium(int codMedium, int end, int tel, int mens, int ano, int coroa, int ori){
+        String compMedium = null;
+        String compEnd = null;
+        String compTel = null;
+        String compMens = null;
+        String compCoroa = null;
+        String compOrixas = null;
         
-    }    
+        if(codMedium == 0){
+            compMedium = "";
+        }else{
+            compMedium = "WHERE m.idmedium = " + codMedium;
+        }
+        
+        if(end == 0){
+            compEnd = "";
+        }else{
+            compEnd = "LEFT JOIN logradouro l ON l.cod_medium = m.idmedium ";
+        }
+        
+        if(tel == 0){
+            compTel = "";
+        }else{
+            compTel = "LEFT JOIN telefones t ON t.codMedium = m.idmedium ";
+        }
+        
+        if(mens == 0){
+            compMens = "";
+        }else{
+            compMens = "LEFT JOIN mensalidade men ON men.cod_medium = m.idmedium AND men.ano = " + ano + " ";
+        }
+        
+        if(coroa == 0){
+            compCoroa = "";
+        }else{
+            compCoroa = "LEFT JOIN coroa c ON c.codmedium = m.idmedium ";
+        }
+        
+        if(ori == 0){
+            compOrixas = "";
+        }else{
+            compOrixas = "LEFT JOIN medium_ori mor ON mor.codMedium = m.idmedium "
+                    + "   LEFT JOIN orixas ori o ON mor.cod_orixa = o.idorixa " // orixa
+
+                    + "   LEFT JOIN medium_ent ment ON ment.codMedium = m.idmedium "
+                    + "   LEFT JOIN entidades ent ON ment.cod_entidade = ent.identidade " // entidade
+
+                    + "   LEFT JOIN medium_caboclo mcab ON mcab.codMedium = m.idmedium "
+                    + "   LEFT JOIN caboclo cab ON mcab.cod_caboclo = cab.idcaboclo " //caboclo
+
+                    + "   LEFT JOIN medium_ere mere ON mere.codMedium = m.idmedium "
+                    + "   LEFT JOIN ere er ON mere.cod_ere = er.idere " // ere
+
+                    + "   LEFT JOIN medium_exu mex ON mex.codMedium = m.idmedium "
+                    + "   LEFT JOIN exu ex ON mex.cod_exu = ex.idexu " // exu
+
+                    ;
+        }
+
+        String sql = "  SELECT * "
+                + "     FROM mediuns m "
+                + compEnd
+                + compTel
+                + compMens
+                + compCoroa
+                + compOrixas
+                + compMedium
+                ;
+        
+//        System.out.println(sql);
+        
+
+        try{
+            con = new Conexao();
+            conn = con.getConnection();
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery(sql);
+            
+            //Gera o relatório                
+            String path = "relatorios//reportFichaMediuns.jasper";
+            
+            JRResultSetDataSource jr = new JRResultSetDataSource(rs); // Cria um resultset do banco de dados
+            Map param = new HashMap(); // Abre o parâmetro
+            
+            JasperPrint print = JasperFillManager.fillReport(path, param, jr); // Junta as informações do banco e parâmetros
+            JasperViewer view = new JasperViewer(print, false);//Prepara a visualização do relatório - true, fecha aplicação | false, mantém aplicação aberto
+            view.setVisible(true); //Visualiza o relatório
+            view.toFront();//Puxa o relatório para frente do frame.
+
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
+        
+        
+        
+    }
 }

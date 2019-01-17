@@ -34,14 +34,6 @@
               <Group type="103" groupAlignment="0" max="-2" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="103" alignment="0" groupAlignment="1" attributes="0">
-                              <Component id="txtBatismo" alignment="1" min="-2" pref="110" max="-2" attributes="0"/>
-                              <Group type="102" alignment="0" attributes="0">
-                                  <Component id="labelCoroacao" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
-                                  <Component id="txtCoroacao" min="-2" pref="110" max="-2" attributes="0"/>
-                              </Group>
-                          </Group>
                           <Component id="jSeparator1" alignment="0" min="-2" pref="409" max="-2" attributes="0"/>
                           <Component id="labelConfirmacao" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
@@ -58,6 +50,18 @@
                                       <Component id="labelPadrinho" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
                                       <Component id="txtPadrinho" min="-2" pref="285" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Group type="103" groupAlignment="1" attributes="0">
+                                          <Component id="txtBatismo" alignment="1" min="-2" pref="110" max="-2" attributes="0"/>
+                                          <Group type="102" alignment="0" attributes="0">
+                                              <Component id="labelCoroacao" min="-2" max="-2" attributes="0"/>
+                                              <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
+                                              <Component id="txtCoroacao" min="-2" pref="110" max="-2" attributes="0"/>
+                                          </Group>
+                                      </Group>
+                                      <EmptySpace min="-2" pref="66" max="-2" attributes="0"/>
+                                      <Component id="jDateChooser1" min="-2" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
@@ -162,11 +166,14 @@
                               <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="labelBatismo" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="txtBatismo" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="labelBatismo" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="txtBatismo" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Component id="jDateChooser1" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace min="18" pref="18" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="labelCoroacao" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="txtCoroacao" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -569,6 +576,8 @@
       <Properties>
         <Property name="editable" type="boolean" value="false"/>
       </Properties>
+    </Component>
+    <Component class="com.toedter.calendar.JDateChooser" name="jDateChooser1">
     </Component>
   </SubComponents>
 </Form>

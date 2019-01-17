@@ -205,10 +205,12 @@ public class Orixas {
         }
     }
     
-    public int retornaIdOrixa(String nome){
+    public int retornaIdOrixa(){
         config = new Configuracoes();
         try{
-            String sql = "SELECT * FROM orixas WHERE nome = '" + nome + "'";
+            String sql = "SELECT * "
+                    + "FROM orixas "
+                    + "WHERE nome = '" + this.orixa + "'";
             
             con = new Conexao();
             conn = con.getConnection();

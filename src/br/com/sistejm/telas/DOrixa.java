@@ -437,27 +437,32 @@ public class DOrixa extends javax.swing.JDialog {
             switch(this.tipo){
                 case "orixas":
                     ori = new Orixas();
-                    int idOri = ori.retornaIdOrixa(txtNome.getText());
+                    ori.setOrixa(txtNome.getText());
+                    int idOri = ori.retornaIdOrixa();
                     txtId.setText(String.valueOf(idOri));
                     break;
                 case "entidade":
                     ent = new Entidade();
-                    int idEnt = ent.retornaIdEntidade(txtNome.getText());
+                    ent.setNome(txtNome.getText());
+                    int idEnt = ent.retornaIdEntidade();
                     txtId.setText(String.valueOf(idEnt));
                     break;
                 case "exu":
                     exu = new Exu();
-                    int idExu = exu.retornaIdExu(txtNome.getText());
+                    exu.setNome(txtNome.getText());
+                    int idExu = exu.retornaIdExu();
                     txtId.setText(String.valueOf(idExu));
                     break;
                 case "ere":
                     ere = new Ere();
-                    int idEre = ere.retornaIdEre(txtNome.getText());
+                    ere.setNome(txtNome.getText());
+                    int idEre = ere.retornaIdEre();
                     txtId.setText(String.valueOf(idEre));
                     break;
                 case "caboclo":
                     cab = new Caboclos();
-                    int id = cab.retornaIdCaboclo(txtNome.getText());
+                    cab.setNome(txtNome.getText());
+                    int id = cab.retornaIdCaboclo();
                     txtId.setText(String.valueOf(id));
                     break;
             }

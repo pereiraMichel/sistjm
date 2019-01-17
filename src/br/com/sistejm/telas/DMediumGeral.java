@@ -96,6 +96,8 @@ public class DMediumGeral extends javax.swing.JDialog {
         preencheCamposCidadeEstado();
         ocultaText(false);
         preencheTitulo();
+        btExcluir.setVisible(false);
+        btImprimir.setVisible(false);
 //        this.ativo = 1;
     }
     
@@ -425,6 +427,11 @@ public class DMediumGeral extends javax.swing.JDialog {
         btImprimir.setToolTipText("Imprimir");
         btImprimir.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btImprimir.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btImprimir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btImprimirActionPerformed(evt);
+            }
+        });
 
         btNovo.setBackground(new java.awt.Color(255, 255, 255));
         btNovo.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
@@ -1559,6 +1566,10 @@ public class DMediumGeral extends javax.swing.JDialog {
         }
         
     }//GEN-LAST:event_btOrixasActionPerformed
+
+    private void btImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btImprimirActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btImprimirActionPerformed
 
     public void recebeUsuario(int iduser, String user){
         txtCodeUser.setText(String.valueOf(iduser));

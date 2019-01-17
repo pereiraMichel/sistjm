@@ -105,7 +105,7 @@ public class Mensalidade {
         String sql = "SELECT ano FROM mensalidade WHERE ano = " + this.ano + " "
                 + "AND cod_medium = " + this.codMedium;
         
-        System.out.println(sql);
+//        System.out.println(sql);
         
         try{
             
@@ -372,7 +372,12 @@ public class Mensalidade {
     
     public String quantMeses(String pago, int idMedium, int codperiodo, int mes1, int ano1, int mes2, int ano2){
 
-        String compPeriodo = null;
+        String compPeriodo = "";
+        String compMedium = "";
+        
+        if(idMedium != 0){
+            compMedium = "AND m.idmedium = " + idMedium + " ";
+        }
 
         switch(codperiodo){
             case 1: //por ano
@@ -392,7 +397,8 @@ public class Mensalidade {
         String sql = "SELECT COUNT(me.idmensalidade) AS quantidade FROM mensalidade me "
                 + "LEFT JOIN mediuns m ON m.idmedium = me.cod_medium "
                 + "WHERE me.pago = '" + pago + "' "
-                + "AND m.idmedium = " + idMedium + " "
+                + compMedium
+//                + "AND m.idmedium = " + idMedium + " "
                 + compPeriodo;
         
 //        System.out.println(sql);

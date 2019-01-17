@@ -580,7 +580,7 @@
         <Component class="javax.swing.JLabel" name="labelFotoCoroa">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/br/com/sistejm/images/BtCoroa.png"/>
+              <Image iconType="3" name="/br/com/sistejm/images/BtFinaceiro1.png"/>
             </Property>
           </Properties>
         </Component>

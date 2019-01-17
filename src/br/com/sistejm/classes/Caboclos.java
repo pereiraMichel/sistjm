@@ -43,8 +43,9 @@ public class Caboclos {
     }
     
     public void preencheTabCaboclo(JTable tabela){
-
-        String sql = "SELECT * FROM caboclo";
+        String sql = "SELECT nome FROM caboclo";
+        
+//        System.out.println(sql);
         
         try{
             con = new Conexao();
@@ -60,10 +61,8 @@ public class Caboclos {
             tabela.getColumnModel().getColumn(0).setPreferredWidth(110);
 
             while(rs.next()){
-//                int idEvento = rs.getInt("idcaboclo");
                 String nomeEvento = rs.getString("nome");
                 caboclo.addRow(new Object[]{nomeEvento});
-//                dtm.addRow(new Object[]{idEvento, nomeEvento});
             }
         }catch(Exception ex){
             System.out.println("Erro em tabela de Caboclo. Mensagem: " + ex.getMessage());
@@ -209,9 +208,9 @@ public class Caboclos {
         return false;
     }
     
-    public int retornaIdCaboclo(String texto){
+    public int retornaIdCaboclo(){
         config = new Configuracoes();
-        String sql = "SELECT * FROM caboclo WHERE nome = '" + texto + "'";
+        String sql = "SELECT * FROM caboclo WHERE nome = '" + this.nome + "'";
         
         try{
             con = new Conexao();

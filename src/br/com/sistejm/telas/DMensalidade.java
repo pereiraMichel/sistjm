@@ -6,6 +6,7 @@
 package br.com.sistejm.telas;
 
 import br.com.sistejm.classes.Configuracoes;
+import br.com.sistejm.classes.Constances;
 import br.com.sistejm.classes.Mensalidade;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -158,7 +159,7 @@ public class DMensalidade extends javax.swing.JDialog {
         
         txtCodMedium.setText(String.valueOf(idMedium));
         txtCodUser.setText(String.valueOf(codUsuario));
-        labelNomeMedium.setText(medium);
+        labelNomeMedium.setText(medium.toUpperCase());
         
         m.setCodMedium(idMedium);
         m.setCodUsuario(codUsuario);
@@ -167,6 +168,7 @@ public class DMensalidade extends javax.swing.JDialog {
         m.consultaMesesPagos(cJan, cFev, cMar, cAbr, 
             cMai, cJun, cJul, cAgo, cSet, cOut, 
             cNov, cDez);
+        this.setTitle(Constances.TITULO_DMENSALIDADESMEDIUM);
     }
     
     public void preencheCampos(){
