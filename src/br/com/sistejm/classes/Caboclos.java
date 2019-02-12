@@ -43,7 +43,8 @@ public class Caboclos {
     }
     
     public void preencheTabCaboclo(JTable tabela){
-        String sql = "SELECT nome FROM caboclo";
+        String sql = "SELECT nome FROM caboclo "
+                + "   ORDER BY nome ASC";
         
 //        System.out.println(sql);
         
@@ -99,7 +100,7 @@ public class Caboclos {
                 + "LEFT JOIN medium_caboclo mc ON m.idmedium = mc.codMedium "
                 + "LEFT JOIN caboclo c ON c.idcaboclo = mc.cod_caboclo "
                 + "WHERE m.nome = '" + texto + "' "
-                + "ORDER BY c.idcaboclo";        
+                + "ORDER BY c.nome ASC";        
         
         try{
             con = new Conexao();
@@ -125,6 +126,7 @@ public class Caboclos {
     
     public boolean verificaExistente(){
         con = new Conexao();
+        config = new Configuracoes();
         
         String sql = "SELECT nome FROM caboclo WHERE nome = '" + this.nome + "'";
         
@@ -136,13 +138,16 @@ public class Caboclos {
             
             //rs.next();
             if(rs.absolute(1)){
+                alterarCaboclo();
                 return true;
             }else{
-                return false;
+                incluirCaboclo();
+//                return false;
             }
+            return true;
            
         }catch(Exception ex){
-            System.out.println("Catch verificação de duplicidade de Caboclo ativado. Erro: " + ex.getMessage());
+            config.gravaErroLog(Constances.ERRORTAB+ ex.getMessage(), "Tabela de Caboclo", "sistejm.tabcaboclo");
         }
         return false;
     }
@@ -150,7 +155,7 @@ public class Caboclos {
     public boolean incluirCaboclo(){
         con = new Conexao();
         config = new Configuracoes();
-        if(!this.verificaExistente()){
+//        if(!this.verificaExistente()){
             
             this.idCaboclo = con.ultimoId("caboclo", "idcaboclo");
 
@@ -161,13 +166,14 @@ public class Caboclos {
                 conn = con.getConnection();
                 stmt = conn.createStatement();
                 stmt.executeUpdate(sql);
+                config.gravaBDBackup(sql);
 
                 return true;
 
             }catch(Exception ex){
                 config.gravaErroLog("Erro: " + ex.getMessage() + ".", "Inclusão do caboclo", "sistejm.incluicaboclo");
             }
-        }
+//        }
         return false;
     }
     
@@ -180,6 +186,7 @@ public class Caboclos {
             conn = con.getConnection();
             stmt = conn.createStatement();
             stmt.executeUpdate(sql);
+            config.gravaBDBackup(sql);
             
             return true;
             
@@ -199,6 +206,7 @@ public class Caboclos {
             conn = con.getConnection();
             stmt = conn.createStatement();
             stmt.executeUpdate(sql);
+            config.gravaBDBackup(sql);
             
             return true;
             

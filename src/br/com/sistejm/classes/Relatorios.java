@@ -10,9 +10,11 @@ import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import net.sf.jasperreports.engine.JRException;
@@ -364,73 +366,56 @@ public class Relatorios {
         }
     }
     
-    public void relatorioFichaMedium(int codMedium, int end, int tel, int mens, int ano, int coroa, int ori){
-        String compMedium = null;
-        String compEnd = null;
-        String compTel = null;
-        String compMens = null;
-        String compCoroa = null;
-        String compOrixas = null;
+    public void relatorioFichaMedium(int codMedium, int foto){
+
+        String compFoto = null;
         
-        if(codMedium == 0){
-            compMedium = "";
+        if(foto == 0){
+            compFoto = "(f.foto = NULL) AS foto, ";
         }else{
-            compMedium = "WHERE m.idmedium = " + codMedium;
+            compFoto = "f.foto, ";
         }
         
-        if(end == 0){
-            compEnd = "";
-        }else{
-            compEnd = "LEFT JOIN logradouro l ON l.cod_medium = m.idmedium ";
-        }
-        
-        if(tel == 0){
-            compTel = "";
-        }else{
-            compTel = "LEFT JOIN telefones t ON t.codMedium = m.idmedium ";
-        }
-        
-        if(mens == 0){
-            compMens = "";
-        }else{
-            compMens = "LEFT JOIN mensalidade men ON men.cod_medium = m.idmedium AND men.ano = " + ano + " ";
-        }
-        
-        if(coroa == 0){
-            compCoroa = "";
-        }else{
-            compCoroa = "LEFT JOIN coroa c ON c.codmedium = m.idmedium ";
-        }
-        
-        if(ori == 0){
-            compOrixas = "";
-        }else{
-            compOrixas = "LEFT JOIN medium_ori mor ON mor.codMedium = m.idmedium "
-                    + "   LEFT JOIN orixas ori o ON mor.cod_orixa = o.idorixa " // orixa
-
-                    + "   LEFT JOIN medium_ent ment ON ment.codMedium = m.idmedium "
-                    + "   LEFT JOIN entidades ent ON ment.cod_entidade = ent.identidade " // entidade
-
-                    + "   LEFT JOIN medium_caboclo mcab ON mcab.codMedium = m.idmedium "
-                    + "   LEFT JOIN caboclo cab ON mcab.cod_caboclo = cab.idcaboclo " //caboclo
-
-                    + "   LEFT JOIN medium_ere mere ON mere.codMedium = m.idmedium "
-                    + "   LEFT JOIN ere er ON mere.cod_ere = er.idere " // ere
-
-                    + "   LEFT JOIN medium_exu mex ON mex.codMedium = m.idmedium "
-                    + "   LEFT JOIN exu ex ON mex.cod_exu = ex.idexu " // exu
-
-                    ;
-        }
-
-        String sql = "  SELECT * "
-                + "     FROM mediuns m "
-                + compEnd
-                + compTel
-                + compMens
-                + compCoroa
-                + compOrixas
-                + compMedium
+        String sql = "SELECT "
+                + "m.nome, "
+                + "m.ativo, "
+                + "m.matricula, "
+                + "m.funcao, "
+                + "DATE_FORMAT(m.dataEntrada, '%d/%m/%Y') AS dataEntFormat, "
+                + "m.isentoMensal, "
+                + "m.sexo, "
+                + "DATE_FORMAT(m.dataNascimento, '%d/%m/%Y') AS dataNascFormat, "
+                + "m.observacoes, "
+                + "m.email, "
+                + "l.endereco, "
+                + "l.bairro, "
+                + "l.cidade, "
+                + "l.estado, "
+                + "t.numTelefone, "
+                + compFoto + " "
+                + "o.nome AS orixa, "
+                + "tp.tipo AS tipo, "
+                + "ent.nome AS entidade, "
+                + "cab.nome AS caboclo, "
+                + "er.nome AS ere, "
+                + "ex.nome AS exu"
+                + "   FROM mediuns m "
+                + "   LEFT JOIN logradouro l ON l.cod_medium = m.idmedium "
+                + "   LEFT JOIN foto f ON f.cod_medium = m.idmedium "
+                + "   LEFT JOIN telefones t ON t.codMedium = m.idmedium "
+                +    "LEFT JOIN medium_ori mor ON mor.codMedium = m.idmedium "
+                +    "LEFT JOIN orixas o ON mor.cod_orixa = o.idorixa "
+                +    "LEFT JOIN tipo_orixa tp ON tp.idtipo_orixa = mor.codTipo "
+                +    "LEFT JOIN medium_ent ment ON ment.codMedium = m.idmedium "
+                +    "LEFT JOIN entidade ent ON ment.cod_entidade = ent.identidade "
+                +    "LEFT JOIN medium_caboclo mcab ON mcab.codMedium = m.idmedium "
+                +    "LEFT JOIN caboclo cab ON mcab.cod_caboclo = cab.idcaboclo "
+                +    "LEFT JOIN medium_ere mere ON mere.codMedium = m.idmedium "
+                +    "LEFT JOIN ere er ON mere.cod_ere = er.idere "
+                +    "LEFT JOIN medium_exu mex ON mex.codMedium = m.idmedium "
+                +    "LEFT JOIN exu ex ON mex.cod_exu = ex.idexu "
+                +    "WHERE m.idmedium =  " + codMedium + " "
+                +    "ORDER BY tp.idtipo_orixa "
                 ;
         
 //        System.out.println(sql);
@@ -456,8 +441,104 @@ public class Relatorios {
         }catch(Exception ex){
             ex.printStackTrace();
         }
+    }
+    
+    public void relatorioSaidasMedium(int idmedium){
         
+        String sql = "  SELECT " +
+                    " m.nome," +
+                    " m.matricula," +
+                    " m.ativo," +
+                    " c.mes," +
+                    " c.ano," +
+                    " c.confirma, (" +
+                    " CASE WHEN c.confirma = 's'" +
+                    " THEN" +
+                    " DATE_FORMAT(c.dataRealizacao, '%d/%m/%Y')" +
+                    " END" +
+                    ") AS dtReal," +
+                    " tp.nome AS tipo " +
+                    "FROM mediuns m " +
+                    "LEFT JOIN coroa c ON c.codmedium = m.idmedium " +
+                    "LEFT JOIN tipocoroa tp ON c.codtipocoroa = tp.idtipocoroa " +
+                    "WHERE m.idmedium = " + idmedium
+                ;
+
+//        System.out.println(sql);
         
+
+        try{
+            con = new Conexao();
+            conn = con.getConnection();
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery(sql);
+            
+            //Gera o relatório                
+            String path = "relatorios//rSaidasMedium.jasper";
+            
+            JRResultSetDataSource jr = new JRResultSetDataSource(rs); // Cria um resultset do banco de dados
+            Map param = new HashMap(); // Abre o parâmetro
+
+            JasperPrint print = JasperFillManager.fillReport(path, param, jr); // Junta as informações do banco e parâmetros
+            JasperViewer view = new JasperViewer(print, false);//Prepara a visualização do relatório - true, fecha aplicação | false, mantém aplicação aberto
+            view.setVisible(true); //Visualiza o relatório
+            view.toFront();//Puxa o relatório para frente do frame.
+
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
+        
+    }
+    public void relatorioEntidadesMedium(int idmedium){
+        
+        String sqlOrixas = "SELECT DISTINCT " +
+                "m.nome, " +
+                "m.matricula, " +
+                "o.nome AS orixa, " +
+                "tp.tipo AS tipo, " +
+                "ent.nome AS entidade, " +
+                "cab.nome AS caboclo, " +
+                "er.nome AS ere, " +
+                "ex.nome AS exu " +
+                "FROM mediuns m " +
+                "LEFT JOIN medium_ori mor ON mor.codMedium = m.idmedium " +
+                "LEFT JOIN orixas o ON mor.cod_orixa = o.idorixa " +
+                "LEFT JOIN tipo_orixa tp ON tp.idtipo_orixa = mor.codTipo " +
+                "LEFT JOIN medium_ent ment ON ment.codMedium = m.idmedium " +
+                "LEFT JOIN entidade ent ON ment.cod_entidade = ent.identidade " +
+                "LEFT JOIN medium_caboclo mcab ON mcab.codMedium = m.idmedium " +
+                "LEFT JOIN caboclo cab ON mcab.cod_caboclo = cab.idcaboclo " +
+                "LEFT JOIN medium_ere mere ON mere.codMedium = m.idmedium " +
+                "LEFT JOIN ere er ON mere.cod_ere = er.idere " +
+                "LEFT JOIN medium_exu mex ON mex.codMedium = m.idmedium " +
+                "LEFT JOIN exu ex ON mex.cod_exu = ex.idexu " +
+                "WHERE m.idmedium = 1 " + idmedium +
+                "ORDER BY tp.idtipo_orixa "
+                ;
+
+//        System.out.println(sql);
+        
+
+        try{
+            con = new Conexao();
+            conn = con.getConnection();
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery(sqlOrixas);
+            
+            //Gera o relatório                
+            String path = "relatorios//rOrixas.jasper";
+            
+            JRResultSetDataSource jr = new JRResultSetDataSource(rs); // Cria um resultset do banco de dados
+            Map param = new HashMap(); // Abre o parâmetro
+
+            JasperPrint print = JasperFillManager.fillReport(path, param, jr); // Junta as informações do banco e parâmetros
+            JasperViewer view = new JasperViewer(print, false);//Prepara a visualização do relatório - true, fecha aplicação | false, mantém aplicação aberto
+            view.setVisible(true); //Visualiza o relatório
+            view.toFront();//Puxa o relatório para frente do frame.
+
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
         
     }
 }

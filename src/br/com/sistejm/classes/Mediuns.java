@@ -12,6 +12,8 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
@@ -49,6 +51,8 @@ public class Mediuns {
     Statement stmt;
     ResultSet rs;
     Configuracoes config;
+    Calendar cal;
+    Mensalidade m;
 
     public String getFuncao() {
         return funcao;
@@ -166,7 +170,8 @@ public class Mediuns {
     public void preencheTabMedium(JTable tabela){
 
         String sql = "SELECT DISTINCT m.*, mo.codMedium AS codeMedium FROM mediuns m " +
-                      "LEFT JOIN medium_ori mo ON m.idmedium = mo.codMedium";
+                      "LEFT JOIN medium_ori mo ON m.idmedium = mo.codMedium "
+                + "    ORDER BY m.nome ASC";
      
         try{
             con = new Conexao();
@@ -177,18 +182,18 @@ public class Mediuns {
             DefaultTableModel medium = new DefaultTableModel();
             tabela.setModel(medium);
 
-            medium.addColumn("ID");
+//            medium.addColumn("ID");
             medium.addColumn("Matrícula");
             medium.addColumn("Médium");
             medium.addColumn("Ativo");
 
-            tabela.getColumnModel().getColumn(0).setPreferredWidth(5);
-            tabela.getColumnModel().getColumn(1).setPreferredWidth(10);
-            tabela.getColumnModel().getColumn(2).setPreferredWidth(110);
-            tabela.getColumnModel().getColumn(2).setPreferredWidth(50);
+//            tabela.getColumnModel().getColumn(0).setPreferredWidth(10);
+            tabela.getColumnModel().getColumn(0).setPreferredWidth(10);
+            tabela.getColumnModel().getColumn(1).setPreferredWidth(110);
+            tabela.getColumnModel().getColumn(2).setPreferredWidth(30);
 
             while(rs.next()){
-                int id = rs.getInt("idmedium");
+//                int id = rs.getInt("idmedium");
                 String nome = rs.getString("nome");
                 String matricula = rs.getString("matricula");
                 String ativo = null;
@@ -198,7 +203,9 @@ public class Mediuns {
                 }else{
                     ativo = "Não";
                 }
-                medium.addRow(new Object[]{id, matricula, nome, ativo});
+//                medium.addRow(new Object[]{matricula, nome});
+//                medium.addRow(new Object[]{id, matricula, nome, ativo});
+                medium.addRow(new Object[]{matricula, nome, ativo});
             }
             
         }catch(Exception ex){
@@ -220,7 +227,8 @@ public class Mediuns {
     
     public void buscaTabMedium(JTable tabela, String tipoBusca, JTextField texto){
 
-        String sql = "SELECT * FROM mediuns WHERE " + tipoBusca + " LIKE '%" + texto.getText() + "%'";
+        String sql = "SELECT * FROM mediuns WHERE " + tipoBusca + " LIKE '%" + texto.getText() + "%' "
+                + "ORDER BY nome ASC";
         
         try{
             con = new Conexao();
@@ -231,19 +239,13 @@ public class Mediuns {
             DefaultTableModel medium = new DefaultTableModel();
             tabela.setModel(medium);
 
-            medium.addColumn("ID");
-            medium.addColumn("Matrícula");
             medium.addColumn("Médium");
 
-            tabela.getColumnModel().getColumn(0).setPreferredWidth(5);
-            tabela.getColumnModel().getColumn(1).setPreferredWidth(10);
-            tabela.getColumnModel().getColumn(2).setPreferredWidth(110);
+            tabela.getColumnModel().getColumn(0).setPreferredWidth(110);
 
             while(rs.next()){
-                int id = rs.getInt("idmedium");
                 String nome = rs.getString("nome");
-                String matricula = rs.getString("matricula");
-                medium.addRow(new Object[]{id, matricula, nome});
+                medium.addRow(new Object[]{nome});
             }
         }catch(Exception ex){
             System.out.println("Erro na busca de tabela de Médiuns. Mensagem: " + ex.getMessage());
@@ -251,7 +253,8 @@ public class Mediuns {
     }
     public void buscaTabMediumMatricula(JTable tabela, JTextField texto){
 
-        String sql = "SELECT * FROM mediuns WHERE matricula LIKE '%" + texto.getText() + "%'";
+        String sql = "SELECT * FROM mediuns WHERE matricula LIKE '%" + texto.getText() + "%' "
+                + " ORDER BY nome ASC";
         
         try{
             con = new Conexao();
@@ -309,6 +312,7 @@ public class Mediuns {
     
     public boolean incluirMedium(){
         con = new Conexao();
+        
         if(!this.verificaExistente()){
 //            this.idMedium = con.ultimoId("mediuns", "idmedium");
             String sql = "INSERT INTO mediuns (idmedium, nome, dataCadastro, dataNascimento, "
@@ -323,6 +327,14 @@ public class Mediuns {
                 conn = con.getConnection();
                 stmt = conn.createStatement();
                 stmt.executeUpdate(sql);
+
+                cal = new GregorianCalendar();
+                m = new Mensalidade();
+                m.setAno(cal.get(Calendar.YEAR));
+                m.setCodMedium(this.idMedium);
+                m.verificaAno();
+
+                config.gravaBDBackup(sql);
                 return true;
 
             }catch(Exception ex){
@@ -343,7 +355,7 @@ public class Mediuns {
                 + "ativo = " + this.ativo + ", "
                 + "observacoes = '" + this.observacoes + "', "
                 + "email = '" + this.email + "', "
-                + "sexo = '" + this.sexo + "' "
+                + "sexo = '" + this.sexo + "', "
                 + "funcao = '" + this.funcao + "' "
                 + " WHERE idmedium = " + this.idMedium;
         
@@ -354,11 +366,13 @@ public class Mediuns {
             conn = con.getConnection();
             stmt = conn.createStatement();
             stmt.executeUpdate(sql);
+
+            config.gravaBDBackup(sql);
             
             return true;
             
         }catch(Exception ex){
-            System.out.println("Catch alteração de Médium ativado. Erro: " + ex.getMessage());
+            config.gravaErroLog("Houve um erro na alteração. Descrição: " + ex.getMessage(), "Alteração dos campos do médium", "sistejm.alteramedium");
         }
         return false;
     }
@@ -377,6 +391,8 @@ public class Mediuns {
             conn = con.getConnection();
             stmt = conn.createStatement();
             stmt.executeUpdate(sql);
+
+            config.gravaBDBackup(sql);
             
             return true;
             
@@ -398,6 +414,8 @@ public class Mediuns {
             conn = con.getConnection();
             stmt = conn.createStatement();
             stmt.executeUpdate(sql);
+
+            config.gravaBDBackup(sql);
             
             return true;
             
@@ -421,10 +439,11 @@ public class Mediuns {
             stmt = conn.createStatement();
             stmt.executeUpdate(sql);
             
+            config.gravaBDBackup(sql);
             return true;
             
         }catch(Exception ex){
-            config.gravaErroLog("Houve um erro ao alterar o e-mail. Descrição: " + ex.getMessage(), "Alteração do E-mail do médium", "sistejm.altemamedium");
+            config.gravaErroLog("Houve um erro ao alterar o e-mail. Descrição: " + ex.getMessage(), "Alteração e-mail do médium", "sistejm.emailmedium");
         }
         return false;
     }
@@ -443,10 +462,11 @@ public class Mediuns {
             stmt = conn.createStatement();
             stmt.executeUpdate(sql);
             
+            config.gravaBDBackup(sql);
             return true;
             
         }catch(Exception ex){
-            config.gravaErroLog("Houve um erro ao alterar o e-mail. Descrição: " + ex.getMessage(), "Alteração do E-mail do médium", "sistejm.altemamedium");
+            config.gravaErroLog("Houve um erro o sexo do médium. Descrição: " + ex.getMessage(), "Alteração do sexo do médium", "sistejm.sexomedium");
         }
         return false;
     }
@@ -468,6 +488,7 @@ public class Mediuns {
             stmt = conn.createStatement();
             stmt.executeUpdate(sql);
             
+            config.gravaBDBackup(sql);
             return true;
             
         }catch(Exception ex){
@@ -484,11 +505,12 @@ public class Mediuns {
             stmt = conn.createStatement();
             stmt.executeUpdate(sql);
             
+            config.gravaBDBackup(sql);
             //Colocar direcionamento de outras tabelas
             return true;
             
         }catch(Exception ex){
-            System.out.println("Catch exclusão de Médium ativado. Erro: " + ex.getMessage());
+            config.gravaErroLog("Houve um erro ao excluir o médium. Descrição: " + ex.getMessage(), "Exclusão do médium", "sistejm.excluimedium");
         }
         return false;
     }
@@ -533,7 +555,7 @@ public class Mediuns {
             System.out.println(" Erro: " + ex.getMessage());
         }
     }
-    public int retornaIdMedium(String texto){
+    public int retornaIdMedium(String texto){// colocar a variável OO
 
         String sql = "SELECT * FROM mediuns WHERE nome =  '" + texto + "'";
         
@@ -585,8 +607,7 @@ public class Mediuns {
                 + "m.ativo, m.email, m.sexo, m.funcao, l.endereco, l.bairro, l.cidade, l.estado "
                 + "FROM mediuns m "
                 + "LEFT JOIN logradouro l ON l.cod_medium = m.idmedium "
-                + "WHERE m.idmedium = " + this.idMedium + " "
-                + "AND m.ativo = 1";
+                + "WHERE m.idmedium = " + this.idMedium;
         
 //        System.out.println(sql);
         
@@ -651,13 +672,13 @@ public class Mediuns {
                     isento.setSelected(false);
                 }
 //                matricula.setText(rs.getString("m.matricula"));
-                if(dtNasc.equals("1901-01-01") || dtNasc.equals("")){
+                if(dtNasc.equals("01/01/1901") || dtNasc.equals("")){
                     dataNascimento.setText("");
                 }else{
                     dataNascimento.setText(dtNasc);
                 }
                 
-                if(dtEnt.equals("1901-01-01") || dtEnt.equals("")){
+                if(dtEnt.equals("01/01/1901") || dtEnt.equals("")){
                     dtEntrada.setText("");
                 }else{
                     dtEntrada.setText(dtEnt);
@@ -700,6 +721,8 @@ public class Mediuns {
                 }
             }
             
+        }catch(NullPointerException e){
+            System.out.println("Há campos null");
         }catch(Exception ex){
             config.gravaErroLog("Houve um erro no campos do médium. Erro: " + ex.getMessage(), "Preenchimento dos campos do médium", "sistejm.campomedium");
         }// + " SQL: " + sql
@@ -708,7 +731,19 @@ public class Mediuns {
 
     public void preencheTabNomeMedium(JTable tabela){
 
-        String sql = "SELECT DISTINCT * FROM mediuns m  WHERE m.ativo = 1";
+        String compAtivo = null;
+        
+        if(this.ativo == 9){
+            compAtivo = "";
+        }else{
+            compAtivo = "WHERE m.ativo = " + this.ativo;
+        }
+        
+        String sql = "SELECT nome FROM mediuns m "
+                + compAtivo + " "
+                + "ORDER BY nome ASC";
+        
+//        System.out.println(sql);
      
         try{
             con = new Conexao();
@@ -761,8 +796,21 @@ public class Mediuns {
     }    
     public void buscaTabNomeMedium(JTable tabela, String texto){
 
-        String sql = "SELECT DISTINCT * FROM mediuns m WHERE nome LIKE '%" + texto + "'";
-     
+        String compAtivo = null;
+        
+        if(this.ativo == 9){
+            compAtivo = "";
+        }else{
+            compAtivo = "AND m.ativo = " + this.ativo;
+        }
+        
+        String sql = "SELECT m.nome FROM mediuns m "
+                + "WHERE m.nome LIKE '%" + texto + "%' "
+                + compAtivo + " "
+                + "ORDER BY nome ASC";
+        
+//        System.out.println(sql);
+        
         try{
             con = new Conexao();
             conn = con.getConnection();
@@ -812,7 +860,6 @@ public class Mediuns {
             
         }catch(Exception ex){
             config.gravaErroLog("Houve um erro na execução da tabela de médiuns na mensalidade. Erro: " + ex.getMessage(), "Tabela de Médiuns | Mensalidade", "sistejm.tabmensal");
-//            System.out.println("Erro em tabela de mediuns. Mensagem: " + ex.getMessage());
         }        
     }
     public String retornaFuncao(String texto){
@@ -841,6 +888,117 @@ public class Mediuns {
             config.gravaErroLog("Houve um erro na pesquisa de função do médium. Erro: " + ex.getMessage(), "Função do Médiuns", "sistejm.funcaomedium");
         }
         return null;
+    }
+    
+    public void confereAniversariantesNoMes(JTable tabela, int mes){
+        
+        String dataNascimento = null;
+        
+        String sql = "SELECT nome, DATE_FORMAT(dataNascimento, '%d/%m/%Y') AS nascimento FROM mediuns "
+                + "   ORDER BY nome ASC";
+        
+        try{
+            con = new Conexao();
+            conn = con.getConnection();
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery(sql);
+                
+            DefaultTableModel medium = new DefaultTableModel();
+            tabela.setModel(medium);
+
+            medium.addColumn("Médium");
+            medium.addColumn("Data de Aniversário");
+
+            tabela.getColumnModel().getColumn(0).setPreferredWidth(110);
+            tabela.getColumnModel().getColumn(1).setPreferredWidth(80);
+
+            while(rs.next()){
+                dataNascimento = rs.getString("nascimento");
+                String dataNascDia = dataNascimento.substring(0, 2);
+                String dataNascMes = dataNascimento.substring(3, 5);
+                
+                if(dataNascMes.equals(mes)){
+                    String dataNasc = dataNascDia + "/" + dataNascMes;
+                    String nome = rs.getString("nome");
+                    medium.addRow(new Object[]{nome, dataNasc});
+                }
+            }
+            
+        }catch(Exception ex){
+            config.gravaErroLog("Houve um erro na aniversário dos médiuns. Erro: " + ex.getMessage(), "Aniversário dos Médiuns", "sistejm.nivermediuns");
+        }        
+        
+    }
+    
+    public void confereAniversariantesNoDia(JTable tabela){
+        cal = new GregorianCalendar();
+        
+        int dia = cal.get(Calendar.DAY_OF_MONTH);
+        int mes = cal.get(Calendar.MONTH) + 1;
+        
+        String sql = "SELECT nome, DATE_FORMAT(dataNascimento, '%d/%m/%Y') AS nascimento FROM mediuns "
+                + "   ORDER BY nome ASC";
+        
+        try{
+            con = new Conexao();
+            conn = con.getConnection();
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery(sql);
+                
+            DefaultTableModel medium = new DefaultTableModel();
+            tabela.setModel(medium);
+
+            medium.addColumn("Médium");
+            medium.addColumn("Data de Aniversário");
+
+            tabela.getColumnModel().getColumn(0).setPreferredWidth(110);
+
+            while(rs.next()){
+                dataNascimento = rs.getString("nascimento");
+                String dataNascDia = dataNascimento.substring(0, 2);
+                String dataNascMes = dataNascimento.substring(3, 5);
+                
+                if(dataNascMes.equals(mes)){
+                    if(dataNascDia.equals(dia)){
+                        String dataNasc = dataNascDia + "/" + dataNascMes;
+                        String nome = rs.getString("nome");
+                        medium.addRow(new Object[]{nome, dataNasc});
+                    }
+                }
+            }
+            
+        }catch(Exception ex){
+            config.gravaErroLog("Houve um erro na aniversário dos médiuns. Erro: " + ex.getMessage(), "Aniversário dos Médiuns", "sistejm.nivermediuns");
+        }        
+        
+        
+    }
+    public int confereQuantAniversariantes(){
+        cal = new GregorianCalendar();
+        
+//        int dia = cal.get(Calendar.DAY_OF_MONTH);
+        int mes = cal.get(Calendar.MONTH) + 1;
+        int quant = 0;
+        
+        String sql = "SELECT COUNT(idmedium) AS quant, DATE_FORMAT(dataNascimento, '%d/%m/%Y') AS nascimento "
+                + "FROM mediuns "
+                + "WHERE DATE_FORMAT(dataNascimento, '%m') = " + mes
+                ;
+        
+        try{
+            con = new Conexao();
+            conn = con.getConnection();
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery(sql);
+
+            while(rs.next()){
+                quant = rs.getInt("quant");
+            }
+            return quant;
+        }catch(Exception ex){
+            config.gravaErroLog("Houve um erro na aniversário dos médiuns. Erro: " + ex.getMessage(), "Aniversário dos Médiuns", "sistejm.nivermediuns");
+        }
+        return 0;
     }
     
     

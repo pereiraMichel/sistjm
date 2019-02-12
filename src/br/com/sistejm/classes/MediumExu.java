@@ -98,7 +98,8 @@ public class MediumExu {
                     + "FROM mediuns m "
                     + "INNER JOIN medium_exu me ON me.codMedium = m.idmedium "
                     + "LEFT JOIN exu e ON e.idexu = me.cod_exu "
-                    + "WHERE matricula LIKE '%" + texto.getText() + "%'";
+                    + "WHERE matricula LIKE '%" + texto.getText() + "%' "
+                    + "ORDER BY m.nome ASC";
 
         config = new Configuracoes();
         
@@ -171,11 +172,11 @@ public class MediumExu {
                 conn = con.getConnection();
                 stmt = conn.createStatement();
                 stmt.executeUpdate(sql);
+                config.gravaBDBackup(sql);
                 return true;
 
             }catch(Exception ex){
                 config.gravaErroLog("Tentativa de inclusão de Exu do Médium. Erro: " + ex.getMessage(), "Inclusão de Exu", "sistejm.mexu");
-//                System.out.println("Catch inclusão de Entidade do Médium ativado. Erro: " + ex.getMessage());
             }
         }
         return false;
@@ -192,6 +193,7 @@ public class MediumExu {
             conn = con.getConnection();
             stmt = conn.createStatement();
             stmt.executeUpdate(sql);
+            config.gravaBDBackup(sql);
             
             return true;
             
@@ -203,15 +205,15 @@ public class MediumExu {
     public boolean excluirMediumExu(){
         config = new Configuracoes();
         
-        String sql = "DELETE FROM medium_exu WHERE idmedium_exu = " + this.idMediumExu;
+        String sql = "DELETE FROM medium_exu WHERE codMedium = " + this.codMedium;
 
         try{
             con = new Conexao();
             conn = con.getConnection();
             stmt = conn.createStatement();
             stmt.executeUpdate(sql);
+            config.gravaBDBackup(sql);
             
-            //Colocar direcionamento de outras tabelas
             return true;
             
         }catch(Exception ex){
@@ -243,11 +245,11 @@ public class MediumExu {
         }
     }
     
-    public void preencheTabMediumCaboclo(JTable tabela){
+    public void preencheTabMediumExu(JTable tabela){
         config = new Configuracoes();
         String sql = "SELECT DISTINCT m.nome FROM mediuns m "
                 + "LEFT JOIN medium_exu me ON m.idmedium = mec.codMedium  "
-                + "LEFT JOIN exu e ON c.idcaboclo = me.cod_exu";
+                + "LEFT JOIN exu e ON e.idexu = me.cod_exu";
         
         try{
             con = new Conexao();
@@ -279,7 +281,7 @@ public class MediumExu {
                 + "LEFT JOIN medium_exu me ON m.idmedium = me.codMedium  "
                 + "LEFT JOIN exu e ON e.idexu = me.cod_exu "
                 + "WHERE m.nome = '" + nome + "' "
-                + "ORDER BY e.idexu";
+                + "ORDER BY e.idexu ASC";
 
         try{
             con = new Conexao();

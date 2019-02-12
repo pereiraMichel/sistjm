@@ -65,6 +65,7 @@ public class DMensalidadeMediuns extends javax.swing.JDialog {
     
     public void preencheTabMediuns(){
         m = new Mediuns();
+        m.setAtivo(9);
         m.preencheTabNomeMedium(tabelaMediuns);
     }
     
@@ -688,14 +689,19 @@ public class DMensalidadeMediuns extends javax.swing.JDialog {
 
     private void tabelaMediunsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaMediunsMouseClicked
 
+        int id = 0;
         m = new Mediuns();
+        men = new Mensalidade();
+
         String nomeMedium = String.valueOf(tabelaMediuns.getValueAt(tabelaMediuns.getSelectedRow(), 0));
         txtPesquisa.setText(nomeMedium);
         txtCodMedium.setText(String.valueOf(m.retornaIdMedium(nomeMedium)));
         
-        men = new Mensalidade();
-        men.setCodMedium(Integer.valueOf(txtCodMedium.getText()));
+        id = m.retornaIdMedium(nomeMedium);
+        men.setCodMedium(id);
         men.setAno(Integer.valueOf(txtAno.getText()));
+        men.setCodUsuario(Integer.valueOf(txtCodUser.getText()));
+        men.verificaAno();
         men.consultaMesesPagos(cJan, cFev, cMar, cAbr, 
             cMai, cJun, cJul, cAgo, cSet, cOut, 
             cNov, cDez);   
@@ -706,6 +712,7 @@ public class DMensalidadeMediuns extends javax.swing.JDialog {
     private void txtPesquisaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPesquisaKeyReleased
 
     m = new Mediuns();
+    m.setAtivo(9);
     m.buscaTabNomeMedium(tabelaMediuns, txtPesquisa.getText());
         // TODO add your handling code here:
     }//GEN-LAST:event_txtPesquisaKeyReleased

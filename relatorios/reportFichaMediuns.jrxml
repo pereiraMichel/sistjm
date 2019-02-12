@@ -2,61 +2,102 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reportFichaMediuns" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="b4cdf76a-5899-4da0-a13f-c5e889e12bec">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="64"/>
+	<property name="ireport.y" value="186"/>
+	<style name="table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TH" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_CH" mode="Opaque" backcolor="#FFBFBF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[new Boolean($V{REPORT_COUNT}.intValue()%2==0)]]></conditionExpression>
+			<style backcolor="#FFEFEF"/>
+		</conditionalStyle>
+	</style>
+	<style name="Crosstab Data Text" hAlign="Center"/>
 	<queryString>
-		<![CDATA[SELECT *
+		<![CDATA[SELECT m.nome, m.ativo, m.matricula, m.funcao, DATE_FORMAT(m.dataEntrada, "%d/%m/%Y") AS dataEntFormat,
+m.isentoMensal, m.sexo, DATE_FORMAT(m.dataNascimento, "%d/%m/%Y") AS dataNascFormat, m.observacoes,
+m.email, l.endereco, l.bairro, l.cidade, l.estado, t.numTelefone, f.foto,
+o.nome AS orixa,
+tp.tipo AS tipo,
+ent.nome AS entidade,
+cab.nome AS caboclo,
+er.nome AS ere,
+ex.nome AS exu,
+c.mes,
+c.ano,
+c.confirma, (
+CASE WHEN c.confirma = "s"
+THEN
+DATE_FORMAT(c.dataRealizacao, "%d/%m/%Y")
+END
+) AS dtReal,
+tpc.nome AS tipoCoroa,
+tpc.idtipocoroa
 FROM mediuns m
 LEFT JOIN logradouro l ON l.cod_medium = m.idmedium
 LEFT JOIN foto f ON f.cod_medium = m.idmedium
 LEFT JOIN telefones t ON t.codMedium = m.idmedium
-WHERE m.idmedium = 1]]>
+
+LEFT JOIN medium_ori mor ON mor.codMedium = m.idmedium
+LEFT JOIN orixas o ON mor.cod_orixa = o.idorixa
+LEFT JOIN tipo_orixa tp ON tp.idtipo_orixa = mor.codTipo
+LEFT JOIN medium_ent ment ON ment.codMedium = m.idmedium
+LEFT JOIN entidade ent ON ment.cod_entidade = ent.identidade
+LEFT JOIN medium_caboclo mcab ON mcab.codMedium = m.idmedium
+LEFT JOIN caboclo cab ON mcab.cod_caboclo = cab.idcaboclo
+LEFT JOIN medium_ere mere ON mere.codMedium = m.idmedium
+LEFT JOIN ere er ON mere.cod_ere = er.idere
+LEFT JOIN medium_exu mex ON mex.codMedium = m.idmedium
+LEFT JOIN exu ex ON mex.cod_exu = ex.idexu
+
+LEFT JOIN coroa c ON c.codmedium = m.idmedium
+LEFT JOIN tipocoroa tpc ON c.codtipocoroa = tpc.idtipocoroa
+
+WHERE m.idmedium = 351
+ORDER BY tp.idtipo_orixa]]>
 	</queryString>
-	<field name="idmedium" class="java.lang.Integer">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
 	<field name="nome" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="dataCadastro" class="java.sql.Date">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="dataNascimento" class="java.sql.Date">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="dataEntrada" class="java.sql.Date">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="matricula" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="isentoMensal" class="java.lang.Integer">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="ativo" class="java.lang.Integer">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
+	<field name="matricula" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="funcao" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="dataEntFormat" class="java.lang.String"/>
+	<field name="isentoMensal" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="sexo" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="dataNascFormat" class="java.lang.String"/>
 	<field name="observacoes" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="email" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="sexo" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="funcao" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="cod_usuario" class="java.lang.Integer">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="idlogradouro" class="java.lang.Integer">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
 	<field name="endereco" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="complemento" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="bairro" class="java.lang.String">
@@ -68,227 +109,396 @@ WHERE m.idmedium = 1]]>
 	<field name="estado" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="cod_medium" class="java.lang.Integer">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="idfoto" class="java.lang.Integer">
+	<field name="numTelefone" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="foto" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="idtelefone" class="java.lang.Integer">
+	<field name="orixa" class="java.lang.String"/>
+	<field name="tipo" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="numTelefone" class="java.lang.String">
+	<field name="entidade" class="java.lang.String"/>
+	<field name="caboclo" class="java.lang.String"/>
+	<field name="ere" class="java.lang.String"/>
+	<field name="exu" class="java.lang.String"/>
+	<field name="mes" class="java.lang.Integer">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="codMedium" class="java.lang.Integer">
+	<field name="ano" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="confirma" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="dtReal" class="java.lang.String"/>
+	<field name="tipoCoroa" class="java.lang.String"/>
+	<field name="idtipocoroa" class="java.lang.Integer">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
-	<title>
-		<band height="79" splitType="Stretch">
-			<image hAlign="Center">
-				<reportElement x="0" y="0" width="83" height="62" uuid="4c1ae40f-4d04-409c-b298-877dc6bfebc7"/>
-				<imageExpression><![CDATA["C:\\Users\\Michel\\Documents\\NetBeansProjects\\SISTEJM\\src\\br\\com\\sistejm\\images\\logoTJM.jpg"]]></imageExpression>
-			</image>
+	<columnHeader>
+		<band height="241" splitType="Stretch">
 			<staticText>
-				<reportElement x="83" y="0" width="282" height="30" forecolor="#0000CC" uuid="48b3b38f-8005-4ccd-859e-1a8ad234b5e3"/>
+				<reportElement x="86" y="0" width="282" height="30" forecolor="#0000CC" uuid="48b3b38f-8005-4ccd-859e-1a8ad234b5e3"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="Calibri" size="12" isBold="true" isStrikeThrough="false"/>
 				</textElement>
 				<text><![CDATA[TEMPLO ESPÍRITA JORGE MIGUEL]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="83" y="30" width="257" height="15" uuid="129ee1a9-a010-420f-9a10-2aff497e2521"/>
+				<reportElement x="88" y="34" width="257" height="15" uuid="129ee1a9-a010-420f-9a10-2aff497e2521"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="Calibri" size="11" isBold="true" isStrikeThrough="false"/>
 				</textElement>
 				<text><![CDATA[FICHA DOS MÉDIUNS]]></text>
 			</staticText>
-			<image>
-				<reportElement x="482" y="12" width="73" height="67" uuid="b08d3c76-d34d-4335-bbc0-66498cb31a5f"/>
-				<imageExpression><![CDATA[$F{foto}]]></imageExpression>
-				<anchorNameExpression><![CDATA[$F{foto}]]></anchorNameExpression>
+			<image hAlign="Center">
+				<reportElement x="1" y="2" width="83" height="62" uuid="2779a128-48b4-44bb-8507-cdc0fcc6968e"/>
+				<imageExpression><![CDATA["C:\\Users\\Michel\\Documents\\NetBeansProjects\\SISTEJM\\src\\br\\com\\sistejm\\images\\logoTJM.jpg"]]></imageExpression>
 			</image>
-		</band>
-	</title>
-	<columnHeader>
-		<band height="29" splitType="Stretch">
-			<staticText>
-				<reportElement x="0" y="2" width="48" height="18" uuid="ab38f5eb-1970-4a6e-a5f5-0b1eb282ec67"/>
-				<textElement>
-					<font fontName="Calibri" size="11" isBold="true"/>
-				</textElement>
-				<text><![CDATA[MÉDIUM:]]></text>
-			</staticText>
+			<rectangle radius="10">
+				<reportElement x="358" y="108" width="117" height="26" uuid="f77034f9-c035-4023-af5b-9f7360bf1c36"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="364" y="97" width="100" height="20" forecolor="#FFFFFF" uuid="dca361cc-2bd1-477f-954d-acd5d2407fbd"/>
+			</rectangle>
+			<rectangle radius="10">
+				<reportElement x="246" y="108" width="106" height="26" uuid="79f27bdd-b316-4363-9d2b-6fd0666bb7d0"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="249" y="97" width="97" height="20" forecolor="#FFFFFF" uuid="ff2c034f-5137-4d5c-a857-c6e2a23b14b0"/>
+			</rectangle>
+			<rectangle radius="10">
+				<reportElement x="123" y="108" width="100" height="26" uuid="1942b229-563a-4734-8d70-859e8ad6f29c"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="132" y="95" width="58" height="20" forecolor="#FFFFFF" uuid="25130fa4-8216-446f-a127-7dbfbb1d6f9e"/>
+			</rectangle>
+			<rectangle radius="10">
+				<reportElement x="5" y="108" width="100" height="26" uuid="d3b4fa5e-300a-472c-a7e9-966c240335df"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="11" y="97" width="69" height="20" forecolor="#FFFFFF" uuid="ed40a3a4-a80e-4a02-a76b-f7412395becf"/>
+			</rectangle>
 			<textField>
-				<reportElement x="53" y="2" width="307" height="17" uuid="e231a516-5fb8-46cd-8785-600b79ce36c0"/>
-				<textElement>
-					<font fontName="Calibri" size="11" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{nome}.toUpperCase()]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="367" y="2" width="100" height="20" uuid="beca6f32-8389-4a77-b194-fd31231d158a"/>
-				<textElement verticalAlignment="Middle">
-					<font isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{ativo}.valueOf(1)?"ATIVO":"INATIVO"]]></textFieldExpression>
-			</textField>
-		</band>
-	</columnHeader>
-	<detail>
-		<band height="209" splitType="Stretch">
-			<textField>
-				<reportElement x="65" y="75" width="253" height="18" uuid="f3c9dd29-dbda-497a-bfe9-58b737386bbc"/>
+				<reportElement x="69" y="172" width="253" height="18" uuid="f3c9dd29-dbda-497a-bfe9-58b737386bbc"/>
 				<textElement verticalAlignment="Top"/>
-				<textFieldExpression><![CDATA[$F{endereco}.toUpperCase()]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{endereco}.equals(null)?"":$F{endereco}.toUpperCase()]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="2" y="76" width="58" height="16" uuid="9538fdff-cbc6-4cdf-be48-999925a13942"/>
+				<reportElement x="6" y="173" width="63" height="16" uuid="9538fdff-cbc6-4cdf-be48-999925a13942"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[ENDEREÇO:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="373" y="72" width="134" height="20" uuid="ef5de89b-bec4-48f9-bf34-77e42044e87e"/>
+				<reportElement x="377" y="169" width="134" height="20" uuid="ef5de89b-bec4-48f9-bf34-77e42044e87e"/>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{bairro}.toUpperCase()]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{bairro}.equals(null)?"":$F{bairro}.toUpperCase()]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="1" y="20" width="100" height="17" uuid="c1302192-e304-4316-b18b-90e24edb4d20"/>
+				<reportElement x="11" y="114" width="94" height="17" uuid="c1302192-e304-4316-b18b-90e24edb4d20"/>
 				<textElement>
 					<font fontName="Calibri" size="11" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{matricula}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="1" y="0" width="66" height="17" uuid="9af6aa6e-5b7b-4aa3-9bef-685c48f27bd6"/>
+				<reportElement x="14" y="99" width="66" height="17" uuid="9af6aa6e-5b7b-4aa3-9bef-685c48f27bd6"/>
 				<textElement textAlignment="Left">
-					<font fontName="Calibri" size="11" isBold="true" isItalic="false"/>
+					<font fontName="Calibri" size="10" isBold="true" isItalic="false"/>
 				</textElement>
 				<text><![CDATA[MATRÍCULA]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="327" y="75" width="42" height="16" uuid="47676687-4ef2-4a96-bf25-fecce96e7e32"/>
+				<reportElement x="331" y="172" width="42" height="16" uuid="47676687-4ef2-4a96-bf25-fecce96e7e32"/>
 				<textElement textAlignment="Left">
 					<font fontName="Calibri" size="11" isBold="true" isItalic="false"/>
 				</textElement>
-				<text><![CDATA[BAIRRO]]></text>
+				<text><![CDATA[BAIRRO:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="68" y="49" width="143" height="20" uuid="6004aafa-e056-4fb0-8d2b-3947afc0b691"/>
+				<reportElement x="72" y="146" width="143" height="20" uuid="6004aafa-e056-4fb0-8d2b-3947afc0b691"/>
 				<textFieldExpression><![CDATA[$F{sexo}.equals("m")? "MASCULINO": "FEMININO"]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="4" y="49" width="48" height="18" uuid="8fa0213d-5f94-4e3f-a8df-9e2df01410fb"/>
+				<reportElement x="8" y="146" width="48" height="18" uuid="8fa0213d-5f94-4e3f-a8df-9e2df01410fb"/>
 				<textElement>
 					<font fontName="Calibri" size="11" isBold="true"/>
 				</textElement>
-				<text><![CDATA[SEXO]]></text>
+				<text><![CDATA[SEXO:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="123" y="0" width="45" height="17" uuid="28d9c4fe-9e67-4ac5-a330-e2f2b6d0f3ca"/>
+				<reportElement x="137" y="99" width="45" height="17" uuid="28d9c4fe-9e67-4ac5-a330-e2f2b6d0f3ca"/>
 				<textElement textAlignment="Left">
-					<font fontName="Calibri" size="11" isBold="true" isItalic="false"/>
+					<font fontName="Calibri" size="10" isBold="true" isItalic="false"/>
 				</textElement>
 				<text><![CDATA[FUNÇÃO]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="123" y="20" width="100" height="20" uuid="cead8863-0bdc-44ca-990d-9f92082d761a"/>
+				<reportElement x="132" y="112" width="91" height="20" uuid="cead8863-0bdc-44ca-990d-9f92082d761a"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{funcao}.toUpperCase()]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="242" y="20" width="100" height="20" uuid="94c9bf79-29a3-42a1-8350-aa6aa6c98c9c"/>
-				<textFieldExpression><![CDATA[$F{dataEntrada}]]></textFieldExpression>
-			</textField>
 			<staticText>
-				<reportElement x="242" y="0" width="100" height="17" uuid="99b26d8d-5514-49cf-a5ce-b843c5bd5c6a"/>
-				<textElement textAlignment="Left">
-					<font fontName="Calibri" size="11" isBold="true" isItalic="false"/>
+				<reportElement x="250" y="99" width="94" height="17" uuid="99b26d8d-5514-49cf-a5ce-b843c5bd5c6a"/>
+				<textElement textAlignment="Center">
+					<font fontName="Calibri" size="10" isBold="true" isItalic="false"/>
 				</textElement>
 				<text><![CDATA[DATA DE ENTRADA]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="367" y="20" width="100" height="20" uuid="e6bf152e-89a8-4453-b777-b56634567115"/>
-				<textFieldExpression><![CDATA[$F{isentoMensal}.valueOf(0)?"Sim":"Não"]]></textFieldExpression>
+				<reportElement x="369" y="117" width="100" height="20" uuid="e6bf152e-89a8-4453-b777-b56634567115"/>
+				<textFieldExpression><![CDATA[$F{isentoMensal}.valueOf(0)?"SIM":"NÃO"]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="367" y="3" width="115" height="17" uuid="e9178db2-b84f-4cbc-97ca-9cc094575184"/>
+				<reportElement x="366" y="100" width="105" height="17" uuid="e9178db2-b84f-4cbc-97ca-9cc094575184"/>
 				<textElement textAlignment="Left">
-					<font fontName="Calibri" size="11" isBold="true" isItalic="false"/>
+					<font fontName="Calibri" size="10" isBold="true" isItalic="false"/>
 				</textElement>
 				<text><![CDATA[ISENTO MENSALIDADE]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="397" y="49" width="100" height="20" uuid="abb7b563-bb90-42b0-87ff-a6e59b0726da"/>
-				<textFieldExpression><![CDATA[$F{dataNascimento}]]></textFieldExpression>
+				<reportElement x="401" y="146" width="100" height="20" uuid="abb7b563-bb90-42b0-87ff-a6e59b0726da"/>
+				<textFieldExpression><![CDATA[$F{dataNascFormat}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="283" y="49" width="114" height="16" uuid="55ee791e-21d0-4476-ba79-05576319803d"/>
+				<reportElement x="287" y="146" width="114" height="16" uuid="55ee791e-21d0-4476-ba79-05576319803d"/>
 				<textElement textAlignment="Left">
 					<font fontName="Calibri" size="11" isBold="true" isItalic="false"/>
 				</textElement>
-				<text><![CDATA[DATA DE NASCIMENTO]]></text>
+				<text><![CDATA[DATA DE NASCIMENTO:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="4" y="111" width="64" height="16" uuid="1b2a4e4a-b7c8-4ef5-a90e-9c82b948c129"/>
+				<reportElement x="4" y="75" width="48" height="18" uuid="ab38f5eb-1970-4a6e-a5f5-0b1eb282ec67"/>
+				<textElement>
+					<font fontName="Calibri" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[MÉDIUM:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="57" y="76" width="307" height="17" uuid="e231a516-5fb8-46cd-8785-600b79ce36c0"/>
+				<textElement>
+					<font fontName="Calibri" size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nome}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="366" y="76" width="100" height="20" forecolor="#009900" uuid="beca6f32-8389-4a77-b194-fd31231d158a"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ativo}.valueOf(1)?"ATIVO":"INATIVO"]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="481" y="79" width="73" height="67" uuid="b08d3c76-d34d-4335-bbc0-66498cb31a5f"/>
+				<imageExpression><![CDATA[$F{foto}]]></imageExpression>
+				<anchorNameExpression><![CDATA[$F{foto}]]></anchorNameExpression>
+			</image>
+			<textField>
+				<reportElement x="252" y="115" width="94" height="20" uuid="94c9bf79-29a3-42a1-8350-aa6aa6c98c9c"/>
+				<textFieldExpression><![CDATA[$F{dataEntFormat}.equals("01/01/1901")?"":$F{dataEntFormat}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="6" y="203" width="64" height="16" uuid="1b2a4e4a-b7c8-4ef5-a90e-9c82b948c129"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
-				<text><![CDATA[TELEFONES]]></text>
+				<text><![CDATA[TELEFONE:]]></text>
 			</staticText>
 			<textField pattern="####-####">
-				<reportElement x="4" y="127" width="100" height="20" uuid="57c87a8d-d7c9-4c32-afcc-87081a56938c"/>
-				<textFieldExpression><![CDATA[$F{numTelefone}]]></textFieldExpression>
+				<reportElement x="72" y="203" width="100" height="20" uuid="57c87a8d-d7c9-4c32-afcc-87081a56938c"/>
+				<textFieldExpression><![CDATA[$F{numTelefone}.equals(null)?"":$F{numTelefone}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="176" y="223" width="66" height="17" uuid="12faaaaf-280b-48cc-becd-613d954401fc"/>
+				<textElement textAlignment="Left">
+					<font fontName="Calibri" size="11" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[ENTIDADE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="4" y="223" width="66" height="17" uuid="dfc385f2-1e1c-4387-aef0-0d2d098fa32b"/>
+				<textElement textAlignment="Left">
+					<font fontName="Calibri" size="11" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[ORIXÁ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="464" y="223" width="66" height="17" uuid="963b286a-2bb2-4d1f-b35f-9a1602b9590a"/>
+				<textElement textAlignment="Left">
+					<font fontName="Calibri" size="11" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[EXU]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="380" y="223" width="66" height="17" uuid="c9de4808-0df0-4824-b586-6766aab2943a"/>
+				<textElement textAlignment="Left">
+					<font fontName="Calibri" size="11" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[ERÊ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="280" y="223" width="66" height="17" uuid="6ec7846b-2bfd-4c49-a814-00b2d2a146ee"/>
+				<textElement textAlignment="Left">
+					<font fontName="Calibri" size="11" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[CABOCLO]]></text>
+			</staticText>
+			<textField>
+				<reportElement isPrintRepeatedValues="false" x="381" y="2" width="82" height="20" uuid="d4351d24-075d-4060-8aa8-be5e01df262a"/>
+				<textElement>
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ere}.equals(null)?"":$F{ere}.toUpperCase()]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="23" splitType="Stretch">
+			<textField>
+				<reportElement isPrintRepeatedValues="false" x="5" y="2" width="66" height="20" isRemoveLineWhenBlank="true" uuid="e3cf9f8a-734d-4519-b2ea-f879230bd43e"/>
+				<textElement>
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{orixa}.equals(null)?"":$F{orixa}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement isPrintRepeatedValues="false" x="177" y="2" width="100" height="20" uuid="c2503c6a-79e7-4462-ae7a-8aba58c21172"/>
+				<textElement>
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{entidade}.equals(null)?"":$F{entidade}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement isPrintRepeatedValues="false" x="69" y="3" width="101" height="18" uuid="552b9893-8a93-44c1-b0b1-3f49a3ff6416"/>
+				<textElement>
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tipo}.equals(null)?"":$F{tipo}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement isPrintRepeatedValues="false" mode="Transparent" x="463" y="2" width="93" height="20" uuid="bbd852eb-f492-4e9b-a1ed-4cb8aa9b0cce"/>
+				<textElement markup="none">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{exu}.equals(null)?"":$F{exu}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement isPrintRepeatedValues="false" x="281" y="2" width="82" height="20" uuid="c30babb2-3c02-418f-8e2e-0560ca665059"/>
+				<textElement>
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{caboclo}.equals(null)?"":$F{caboclo}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement isPrintRepeatedValues="false" x="373" y="2" width="90" height="20" uuid="90ee1800-656e-4874-b76f-7b8397d9cba0"/>
+				<textFieldExpression><![CDATA[$F{ere}.equals(null)?"":$F{ere}.toUpperCase()]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
 	<columnFooter>
-		<band height="132" splitType="Stretch">
+		<band height="100" splitType="Stretch">
 			<staticText>
-				<reportElement x="520" y="72" width="9" height="20" uuid="2f52be8b-9d8f-4f7f-a2a4-a610edff867f"/>
+				<reportElement x="352" y="4" width="200" height="16" uuid="0e4439fb-f834-44e3-9da4-5070a2b85782"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[CÓDIGO DE BARRAS DO MÉDIUM]]></text>
+			</staticText>
+			<componentElement>
+				<reportElement x="352" y="19" width="200" height="35" uuid="7e72b732-5bcc-4d5d-8725-d9f515b3d6e8"/>
+				<jr:barbecue xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" type="Code39" drawText="false" checksumRequired="false">
+					<jr:codeExpression><![CDATA[$F{matricula}]]></jr:codeExpression>
+				</jr:barbecue>
+			</componentElement>
+			<staticText>
+				<reportElement x="520" y="76" width="9" height="20" uuid="2f52be8b-9d8f-4f7f-a2a4-a610edff867f"/>
 				<text><![CDATA[/]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="493" y="72" width="27" height="20" uuid="3bd6750a-2072-446e-891c-58c30d667528"/>
+				<reportElement x="493" y="76" width="27" height="20" uuid="3bd6750a-2072-446e-891c-58c30d667528"/>
 				<textElement textAlignment="Right">
 					<font isStrikeThrough="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="-5" y="19" width="554" height="20" uuid="14c8967a-0704-4429-b1b8-38e483e30141"/>
+				<reportElement x="1" y="59" width="554" height="20" uuid="14c8967a-0704-4429-b1b8-38e483e30141"/>
 				<textElement textAlignment="Center">
 					<font fontName="Arial Narrow" size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[USO EXCLUSIVO DO TEJM]]></text>
 			</staticText>
 			<line>
-				<reportElement x="2" y="19" width="544" height="1" uuid="799e5e12-ef64-4be5-bb19-28bbebd9f4ae"/>
+				<reportElement x="8" y="55" width="544" height="1" uuid="799e5e12-ef64-4be5-bb19-28bbebd9f4ae"/>
 			</line>
 			<textField evaluationTime="Report">
-				<reportElement x="526" y="72" width="23" height="20" uuid="d18619b4-dcb2-431e-b871-0e2e7e5bf32e"/>
+				<reportElement x="526" y="76" width="23" height="20" uuid="d18619b4-dcb2-431e-b871-0e2e7e5bf32e"/>
 				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
-			<line>
-				<reportElement x="-1" y="4" width="551" height="1" uuid="02eef99a-f277-4cc3-819c-053d16c2ac75"/>
-				<graphicElement>
-					<pen lineStyle="Dotted"/>
-				</graphicElement>
-			</line>
-			<line>
-				<reportElement x="3" y="-165" width="551" height="1" uuid="51f71a8c-b2f9-4306-8440-e1695e0b5387"/>
-				<graphicElement>
-					<pen lineStyle="Dashed"/>
-				</graphicElement>
-			</line>
 		</band>
 	</columnFooter>
+	<summary>
+		<band height="140">
+			<staticText>
+				<reportElement x="6" y="11" width="66" height="17" uuid="c740931d-10f8-4e69-8985-a014e7457ac9"/>
+				<textElement textAlignment="Left">
+					<font fontName="Calibri" size="11" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[COROAÇÃO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="5" y="26" width="78" height="17" uuid="6bee7fbe-5cc8-43ec-b104-74c95e08c96c"/>
+				<textElement textAlignment="Left">
+					<font fontName="Calibri" size="11" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[RECOLHIMENTO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="86" y="26" width="51" height="17" uuid="1f61f24c-398b-4990-b709-01c904719154"/>
+				<textElement textAlignment="Left">
+					<font fontName="Calibri" size="11" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[1 ANO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="137" y="26" width="53" height="17" uuid="1a3cc623-a144-4981-b64d-a9fdb55ec23b"/>
+				<textElement textAlignment="Left">
+					<font fontName="Calibri" size="11" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[3 ANOS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="193" y="26" width="53" height="17" uuid="b449eea6-162d-4eb7-b17b-897624c4d7c1"/>
+				<textElement textAlignment="Left">
+					<font fontName="Calibri" size="11" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[7 ANOS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="246" y="26" width="51" height="17" uuid="0877941f-e8a1-4e59-8c26-7166e0090ffa"/>
+				<textElement textAlignment="Left">
+					<font fontName="Calibri" size="11" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[14 ANOS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="300" y="26" width="51" height="17" uuid="5239fa23-a96a-47e3-a787-e79b2b5b4bd4"/>
+				<textElement textAlignment="Left">
+					<font fontName="Calibri" size="11" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[21 ANOS]]></text>
+			</staticText>
+			<textField>
+				<reportElement isPrintRepeatedValues="false" x="5" y="43" width="79" height="20" uuid="02cdb03e-6691-4fb2-965a-6c347794e719"/>
+				<textFieldExpression><![CDATA[$F{idtipocoroa}.equals('2')?$F{dtReal}:""]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
 </jasperReport>

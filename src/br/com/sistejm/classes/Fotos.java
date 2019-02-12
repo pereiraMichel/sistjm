@@ -53,6 +53,7 @@ public class Fotos {
     
     public boolean incluirFoto(){
         con = new Conexao();
+        config = new Configuracoes();
             
             this.idFoto = con.ultimoId("foto", "idfoto");
 
@@ -64,6 +65,8 @@ public class Fotos {
                 conn = con.getConnection();
                 stmt = conn.createStatement();
                 stmt.executeUpdate(sql);
+                config.gravaBDBackup(sql);
+                
                 return true;
 
             }catch(Exception ex){
@@ -74,6 +77,10 @@ public class Fotos {
     }
     
     public boolean excluirFoto(){
+        config = new Configuracoes();
+        
+        this.idFoto = this.retornaIdFoto();
+        
         String sql = "DELETE FROM foto WHERE cod_medium = " + this.codMedium;
         
 //            System.out.println(sql);
@@ -82,6 +89,7 @@ public class Fotos {
             conn = con.getConnection();
             stmt = conn.createStatement();
             stmt.executeUpdate(sql);
+            config.gravaBDBackup(sql);
             
             return true;
             
@@ -114,6 +122,30 @@ public class Fotos {
             config.gravaErroLog("Houve um erro na foto. Erro: " + ex.getMessage(), "Retorno ID do Telefone", "sistejm.telefone");
         }
         return null;
+    }
+    
+    public int retornaIdFoto(){
+        config = new Configuracoes();
+        con = new Conexao();
+        String sql = "SELECT idfoto FROM foto WHERE cod_medium = " + this.codMedium;
+        
+//        System.out.println(sql);
+        
+        try{
+            conn = con.getConnection();
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery(sql);
+            
+            rs.next();
+            
+            if(rs.absolute(1)){
+                return rs.getInt("foto");
+            }
+            
+        }catch(Exception ex){
+            config.gravaErroLog("Houve um erro na foto. Erro: " + ex.getMessage(), "Retorno ID da Foto", "sistejm.idfoto");
+        }
+        return 0;
     }
 
 

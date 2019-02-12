@@ -141,6 +141,8 @@ public class MediumEntidade {
             stmt = conn.createStatement();
             rs = stmt.executeQuery(sql);
             
+            rs.next();
+            
             if(rs.absolute(1)){
                 return true;
             }else{
@@ -171,11 +173,12 @@ public class MediumEntidade {
                 conn = con.getConnection();
                 stmt = conn.createStatement();
                 stmt.executeUpdate(sql);
+                config.gravaBDBackup(sql);
+                
                 return true;
 
             }catch(Exception ex){
                 config.gravaErroLog("Tentativa de inclusão da entidade do Médium. Erro: " + ex.getMessage(), "Entidade", "sistejm.entidade");
-//                System.out.println("Catch inclusão de Entidade do Médium ativado. Erro: " + ex.getMessage());
             }
         }
         return false;
@@ -192,6 +195,7 @@ public class MediumEntidade {
             conn = con.getConnection();
             stmt = conn.createStatement();
             stmt.executeUpdate(sql);
+            config.gravaBDBackup(sql);
             
             return true;
             
@@ -210,13 +214,13 @@ public class MediumEntidade {
             conn = con.getConnection();
             stmt = conn.createStatement();
             stmt.executeUpdate(sql);
+            config.gravaBDBackup(sql);
             
             //Colocar direcionamento de outras tabelas
             return true;
             
         }catch(Exception ex){
             config.gravaErroLog("Tentativa de exclusão da entidade do Médium. Erro: " + ex.getMessage(), "Exclusão da Entidade", "sistejm.entidade");
-//            System.out.println("Catch exclusão de Orixá de Médium ativado. Erro: " + ex.getMessage());
         }
         return false;
     }
@@ -230,13 +234,12 @@ public class MediumEntidade {
             conn = con.getConnection();
             stmt = conn.createStatement();
             stmt.executeUpdate(sql);
-            
-            //Colocar direcionamento de outras tabelas
+            config.gravaBDBackup(sql);
+
             return true;
             
         }catch(Exception ex){
             config.gravaErroLog("Tentativa de exclusão da entidade do Médium. Erro: " + ex.getMessage(), "Exclusão da Entidade", "sistejm.entidade");
-//            System.out.println("Catch exclusão de Orixá de Médium ativado. Erro: " + ex.getMessage());
         }
         return false;
     }
@@ -272,7 +275,8 @@ public class MediumEntidade {
                     + "FROM mediuns m "
                     + "INNER JOIN medium_ent me ON me.codMedium = m.idmedium "
                     + "LEFT JOIN entidade e ON e.identidade = me.cod_entidade "
-                    + "WHERE m.idmedium = " + this.codMedium;
+                    + "WHERE m.idmedium = " + this.codMedium + " "
+                    + "ORDER BY e.nome ASC";
         
 //        System.out.println(sql);
         

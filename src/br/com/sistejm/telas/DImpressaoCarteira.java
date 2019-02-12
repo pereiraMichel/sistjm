@@ -50,10 +50,12 @@ public class DImpressaoCarteira extends javax.swing.JDialog {
         camposTexto(false);
         preencheAuto();
         exibeTabelaMedium();
+        this.selecao = "nome";
     }
     
     public void exibeTabelaMedium(){
         m = new Mediuns();
+        m.setAtivo(9);
         m.preencheTabNomeMedium(tabelaMedium);
     }
     
@@ -86,13 +88,13 @@ public class DImpressaoCarteira extends javax.swing.JDialog {
         btImprimir = new javax.swing.JButton();
         btCancelar = new javax.swing.JButton();
         labelLogo = new javax.swing.JLabel();
+        txtMatricula = new javax.swing.JTextField();
+        txtIdMedium = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         tabelaMedium = new javax.swing.JTable();
         txtPesquisa = new javax.swing.JTextField();
         radioNome = new javax.swing.JRadioButton();
         radioMatricula = new javax.swing.JRadioButton();
-        txtMatricula = new javax.swing.JTextField();
-        txtIdMedium = new javax.swing.JTextField();
         panelDown = new javax.swing.JPanel();
         labelVersao = new javax.swing.JLabel();
         labelPesquisa = new javax.swing.JLabel();
@@ -139,6 +141,10 @@ public class DImpressaoCarteira extends javax.swing.JDialog {
         labelLogo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         labelLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/sistejm/images/icontejm.png"))); // NOI18N
 
+        txtMatricula.setEditable(false);
+
+        txtIdMedium.setEditable(false);
+
         javax.swing.GroupLayout panelTopLayout = new javax.swing.GroupLayout(panelTop);
         panelTop.setLayout(panelTopLayout);
         panelTopLayout.setHorizontalGroup(
@@ -148,6 +154,10 @@ public class DImpressaoCarteira extends javax.swing.JDialog {
                 .addComponent(labelLogo, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(labelTitulo)
+                .addGap(48, 48, 48)
+                .addGroup(panelTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(txtMatricula, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtIdMedium, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btImprimir, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -157,16 +167,20 @@ public class DImpressaoCarteira extends javax.swing.JDialog {
         panelTopLayout.setVerticalGroup(
             panelTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelTopLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(panelTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btImprimir, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(panelTopLayout.createSequentialGroup()
                 .addGroup(panelTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(labelTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(labelLogo, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(panelTopLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panelTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelTopLayout.createSequentialGroup()
+                        .addComponent(txtMatricula, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtIdMedium, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btImprimir, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         tabelaMedium.setModel(new javax.swing.table.DefaultTableModel(
@@ -204,10 +218,6 @@ public class DImpressaoCarteira extends javax.swing.JDialog {
                 radioMatriculaActionPerformed(evt);
             }
         });
-
-        txtMatricula.setEditable(false);
-
-        txtIdMedium.setEditable(false);
 
         panelDown.setBackground(new java.awt.Color(255, 255, 255));
         panelDown.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 204, 204), 1, true));
@@ -263,12 +273,8 @@ public class DImpressaoCarteira extends javax.swing.JDialog {
                                 .addGap(0, 0, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(radioNome)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(txtMatricula, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtIdMedium, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(8, 8, 8))))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 611, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 621, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -279,9 +285,7 @@ public class DImpressaoCarteira extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtPesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(radioNome)
-                    .addComponent(labelPesquisa)
-                    .addComponent(txtMatricula, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtIdMedium, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(labelPesquisa))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(radioMatricula)
@@ -333,8 +337,6 @@ public class DImpressaoCarteira extends javax.swing.JDialog {
 
 
         m = new Mediuns();
-//        String id = String.valueOf(tabelaMedium.getValueAt(tabelaMedium.getSelectedRow(), 0));
-//        String matriculaMedium = String.valueOf(tabelaMedium.getValueAt(tabelaMedium.getSelectedRow(), 1));
         String nomeMedium = String.valueOf(tabelaMedium.getValueAt(tabelaMedium.getSelectedRow(), 0));
 
         txtPesquisa.setText(nomeMedium);

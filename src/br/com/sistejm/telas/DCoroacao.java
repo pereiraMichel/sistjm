@@ -479,7 +479,7 @@ public class DCoroacao extends javax.swing.JDialog {
     private void txtPesquisarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPesquisarKeyReleased
 
         m = new Mediuns();
-        
+        m.setAtivo(9);
         m.buscaTabNomeMedium(tabMedium, txtPesquisar.getText());
         // TODO add your handling code here:
     }//GEN-LAST:event_txtPesquisarKeyReleased

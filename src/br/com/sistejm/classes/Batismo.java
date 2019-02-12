@@ -140,13 +140,13 @@ public class Batismo {
             rs.next();
             
             if(rs.absolute(1)){
-                
+                alterarBatismoMedium();
 //                System.out.println("Chegou aqui... existe registros");
             }else{
                 this.incluirBatismoMedium();
             }
             
-//            return true;
+            return true;
            
         }catch(Exception ex){
             config.gravaErroLog(Constances.ERROR_VBATISMO + ex.getMessage() + ". SQL: " + sql, "Verificação de Batismo", "sistejm.verbatismo");
@@ -168,6 +168,7 @@ public class Batismo {
                 conn = con.getConnection();
                 stmt = conn.createStatement();
                 stmt.executeUpdate(sql);
+                config.gravaBDBackup(sql);
 
                 return true;
 
@@ -178,6 +179,8 @@ public class Batismo {
     }
     
     public boolean alterarBatismoMedium(){
+        config = new Configuracoes();
+        
         String sql = "UPDATE batismo SET "
                 + "padrinho = '" + this.padrinho + "', "
                 + "madrinha = '" + this.madrinha + "', "
@@ -191,6 +194,7 @@ public class Batismo {
             conn = con.getConnection();
             stmt = conn.createStatement();
             stmt.executeUpdate(sql);
+            config.gravaBDBackup(sql);
             
             return true;
             
@@ -201,6 +205,7 @@ public class Batismo {
     }
     
     public boolean incluiPadrinhosBatismoMedium(){
+        config = new Configuracoes();
         String sql = "UPDATE batismo SET "
                 + "padrinho = '" + this.padrinho + "', "
                 + "madrinha = '" + this.madrinha + "' "
@@ -213,6 +218,7 @@ public class Batismo {
             conn = con.getConnection();
             stmt = conn.createStatement();
             stmt.executeUpdate(sql);
+            config.gravaBDBackup(sql);
             
             return true;
             
@@ -223,13 +229,14 @@ public class Batismo {
     }
     public boolean excluirBatismoMedium(){
         config = new Configuracoes();
-        String sql = "DELETE FROM coroacao WHERE codmedium = " + this.codMedium;
+        String sql = "DELETE FROM batismo WHERE codmedium = " + this.codMedium;
         
         try{
             con = new Conexao();
             conn = con.getConnection();
             stmt = conn.createStatement();
             stmt.executeUpdate(sql);
+            config.gravaBDBackup(sql);
             
             //Colocar direcionamento de outras tabelas
             return true;

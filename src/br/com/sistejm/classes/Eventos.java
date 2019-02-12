@@ -64,11 +64,12 @@ public class Eventos {
             conn = con.getConnection();
             stmt = conn.createStatement();
             stmt.executeUpdate(sql);
+
+            config.gravaBDBackup(sql);
             return true;
 
         }catch(Exception ex){
-            config.gravaErroLog("Problemas na inclusão de evento. Erro: " + ex.getMessage() + "\nSQL: " + sql, "Eventos", "sistejm.evento");
-//            System.out.println("Problemas na inclusão do evento. Erro: " + ex.getMessage());
+            config.gravaErroLog(Constances.ERRORINC+ ex.getMessage(), "Inclusão de Evento", "sistejm.incevento");
             return false;
         }
         //return false;
@@ -89,8 +90,7 @@ public class Eventos {
             return true;
 
         }catch(Exception ex){
-            config.gravaErroLog("Problemas na alteração de evento. Erro: " + ex.getMessage() + "\nSQL: " + sql, "Eventos", "sistejm.evento");
-//            System.out.println("Problemas na alteração do evento. Erro: " + ex.getMessage());
+            config.gravaErroLog(Constances.ERRORALT+ ex.getMessage(), "Alteração de Evento", "sistejm.altevento");
             return false;
         }        
     }
@@ -106,10 +106,11 @@ public class Eventos {
             conn = con.getConnection();
             stmt = conn.createStatement();
             stmt.executeUpdate(sql);
+            config.gravaBDBackup(sql);
             return true;
 
         }catch(Exception ex){
-            config.gravaErroLog("Problemas na exclusão de evento. Erro: " + ex.getMessage() + "\nSQL: " + sql, "Eventos", "sistejm.evento");
+            config.gravaErroLog(Constances.ERROREXC+ ex.getMessage(), "Exclusão de Evento", "sistejm.excevento");
 //            System.out.println("Problemas na exclusão do evento. Erro: " + ex.getMessage());
             return false;
         }    
@@ -146,7 +147,6 @@ public class Eventos {
             
         }catch(Exception ex){
             config.gravaErroLog("Problemas no preenchimento de tabela. Erro: " + ex.getMessage(), "Eventos", "sistejm.evento");
-//            System.out.println("Erro em tabela de eventos. Mensagem: " + ex.getMessage());
         }
     }
     
@@ -178,8 +178,6 @@ public class Eventos {
             
         }catch(Exception ex){
             config.gravaErroLog("Problemas na pesquisa de campo dos eventos. Erro: " + ex.getMessage(), "Eventos", "sistejm.evento");
-            
-//            System.out.println("Erro em tabela de eventos. Mensagem: " + ex.getMessage());
         }        
     }
     
@@ -204,7 +202,6 @@ public class Eventos {
 
         }catch(Exception ex){
             config.gravaErroLog("Problemas na verificação de duplicidade do eventos. Erro: " + ex.getMessage(), "Eventos", "sistejm.evento");
-//            System.out.println("Problemas na verificação de duplicidade do produto. Erro: " + ex.getMessage());
         }        
             return true;
     }    

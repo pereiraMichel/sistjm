@@ -1100,12 +1100,18 @@ public class DOrixasMedium extends javax.swing.JDialog {
                 mo.setCodOrixa(Integer.valueOf(txtId.getText()));
                 mo.setCodTipo(Integer.valueOf(txtIdTP.getText()));
                 
-                if(JOptionPane.showConfirmDialog(null, "Confirma transação ?", "INCLUSÃO", JOptionPane.YES_NO_OPTION) == 0){
-                    if(!mo.verificaExistente()){
-                        mo.incluirMediumOrixa();
-                        limpaCamposOrixa();
-                    }else{
-                        JOptionPane.showMessageDialog(null, "Já existente.");
+                if(txtTipoOrixa.getText().equals("")){
+                   JOptionPane.showMessageDialog(null, "O tipo do Orixá não pode ficar em branco");
+                   txtTipoOrixa.setText("");
+                   txtTipoOrixa.requestFocus();
+                }else{
+                    if(JOptionPane.showConfirmDialog(null, "Confirma transação ?", "INCLUSÃO", JOptionPane.YES_NO_OPTION) == 0){
+                        if(!mo.verificaExistente()){
+                            mo.incluirMediumOrixa();
+                            limpaCamposOrixa();
+                        }else{
+                            JOptionPane.showMessageDialog(null, "Já existente.");
+                        }
                     }
                 }
                 preparaTabelasMedium();

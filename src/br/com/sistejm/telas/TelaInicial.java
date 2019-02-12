@@ -9,6 +9,7 @@ import br.com.sistejm.classes.Conexao;
 import br.com.sistejm.classes.Configuracoes;
 import br.com.sistejm.classes.Constances;
 import br.com.sistejm.classes.Coroa;
+import br.com.sistejm.classes.Mediuns;
 import br.com.sistejm.classes.Usuario;
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -42,6 +43,7 @@ public class TelaInicial extends javax.swing.JFrame {
     Configuracoes config;
     Calendar cal = new GregorianCalendar();
     Coroa coroa;
+    Mediuns m;
     
     private String user;
     private int iduser;
@@ -77,32 +79,34 @@ public class TelaInicial extends javax.swing.JFrame {
      */
     public TelaInicial() {
         initComponents();
-        fechaPanelLogin();
         bloqueiaMenus(false);
         bloqueiaLogoff(false);
-        fechaTestes();
         txtAcesso.setText("Não está logado.");
-        inicioAdm();
+        panels(false);
         ocultaMenus(false);
         insereIcone();
-        panelSaidas.setVisible(false);
+        inicioLogin();
+        progresso.setVisible(false);
     }
     
-    public void inicioAdm(){
+    public void inicioLogin(){
         panelLogin.setVisible(true);
         txtUsuario.setText("michel");
         txtSenha.setText("m1ch3l4p");
         txtSenha.requestFocus();
     }
     
+    public void panels(boolean valor){
+        panelSaidas.setVisible(valor);
+        panelNiver.setVisible(valor);
+        panelLogin.setVisible(valor);
+    }
+    
     public void preencheCampo(String texto){
         campoTexto.setLineWrap(true);
         campoTexto.append(texto + "\n");
     }
-    
-    public void fechaTestes(){
-        labelEsqueciSenha.setVisible(false);
-    }
+
     
     public void bloqueiaLogoff(boolean valor){
         subMenuLogoff.setEnabled(valor);
@@ -195,6 +199,8 @@ public class TelaInicial extends javax.swing.JFrame {
         subMenuConfigUsuarios.setEnabled(valor);
         subMenuOrixas.setEnabled(valor);
         subMenuEntidades.setEnabled(valor);
+        subMenuCaboclos.setEnabled(valor);
+        subMenuEres.setEnabled(valor);
         subMenuNovoUsuario.setEnabled(valor);
     }
 
@@ -224,9 +230,14 @@ public class TelaInicial extends javax.swing.JFrame {
         labelDesteAno = new javax.swing.JLabel();
         labelValorMesAno = new javax.swing.JLabel();
         labelValorAno = new javax.swing.JLabel();
-        labelEsqueciSenha = new javax.swing.JLabel();
+        panelNiver = new javax.swing.JPanel();
+        labelQuantNver = new javax.swing.JLabel();
+        labelValorNiver = new javax.swing.JLabel();
+        btVerTodosNiver = new javax.swing.JButton();
+        progresso = new javax.swing.JProgressBar();
         toolbar = new javax.swing.JToolBar();
         btLogin = new javax.swing.JButton();
+        jSeparator2 = new javax.swing.JToolBar.Separator();
         panelBaixo = new javax.swing.JPanel();
         labelAcesso = new javax.swing.JLabel();
         txtAcesso = new javax.swing.JTextField();
@@ -240,6 +251,7 @@ public class TelaInicial extends javax.swing.JFrame {
         subMenuSair = new javax.swing.JMenuItem();
         menuAdm = new javax.swing.JMenu();
         subMenuAgendaAnual = new javax.swing.JMenuItem();
+        subMenuAversarios = new javax.swing.JMenuItem();
         subMenuAtividades = new javax.swing.JMenu();
         aubMenuEventos = new javax.swing.JMenuItem();
         subMenuProdutos = new javax.swing.JMenuItem();
@@ -266,13 +278,13 @@ public class TelaInicial extends javax.swing.JFrame {
         menuRelatorios = new javax.swing.JMenu();
         subMenuRelAgenda = new javax.swing.JMenuItem();
         subMenuConsultas = new javax.swing.JMenuItem();
-        subMenuRelUsuarios = new javax.swing.JMenuItem();
-        subMenuRelMediuns = new javax.swing.JMenuItem();
         subMenuRelSaidas = new javax.swing.JMenuItem();
         subMenuRelCortes = new javax.swing.JMenuItem();
         subMenuRelEventos = new javax.swing.JMenuItem();
+        subMenuRelMediuns = new javax.swing.JMenuItem();
         subMenuRelLivros = new javax.swing.JMenuItem();
         subMenuRelMensalidades = new javax.swing.JMenuItem();
+        subMenuRelUsuarios = new javax.swing.JMenuItem();
         menuConfiguracoes = new javax.swing.JMenu();
         subMenuAcesso = new javax.swing.JMenuItem();
         subMenuBancoDados = new javax.swing.JMenuItem();
@@ -320,7 +332,7 @@ public class TelaInicial extends javax.swing.JFrame {
         labelImagemOrixas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/sistejm/images/image.jpg"))); // NOI18N
 
         panelLogin.setBackground(new java.awt.Color(255, 255, 255));
-        panelLogin.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 204, 204), 1, true));
+        panelLogin.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "   LOGIN   ", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Arial", 1, 12), new java.awt.Color(0, 0, 153))); // NOI18N
 
         txtUsuario.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         txtUsuario.setMinimumSize(new java.awt.Dimension(6, 25));
@@ -393,7 +405,7 @@ public class TelaInicial extends javax.swing.JFrame {
         );
 
         panelSaidas.setBackground(new java.awt.Color(255, 255, 255));
-        panelSaidas.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 204)));
+        panelSaidas.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "  RESUMO SAÍDAS  ", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Arial", 1, 10), new java.awt.Color(0, 0, 153))); // NOI18N
 
         labelDesteMesAno.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         labelDesteMesAno.setText("Deste mês e ano:");
@@ -438,9 +450,53 @@ public class TelaInicial extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        labelEsqueciSenha.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        labelEsqueciSenha.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        labelEsqueciSenha.setText("Esqueci minha senha");
+        panelNiver.setBackground(new java.awt.Color(255, 255, 255));
+        panelNiver.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "   ANIVERSARIANTES   ", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Arial", 1, 10), new java.awt.Color(0, 0, 153))); // NOI18N
+
+        labelQuantNver.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        labelQuantNver.setText("Quantidade do mês :");
+
+        labelValorNiver.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        labelValorNiver.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        labelValorNiver.setText("0");
+
+        btVerTodosNiver.setBackground(new java.awt.Color(255, 255, 255));
+        btVerTodosNiver.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        btVerTodosNiver.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/sistejm/images/iconCalendar.png"))); // NOI18N
+        btVerTodosNiver.setText("Ver Todos");
+        btVerTodosNiver.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btVerTodosNiverActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout panelNiverLayout = new javax.swing.GroupLayout(panelNiver);
+        panelNiver.setLayout(panelNiverLayout);
+        panelNiverLayout.setHorizontalGroup(
+            panelNiverLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelNiverLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(labelQuantNver)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(labelValorNiver, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18))
+            .addGroup(panelNiverLayout.createSequentialGroup()
+                .addGap(73, 73, 73)
+                .addComponent(btVerTodosNiver)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        panelNiverLayout.setVerticalGroup(
+            panelNiverLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelNiverLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panelNiverLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(labelQuantNver)
+                    .addComponent(labelValorNiver))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btVerTodosNiver, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+
+        progresso.setStringPainted(true);
 
         javax.swing.GroupLayout panelMeioLayout = new javax.swing.GroupLayout(panelMeio);
         panelMeio.setLayout(panelMeioLayout);
@@ -448,22 +504,22 @@ public class TelaInicial extends javax.swing.JFrame {
             panelMeioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelMeioLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(panelMeioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(labelImagemOrixas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(labelImage, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 92, Short.MAX_VALUE)
                 .addGroup(panelMeioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelMeioLayout.createSequentialGroup()
-                        .addGroup(panelMeioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(panelLogin, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelMeioLayout.createSequentialGroup()
-                                .addComponent(panelSaidas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(40, 40, 40)))
-                        .addGap(15, 15, 15))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelMeioLayout.createSequentialGroup()
-                        .addComponent(labelEsqueciSenha, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)))
-                .addComponent(scroll, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(panelMeioLayout.createSequentialGroup()
+                        .addComponent(labelImagemOrixas)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 82, Short.MAX_VALUE)
+                        .addGroup(panelMeioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(panelSaidas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(panelNiver, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(55, 55, 55))
+                    .addGroup(panelMeioLayout.createSequentialGroup()
+                        .addComponent(labelImage, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(panelLogin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addGroup(panelMeioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(scroll, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(progresso, javax.swing.GroupLayout.PREFERRED_SIZE, 293, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
         panelMeioLayout.setVerticalGroup(
@@ -472,23 +528,24 @@ public class TelaInicial extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(panelMeioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelMeioLayout.createSequentialGroup()
-                        .addComponent(labelImage)
-                        .addGap(119, 119, 119)
-                        .addComponent(labelImagemOrixas)
-                        .addContainerGap(29, Short.MAX_VALUE))
-                    .addGroup(panelMeioLayout.createSequentialGroup()
-                        .addGap(162, 162, 162)
-                        .addComponent(labelEsqueciSenha, javax.swing.GroupLayout.DEFAULT_SIZE, 31, Short.MAX_VALUE)
-                        .addGap(209, 209, 209)
-                        .addComponent(panelSaidas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(70, 70, 70))
+                        .addComponent(scroll, javax.swing.GroupLayout.PREFERRED_SIZE, 507, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(progresso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(panelMeioLayout.createSequentialGroup()
                         .addGroup(panelMeioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(scroll)
+                            .addComponent(labelImage)
+                            .addComponent(panelLogin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(119, 119, 119)
+                        .addGroup(panelMeioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(panelMeioLayout.createSequentialGroup()
-                                .addComponent(panelLogin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE)))
-                        .addContainerGap())))
+                                .addComponent(panelNiver, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(18, 18, 18)
+                                .addComponent(panelSaidas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(panelMeioLayout.createSequentialGroup()
+                                .addComponent(labelImagemOrixas)
+                                .addGap(0, 0, Short.MAX_VALUE)))))
+                .addContainerGap())
         );
 
         toolbar.setBackground(new java.awt.Color(153, 204, 255));
@@ -509,6 +566,7 @@ public class TelaInicial extends javax.swing.JFrame {
             }
         });
         toolbar.add(btLogin);
+        toolbar.add(jSeparator2);
 
         panelBaixo.setBackground(new java.awt.Color(255, 255, 255));
         panelBaixo.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
@@ -545,10 +603,10 @@ public class TelaInicial extends javax.swing.JFrame {
         panelBaixoLayout.setVerticalGroup(
             panelBaixoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(txtAcesso)
+            .addComponent(txtData)
             .addGroup(panelBaixoLayout.createSequentialGroup()
                 .addComponent(labelAcesso, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 12, Short.MAX_VALUE))
-            .addComponent(txtData)
         );
 
         menuArquivo.setText("Arquivo");
@@ -607,6 +665,14 @@ public class TelaInicial extends javax.swing.JFrame {
             }
         });
         menuAdm.add(subMenuAgendaAnual);
+
+        subMenuAversarios.setText("Aniversários");
+        subMenuAversarios.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                subMenuAversariosActionPerformed(evt);
+            }
+        });
+        menuAdm.add(subMenuAversarios);
 
         subMenuAtividades.setText("Atividades");
 
@@ -777,21 +843,6 @@ public class TelaInicial extends javax.swing.JFrame {
         });
         menuRelatorios.add(subMenuConsultas);
 
-        subMenuRelUsuarios.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_U, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
-        subMenuRelUsuarios.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/sistejm/images/icon16x16RelatorioGrupo.png"))); // NOI18N
-        subMenuRelUsuarios.setText("Usuários");
-        subMenuRelUsuarios.setPreferredSize(new java.awt.Dimension(150, 22));
-        menuRelatorios.add(subMenuRelUsuarios);
-
-        subMenuRelMediuns.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_M, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
-        subMenuRelMediuns.setText("Ficha dos Médiuns");
-        subMenuRelMediuns.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                subMenuRelMediunsActionPerformed(evt);
-            }
-        });
-        menuRelatorios.add(subMenuRelMediuns);
-
         subMenuRelSaidas.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
         subMenuRelSaidas.setText("Corôas - Saídas");
         subMenuRelSaidas.addActionListener(new java.awt.event.ActionListener() {
@@ -808,6 +859,15 @@ public class TelaInicial extends javax.swing.JFrame {
         subMenuRelEventos.setText("Eventos");
         menuRelatorios.add(subMenuRelEventos);
 
+        subMenuRelMediuns.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_M, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        subMenuRelMediuns.setText("Ficha dos Médiuns");
+        subMenuRelMediuns.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                subMenuRelMediunsActionPerformed(evt);
+            }
+        });
+        menuRelatorios.add(subMenuRelMediuns);
+
         subMenuRelLivros.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
         subMenuRelLivros.setText("Livros");
         menuRelatorios.add(subMenuRelLivros);
@@ -820,6 +880,12 @@ public class TelaInicial extends javax.swing.JFrame {
             }
         });
         menuRelatorios.add(subMenuRelMensalidades);
+
+        subMenuRelUsuarios.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_U, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        subMenuRelUsuarios.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/sistejm/images/icon16x16RelatorioGrupo.png"))); // NOI18N
+        subMenuRelUsuarios.setText("Usuários");
+        subMenuRelUsuarios.setPreferredSize(new java.awt.Dimension(150, 22));
+        menuRelatorios.add(subMenuRelUsuarios);
 
         menu.add(menuRelatorios);
 
@@ -944,15 +1010,26 @@ public class TelaInicial extends javax.swing.JFrame {
         
         boasVindas();
         
-        try {
-            s = new ServerSocket(9581);
-        } catch (Exception e) {
-            if(JOptionPane.showConfirmDialog(null, "Há o mesmo aplicativo em aberto. Deseja fechar ?", "ERRO", JOptionPane.YES_NO_OPTION) == 0){
-                System.exit(0);
-            }
-        }        
+//        try {
+//            s = new ServerSocket(9581);
+//        } catch (Exception e) {
+//            if(JOptionPane.showConfirmDialog(null, "Há o mesmo aplicativo em aberto. Deseja fechar ?", "ERRO", JOptionPane.YES_NO_OPTION) == 0){
+//                System.exit(0);
+//            }
+//        }
 
     }//GEN-LAST:event_formWindowOpened
+
+    public void telaLogin(){
+//        panelLogin.setVisible(true);
+//                this.setVisible(false);
+        DFLogin login = new DFLogin();
+
+//        DLogin login = new DLogin(this, false);
+        login.setLocationRelativeTo(login);
+        login.setAutoRequestFocus(true);
+        login.setVisible(true);
+    }
 
     
     public void boasVindasNormal(){
@@ -970,7 +1047,7 @@ public class TelaInicial extends javax.swing.JFrame {
         preencheCampo("Bem-vindo ao SISTEJM !");
         preencheCampo("============================== \n");
         preencheCampo("Hoje é " + dataHoje() + " \n");
-        preencheCampo("iniciando o servidor...\n");
+//        preencheCampo("iniciando o servidor...\n");
         txtData.setText(dataHoje());
         config.verificaPastas();
         try {
@@ -978,10 +1055,12 @@ public class TelaInicial extends javax.swing.JFrame {
                 con.getConnection();
                 usuario.verificaPrimeiroUsuario();
                 preencheCampo("Banco conectado.");
+//                this.setVisible(false);
+//                telaLogin();
 //            }else{
 //                preencheCampo("Banco não conectado");
 //            }
-//            if (!con.getConnection().equals(null)){
+//            if (!con.getonectadConnection().equals(null)){
 //                usuario.verificaPrimeiroUsuario();
 //            }
 
@@ -1051,10 +1130,15 @@ public class TelaInicial extends javax.swing.JFrame {
 
     private void subMenuLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuLoginActionPerformed
         abrePanelLogin();
+//        this.setVisible(false);
+//        telaLogin();
     }//GEN-LAST:event_subMenuLoginActionPerformed
 
     private void btLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btLoginActionPerformed
         abrePanelLogin();
+//        this.setVisible(false);
+//        telaLogin();
+        
     }//GEN-LAST:event_btLoginActionPerformed
 
     private void subMenuAgendamentosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuAgendamentosActionPerformed
@@ -1191,10 +1275,12 @@ public class TelaInicial extends javax.swing.JFrame {
                     if(this.iduser > 0){
                         //System.out.println(this.getIduser());
 //                        preencheCampo("\nUsuário localizado.");
-                        autorizaUsuario();
-                        limpaPanelLogin();
-                        fechaPanelLogin();
-                        desativaInoperantes();
+//                    progresso.setIndeterminate(true);
+//                    preencheBarra();
+                    autorizaUsuario();
+                    limpaPanelLogin();
+                    fechaPanelLogin();
+                    desativaInoperantes();
 
                     }else{
                         preencheCampo("\nUsuário inexistente");
@@ -1210,6 +1296,10 @@ public class TelaInicial extends javax.swing.JFrame {
         subMenuPagamentos.setEnabled(false);
         subMenuRecebimentos.setEnabled(false);
         subMenuAgendaAnual.setEnabled(false);
+        subMenuRelAgenda.setVisible(false);
+        subMenuRelCortes.setVisible(false);
+        subMenuRelEventos.setVisible(false);
+        subMenuRelLivros.setVisible(false);
     }
     
     private void subMenuLogoffActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuLogoffActionPerformed
@@ -1225,6 +1315,9 @@ public class TelaInicial extends javax.swing.JFrame {
             btLogin.setEnabled(true);
             config.gravaAtividades("Logoff do", this.user, "Sistema");
             panelSaidas.setVisible(false);
+            panelNiver.setVisible(false);
+            preencheCampo("");
+            boasVindas();
         }
         // TODO add your handling code here:
     }//GEN-LAST:event_subMenuLogoffActionPerformed
@@ -1235,7 +1328,7 @@ public class TelaInicial extends javax.swing.JFrame {
         acesso.setLocationRelativeTo(acesso);
         acesso.setTitle("ACESSO - CONSULTAS");
         acesso.setVisible(true);
-        preencheCampo("\nAbrindo acessos...");
+//        preencheCampo("\nAbrindo acessos...");
         // TODO add your handling code here:
     }//GEN-LAST:event_subMenuAcessoActionPerformed
 
@@ -1248,7 +1341,7 @@ public class TelaInicial extends javax.swing.JFrame {
         ere.setTitle("ERÊS");
         ere.setNomeUsuario(user);
         ere.setVisible(true);
-        preencheCampo("\nAbrindo Erês...");
+//        preencheCampo("\nAbrindo Erês...");
         // TODO add your handling code here:
     }//GEN-LAST:event_subMenuEresActionPerformed
 
@@ -1261,7 +1354,7 @@ public class TelaInicial extends javax.swing.JFrame {
         caboclo.setTitle("CABOCLOS");
         caboclo.setNomeUsuario(user);
         caboclo.setVisible(true);
-        preencheCampo("\nAbrindo Caboclos...");
+//        preencheCampo("\nAbrindo Caboclos...");
         // TODO add your handling code here:
     }//GEN-LAST:event_subMenuCaboclosActionPerformed
 
@@ -1369,13 +1462,16 @@ public class TelaInicial extends javax.swing.JFrame {
 
                 this.setIduser(usuario.consultaLoginUsuario());
                 if(this.iduser > 0){
+                    
                     //System.out.println(this.getIduser());
     //                        preencheCampo("\nUsuário localizado.");
+                    progresso.setIndeterminate(true);
+//                    preencheBarra();
                     autorizaUsuario();
                     limpaPanelLogin();
                     fechaPanelLogin();
                     desativaInoperantes();
-
+ 
                 }else{
                     preencheCampo("\nUsuário inexistente");
                 }
@@ -1401,10 +1497,27 @@ public class TelaInicial extends javax.swing.JFrame {
                 preencheCampo("\nUsuário inexistente");
             }
         }else{
-            preencheCampo("\nO campo não pode ficar vazio.");
+//            preencheCampo("\nO campo não pode ficar vazio.");
         }
     }//GEN-LAST:event_btAcessarActionPerformed
 
+//    public void preencheBarra(){
+////    public void preencheBarra(int tempo, int percentual){
+//        try {
+////            for(int i = 0; i <= 100; i++){
+////                if(i == percentual){
+////                    progresso.setValue(percentual);
+////                    progresso.repaint();
+////                }
+////            }
+//            Thread.sleep(1000);
+//            progresso.setIndeterminate(false);
+//         } catch (InterruptedException e) {  
+//            e.printStackTrace();  
+//         }
+//         
+//    }
+    
     private void subMenuRelMediunsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuRelMediunsActionPerformed
 
         DRelMediuns relMed = new DRelMediuns(this, false);
@@ -1413,46 +1526,88 @@ public class TelaInicial extends javax.swing.JFrame {
         relMed.setVisible(true);
     }//GEN-LAST:event_subMenuRelMediunsActionPerformed
 
+    private void subMenuAversariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuAversariosActionPerformed
+
+        DAniversarios niver = new DAniversarios(this, false);
+        niver.setLocationRelativeTo(niver);
+        niver.setAutoRequestFocus(true);
+        niver.setVisible(true);
+        // TODO add your handling code here:
+    }//GEN-LAST:event_subMenuAversariosActionPerformed
+
+    private void btVerTodosNiverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btVerTodosNiverActionPerformed
+        DAniversarios niver = new DAniversarios(this, false);
+        niver.setLocationRelativeTo(niver);
+        niver.setAutoRequestFocus(true);
+        niver.setVisible(true);
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btVerTodosNiverActionPerformed
+
     public void autorizaUsuario(){
-        con = new Conexao();
-        config = new Configuracoes();
         
-        String sql = "SELECT t.id_usuario, t.nome, a.* FROM tblusuario t "
-                + "INNER JOIN acesso a ON t.codAcesso = a.idacesso "
-                + "WHERE t.id_usuario = " + this.iduser;
-        
-        try{
-            conn = con.getConnection();
-            stmt = conn.createStatement();
-            rs = stmt.executeQuery(sql);
-            rs.next();
-            
-            if(rs.absolute(1)){
-                this.setUser(rs.getString("nome"));
-                this.setIduser(rs.getInt("id_usuario"));
-                this.setAcesso(rs.getString("acesso"));
+           con = new Conexao();
+            config = new Configuracoes();
 
-                
-                txtAcesso.setText(this.user + " | " + this.acesso);
-                preencheCampo("\nBem-vindo(a), " + user);
-//                preencheCampo("\nO seu nível de acesso é " + acesso);
-                verificaAcesso();
-                bloqueiaLogoff(true);
-                bloqueiaLogin(false);
-                btLogin.setEnabled(false);
+            String sql = "SELECT t.id_usuario, t.nome, a.* FROM tblusuario t "
+                    + "INNER JOIN acesso a ON t.codAcesso = a.idacesso "
+                    + "WHERE t.id_usuario = " + this.iduser;
 
-                
-            }else{
-                config.gravaErroLog("Usuário não localizado.", "Usuário", "sistejm.usuario");
-                System.out.println("Problemas.");
-            }
-            rs.close();
-            stmt.close();
-        }catch(Exception ex){
-            System.out.println("Catch usuário ativado. Erro: " + ex.getMessage());
-        }
+    //        System.out.println(sql);
         
+            try{
+                conn = con.getConnection();
+                stmt = conn.createStatement();
+                rs = stmt.executeQuery(sql);
+                rs.next();
+
+                if(rs.absolute(1)){
+                    this.user = rs.getString("nome");
+                    this.iduser = rs.getInt("id_usuario");
+                    this.acesso = rs.getString("acesso");
+                    
+                    txtAcesso.setText(this.user + " | " + this.acesso);
+                    preencheCampo("\nBem-vindo(a), " + this.user);
+                    verificaAcesso();
+                    bloqueiaLogoff(true);
+                    bloqueiaLogin(false);
+                    btLogin.setEnabled(false);
+                    desativaInoperantes();        
+
+//                    verificaAcesso();
+//                    preencheCampo("\nBem-vindo(a), " + this.user);
+
+//                    exibeCamposUser();
+
+                }else{
+                    config.gravaErroLog("Usuário não localizado.", "Usuário", "sistejm.usuario");
+                }
+            }catch(Exception ex){
+                System.out.println("Catch usuário ativado. Erro: " + ex.getMessage());
+            }        
+     }
+    
+    public void exibeCamposUser(){
+
+//        usuario = new Usuario();
+//        
+////        if(this.iduser != 0){
+////            System.out.println(id); //OK
+////            usuario.setIdUsuario(id);
+////            this.user = usuario.retornaUsuario();
+////            preencheCampo("\nBem-vindo(a), " + this.user);
+////            System.out.println(this.user); //OK
+////
+////        }
         
+        txtAcesso.setText(this.user + " | " + this.acesso);
+        preencheCampo("\nBem-vindo(a), " + this.user);
+        verificaAcesso();
+        bloqueiaLogoff(true);
+        bloqueiaLogin(false);
+        btLogin.setEnabled(false);
+        desativaInoperantes();
+        this.setEnabled(true);
+
     }
     
     public void bloqueiaLogin(boolean valor){
@@ -1462,9 +1617,9 @@ public class TelaInicial extends javax.swing.JFrame {
     public void verificaAcesso(){
         config = new Configuracoes();
         
-        preencheCampo("\nCriando o registro de atividades...");
+//        preencheCampo("\nCriando o registro de atividades...");
         config.gravaTituloAtividade(user);
-        preencheCampo("\nCriado com êxito.");
+//        preencheCampo("\nCriado com êxito.");
 //                        config.gravaAtividades("Entrada no ", txtUsuario.getText(), "sistema");
         
         switch(this.acesso){
@@ -1486,11 +1641,23 @@ public class TelaInicial extends javax.swing.JFrame {
         }
     }
 
+    public void divulgaNiver(){
+        m = new Mediuns();
+        config = new Configuracoes();
+        cal = new GregorianCalendar();
+        
+        int mes = cal.get(Calendar.MONTH) + 1;
+        
+        panelNiver.setVisible(true);
+        labelQuantNver.setText("Quantidade do mês de " + config.retornaMesExtenso(mes));
+        labelValorNiver.setText(String.valueOf(m.confereQuantAniversariantes()));
+    }
     
     public void acessoAministrador(){
         bloqueiaMenus(true);
         panelSaidas.setVisible(true);
         divulgaSaidas();
+        divulgaNiver();
     }
     public void acessoAministracao(){
         bloqueiaMenus(true);
@@ -1528,15 +1695,16 @@ public class TelaInicial extends javax.swing.JFrame {
     }
     
     public void recebeDados(String userLogado, String acessoLogado, int idUsuario){
-        this.acesso = acessoLogado;
-        this.user = userLogado;
+//        this.acesso = acessoLogado;
+//        this.user = userLogado;
         this.iduser = idUsuario;
         
-        System.out.println("Usuário: " + this.user);
-        System.out.println("Acesso: " + this.acesso);
-        System.out.println("Id do Usuário: " + this.iduser);
-        txtAcesso.setText(this.acesso);
-        System.out.println("Identifica JTextField:: " + txtAcesso.getText());        
+//        System.out.println("Acesso: " + this.acesso);
+//        System.out.println("Id do Usuário: " + this.iduser);
+        autorizaUsuario();        
+//        txtAcesso.setText(this.acesso);
+//        System.out.println("Identifica JTextField:: " + txtAcesso.getText());
+//        preencheCampo("Incluso pelo recebeDados. User: " + this.user);
 //        labelAcesso.setText("Logado");
 //        labelAcesso.setText(user);
         //fechaPanelLogin();
@@ -1554,11 +1722,11 @@ public class TelaInicial extends javax.swing.JFrame {
     public void sairTelaLogin(KeyEvent ev){
         if(ev.getKeyCode() == KeyEvent.VK_ESCAPE){
             limpaPanelLogin();
-            fechaPanelLogin();        
+//            fechaPanelLogin();
         }
     }
     public void limpaPanelLogin(){
-        txtUsuario.setText("");
+//        txtUsuario.setText("");
         txtSenha.setText("");
     }
     
@@ -1567,6 +1735,7 @@ public class TelaInicial extends javax.swing.JFrame {
         limpaPanelLogin();
         txtUsuario.requestFocus();
         preencheCampo("\nInforme o usuário e a senha nos campos ao lado e dê <enter>...");
+        inicioLogin();
     }
     public void fechaPanelLogin(){
         limpaPanelLogin();
@@ -1614,19 +1783,22 @@ public class TelaInicial extends javax.swing.JFrame {
     private javax.swing.JMenuItem aubMenuEventos;
     private javax.swing.JButton btAcessar;
     private javax.swing.JButton btLogin;
+    private javax.swing.JButton btVerTodosNiver;
     private javax.swing.JTextArea campoTexto;
     private javax.swing.ButtonGroup groupSaidas;
     private javax.swing.JPopupMenu.Separator jSeparator1;
+    private javax.swing.JToolBar.Separator jSeparator2;
     private javax.swing.JLabel labelAcesso;
     private javax.swing.JLabel labelDesteAno;
     private javax.swing.JLabel labelDesteMesAno;
-    private javax.swing.JLabel labelEsqueciSenha;
     private javax.swing.JLabel labelImage;
     private javax.swing.JLabel labelImagemOrixas;
+    private javax.swing.JLabel labelQuantNver;
     private javax.swing.JLabel labelSenha;
     private javax.swing.JLabel labelUsuario;
     private javax.swing.JLabel labelValorAno;
     private javax.swing.JLabel labelValorMesAno;
+    private javax.swing.JLabel labelValorNiver;
     private javax.swing.JMenuBar menu;
     private javax.swing.JMenu menuAdm;
     private javax.swing.JMenu menuArquivo;
@@ -1637,7 +1809,9 @@ public class TelaInicial extends javax.swing.JFrame {
     private javax.swing.JPanel panelBaixo;
     private javax.swing.JPanel panelLogin;
     private javax.swing.JPanel panelMeio;
+    private javax.swing.JPanel panelNiver;
     private javax.swing.JPanel panelSaidas;
+    private javax.swing.JProgressBar progresso;
     private javax.swing.JScrollPane scroll;
     private javax.swing.JMenuItem subCAnos;
     private javax.swing.JMenuItem subCImpressosao;
@@ -1645,6 +1819,7 @@ public class TelaInicial extends javax.swing.JFrame {
     private javax.swing.JMenuItem subMenuAgendaAnual;
     private javax.swing.JMenuItem subMenuAgendamentos;
     private javax.swing.JMenu subMenuAtividades;
+    private javax.swing.JMenuItem subMenuAversarios;
     private javax.swing.JMenuItem subMenuBaixa;
     private javax.swing.JMenuItem subMenuBancoDados;
     private javax.swing.JMenuItem subMenuCComprom;

@@ -142,17 +142,6 @@ public class Configuracoes {
     public void setProp(Properties prop) {
         this.prop = prop;
     }
-
-    
-    public void ultimoId(String idTabela, String tabela){
-        
-    }
-    
-    public void geraPdf (){
-        
-    }
-
-
     
     public String mac(){
 
@@ -235,6 +224,45 @@ public class Configuracoes {
         } catch (SocketException e) {  
            e.printStackTrace();  
         }        
+    }
+    
+    public void gravaBDBackup(String movimento){
+        
+        Calendar c = new GregorianCalendar();
+        
+        String mesLongo = null;
+        
+        String dataCompleta = null;
+        
+        int dia = c.get(Calendar.DAY_OF_MONTH);
+        int mes = c.get(Calendar.MONTH) + 1;
+        int ano = c.get(Calendar.YEAR);
+        
+        int hora = c.get(Calendar.HOUR_OF_DAY);
+        int min = c.get(Calendar.MINUTE);
+        int sec = c.get(Calendar.SECOND);
+
+        if(mes < 10){
+            mesLongo = "0" + mes;
+        }
+        
+        dataCompleta = dia + "." + mesLongo + "." + ano;
+        
+        String arqPrinc = "C:\\sistejm\\backup\\" + dataCompleta + ".sql";
+        
+        try (FileWriter arq = new FileWriter(new File(arqPrinc), true)) {
+            PrintWriter gravarArq = new PrintWriter(arq);
+            gravarArq.append("\r\n");
+            gravarArq.append(movimento);
+            gravarArq.append(";");
+            gravarArq.append("\r\n");
+//            extendNewBD(arqPrinc);
+
+        } catch (FileNotFoundException ex) {
+            System.out.println("Erro File Not Found: " + ex.getMessage());
+        } catch (IOException ex) {
+            System.out.println("Erro IOException: " + ex.getMessage());
+        }
     }
     
     public void gravaAcessoUsuario(int acesso, int autoriza){
@@ -341,6 +369,18 @@ public class Configuracoes {
         
     }
     
+    public void extendNewBD(String local){
+
+        File arquivo = new File(local);
+        arquivo.renameTo(new File(local.replace(".sql",".tejmbckp")));
+        
+    }    
+    public void extendOldBD(String local){
+
+        File arquivo = new File(local);
+        arquivo.renameTo(new File(local.replace(".tejmbckp",".sql")));
+        
+    }    
     public void extendNew(String local){
 
         File arquivo = new File(local);
@@ -510,6 +550,7 @@ public class Configuracoes {
         String dirErro = "C:\\sistejm\\erro";
         String dirFotos = "C:\\sistejm\\fotos";
         String dirImg = "C:\\sistejm\\images";
+        String dirBackup = "C:\\sistejm\\backup";
         
         File fp = new File(dirPrincipal);
         File fc = new File(dirConfig);
@@ -517,6 +558,7 @@ public class Configuracoes {
         File fe = new File(dirErro);
         File ff = new File(dirFotos);
         File fi = new File(dirImg);
+        File fb = new File(dirBackup);
         
         if(!fp.exists()){
             fp.mkdir();
@@ -535,6 +577,9 @@ public class Configuracoes {
         }
         if(!fi.exists()){
             fi.mkdir();
+        }
+        if(!fb.exists()){
+            fb.mkdir();
         }
         
         
@@ -641,7 +686,7 @@ public class Configuracoes {
             secLongo = "0" + sec;
         }
         
-        dataCompleta = diaLongo + "/" + mesLongo + "/" + ano;
+        dataCompleta = dia + "/" + mesLongo + "/" + ano;
         horaCompleta = horaLonga + ":" + minLongo + ":" + secLongo;
         
         String pathPrinc = "C:\\sistejm";

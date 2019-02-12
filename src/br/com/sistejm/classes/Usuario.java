@@ -130,7 +130,9 @@ public class Usuario {
         con = new Conexao();
         inicial = new TelaInicial();
         String sql = "SELECT id_usuario, nome, senha FROM tblusuario "
-                + "WHERE nome = '" + this.nome + "' AND senha = '" + this.senha + "'";
+                + "WHERE "
+                + "nome = '" + this.nome + "' "
+                + "AND senha = '" + this.senha + "'";
         
         try{
             conn = con.getConnection();
@@ -141,8 +143,8 @@ public class Usuario {
             if(rs.absolute(1)){
                 return rs.getInt("id_usuario");
             }
-            rs.close();
-            stmt.close();
+//            rs.close();
+//            stmt.close();
             return 0;
         }catch(Exception ex){
             System.out.println(ex.getMessage());
@@ -234,4 +236,50 @@ public class Usuario {
         return false;
 
     }
+    
+    public String retornaUsuario(){
+        con = new Conexao();
+        config = new Configuracoes();
+        String sql = "SELECT nome FROM tblusuario "
+                + "WHERE "
+                + "id_usuario = " + this.idUsuario;
+        
+//        System.out.println(sql);
+        
+        try{
+            conn = con.getConnection();
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery(sql);
+            rs.next();
+            
+            if(rs.absolute(1)){
+                return rs.getString("nome");
+            }
+        }catch(Exception ex){
+            config.gravaErroLog("Erro no retorno do nome de usuário. " + ex.getMessage(), "Retorna Nome de Usuário" , "sistejm.retnomuser");
+        }        
+            return null;
+    }
+    public String retornaAcesso(){
+        con = new Conexao();
+        config = new Configuracoes();
+            String sql = "SELECT t.id_usuario, a.acesso FROM tblusuario t "
+                    + "INNER JOIN acesso a ON t.codAcesso = a.idacesso "
+                    + "WHERE t.id_usuario = " + this.idUsuario;
+        
+        try{
+            conn = con.getConnection();
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery(sql);
+            rs.next();
+            
+            if(rs.absolute(1)){
+                return rs.getString("acesso");
+            }
+        }catch(Exception ex){
+            config.gravaErroLog("Erro no retorno do acesso de usuário. " + ex.getMessage(), "Retorna Acesso de Usuário" , "sistejm.retnomuser");
+        }        
+            return null;
+    }
+        
 }

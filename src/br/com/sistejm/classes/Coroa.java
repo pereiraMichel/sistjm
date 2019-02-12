@@ -145,8 +145,8 @@ public class Coroa {
             }
             
         }catch(Exception ex){
-            config.gravaErroLog("Erro: " + ex.getMessage() + ". SQL: " + sql, "Inclusão da Corôa", "sistejm.incluicoroa");
-            JOptionPane.showMessageDialog(null, "Erro na coroa. Verifique o arquivo sistejm > erro > sistejm.incluicoroa.log no C");
+            config.gravaErroLog("Erro: " + ex.getMessage() + ". SQL: " + sql, "Verificação da Corôa", "sistejm.verifcoroa");
+//            JOptionPane.showMessageDialog(null, "Erro na coroa. Verifique o arquivo sistejm > erro > sistejm.incluicoroa.log no C");
         }
         return false;
     }
@@ -167,12 +167,13 @@ public class Coroa {
             rs = stmt.executeQuery(sql);
             
             if(rs.absolute(1)){
+                config.gravaBDBackup(sql);
                 return true;
             }
             
         }catch(Exception ex){
             config.gravaErroLog("Erro: " + ex.getMessage() + ". SQL: " + sql, "Inclusão da Corôa", "sistejm.incluicoroa");
-            JOptionPane.showMessageDialog(null, "Erro na coroa. Verifique o arquivo sistejm > erro > sistejm.incluicoroa.log no C");
+//            JOptionPane.showMessageDialog(null, "Erro na coroa. Verifique o arquivo sistejm > erro > sistejm.incluicoroa.log no C");
         }
         return false;
     }
@@ -195,12 +196,13 @@ public class Coroa {
             rs = stmt.executeQuery(sql);
             
             if(rs.absolute(1)){
+                config.gravaBDBackup(sql);
                 return true;
             }
             
         }catch(Exception ex){
-            config.gravaErroLog("Erro: " + ex.getMessage() + ". SQL: " + sql, "Inclusão da Corôa", "sistejm.incluicoroa");
-            JOptionPane.showMessageDialog(null, "Erro na coroa. Verifique o arquivo sistejm > erro > sistejm.incluicoroa.log no C");
+            config.gravaErroLog("Erro: " + ex.getMessage() + ". SQL: " + sql, "Alteração da Corôa", "sistejm.alteracoroa");
+//            JOptionPane.showMessageDialog(null, "Erro na coroa. Verifique o arquivo sistejm > erro > sistejm.incluicoroa.log no C");
         }
         return false;
     }
@@ -256,6 +258,7 @@ public class Coroa {
                 conn = con.getConnection();
                 stmt = conn.createStatement();
                 stmt.executeUpdate(sql);
+                config.gravaBDBackup(sql);
 
                 return true;
             }catch(Exception ex){
@@ -284,6 +287,9 @@ public class Coroa {
             stmt = conn.createStatement();
             stmt.executeUpdate(sql);
 
+            config.gravaBDBackup(sql);
+
+            return true;
             
         }catch(Exception ex){
             config.gravaErroLog("Erro: " + ex.getMessage() + ". SQL: " + sql, "Alteração da Corôa", "sistejm.alteracoroa");
@@ -313,10 +319,11 @@ public class Coroa {
                 conn = con.getConnection();
                 stmt = conn.createStatement();
                 stmt.executeUpdate(sql);
+                config.gravaBDBackup(sql);
 
             }catch(Exception ex){
                 config.gravaErroLog("Tentativa de inclusão dos coroas do médium. Erro: " + ex.getMessage(), "Inclusão de coroas - Médiuns", "sistejm.incluicoroas");
-                JOptionPane.showMessageDialog(null, "Houve um erro. consulte o arquivo C:/sistejm > erro > sistejm.incluicoroas para mais informações");
+//                JOptionPane.showMessageDialog(null, "Houve um erro. consulte o arquivo C:/sistejm > erro > sistejm.incluicoroas para mais informações");
 
             }        
         }
@@ -394,7 +401,8 @@ public class Coroa {
                    + "LEFT JOIN tipocoroa t ON t.idtipocoroa = c.codtipocoroa "
                    + "WHERE c.confirma = 'n'"
                    + "AND mes = " + this.mes
-                   + "AND ano = " + this.ano;
+                   + "AND ano = " + this.ano
+                   + " ORDER BY m.nome ASC";
      
         try{
             con = new Conexao();
@@ -434,7 +442,8 @@ public class Coroa {
                    + "LEFT JOIN tipocoroa t ON t.idtipocoroa = c.codtipocoroa "
                    + "WHERE c.confirma = 's'"
                    + "AND mes = " + this.mes
-                   + "AND ano = " + this.ano;
+                   + "AND ano = " + this.ano
+                   + " ORDER BY m.nome ASC";
      
         try{
             con = new Conexao();
@@ -480,7 +489,8 @@ public class Coroa {
                 + "LEFT JOIN tipocoroa tp ON tp.idtipocoroa = c.codtipocoroa "
                 + "WHERE m.ativo = 1 "
                 + "AND c.confirma = 'n' "
-                + "AND c.ano  BETWEEN " + anoAnterior + " AND " + anoPosterior;
+                + "AND c.ano  BETWEEN " + anoAnterior + " AND " + anoPosterior
+                + " ORDER BY m.nome ASC";
         
 //        System.out.println(sql);
         
@@ -524,7 +534,8 @@ public class Coroa {
                 + "WHERE m.ativo = 1 "
                 + "AND c.confirma = 'n' "
                 + "AND c.mes = " + this.mes + " "
-                + "AND c.ano = " + this.ano;
+                + "AND c.ano = " + this.ano
+                + " ORDER BY m.nome ASC";
         
 //        System.out.println(sql);
         
@@ -576,7 +587,8 @@ public class Coroa {
                 + "LEFT JOIN tipocoroa tp ON tp.idtipocoroa = c.codtipocoroa "
                 + "WHERE m.ativo = 1 "
                 + "AND c.confirma = 'n' "
-                + complemento;
+                + complemento
+                + " ORDER BY m.nome ASC";
         
 //        System.out.println(sql);
         
@@ -805,4 +817,24 @@ public class Coroa {
         }
         return 0;
     }
+    public boolean excluirCoroa(){
+        config = new Configuracoes();
+        String sql = "DELETE FROM coroacao WHERE codmedium = " + this.codmedium;
+        
+        try{
+            con = new Conexao();
+            conn = con.getConnection();
+            stmt = conn.createStatement();
+            stmt.executeUpdate(sql);
+            config.gravaBDBackup(sql);
+            
+            //Colocar direcionamento de outras tabelas
+            return true;
+            
+        }catch(Exception ex){
+            config.gravaErroLog(Constances.ERROR_EBATISMO + ex.getMessage() + ". SQL: " + sql, "Exclusão de Batismo", "sistejm.excluibatismo");
+        }
+        return false;
+    }
+    
 }

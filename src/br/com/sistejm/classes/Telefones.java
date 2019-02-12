@@ -122,13 +122,16 @@ public class Telefones {
     }
     
     public boolean excluirTelefone(){
-        String sql = "DELETE FROM telefones WHERE idtelefone = " + this.idTelefone;
+        config = new Configuracoes();
+        
+        String sql = "DELETE FROM telefones WHERE codMedium = " + this.codMedium;
         
         try{
             con = new Conexao();
             conn = con.getConnection();
             stmt = conn.createStatement();
             stmt.executeUpdate(sql);
+            config.gravaBDBackup(sql);
             
             return true;
             

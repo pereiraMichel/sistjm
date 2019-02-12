@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rOrixas" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="5c4ec0f6-d4ce-4bfa-92b9-1d7a424eadc8">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString>
+		<![CDATA[SELECT DISTINCT
+m.nome,
+m.matricula,
+o.nome AS orixa,
+tp.tipo AS tipo,
+ent.nome AS entidade,
+cab.nome AS caboclo,
+er.nome AS ere,
+ex.nome AS exu
+FROM mediuns m
+LEFT JOIN medium_ori mor ON mor.codMedium = m.idmedium
+LEFT JOIN orixas o ON mor.cod_orixa = o.idorixa
+LEFT JOIN tipo_orixa tp ON tp.idtipo_orixa = mor.codTipo
+LEFT JOIN medium_ent ment ON ment.codMedium = m.idmedium
+LEFT JOIN entidade ent ON ment.cod_entidade = ent.identidade
+LEFT JOIN medium_caboclo mcab ON mcab.codMedium = m.idmedium
+LEFT JOIN caboclo cab ON mcab.cod_caboclo = cab.idcaboclo
+LEFT JOIN medium_ere mere ON mere.codMedium = m.idmedium
+LEFT JOIN ere er ON mere.cod_ere = er.idere
+LEFT JOIN medium_exu mex ON mex.codMedium = m.idmedium
+LEFT JOIN exu ex ON mex.cod_exu = ex.idexu
+WHERE m.idmedium = 1
+GROUP BY o.nome, tp.tipo, ent.nome, cab.nome, er.nome, ex.nome
+ORDER BY tp.idtipo_orixa
+]]>
+	</queryString>
+	<field name="nome" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="matricula" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="orixa" class="java.lang.String"/>
+	<field name="tipo" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="entidade" class="java.lang.String"/>
+	<field name="caboclo" class="java.lang.String"/>
+	<field name="ere" class="java.lang.String"/>
+	<field name="exu" class="java.lang.Object">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="64">
+			<staticText>
+				<reportElement x="84" y="0" width="282" height="30" forecolor="#0000CC" uuid="080d4746-235f-4c5a-882f-2dc34a422331"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Calibri" size="12" isBold="true" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[TEMPLO ESPÍRITA JORGE MIGUEL]]></text>
+			</staticText>
+			<image hAlign="Center">
+				<reportElement x="0" y="0" width="83" height="62" uuid="837f2064-4543-465f-ac6c-06e56699738a"/>
+				<imageExpression><![CDATA["C:\\Users\\Michel\\Documents\\NetBeansProjects\\SISTEJM\\src\\br\\com\\sistejm\\images\\logoTJM.jpg"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="83" y="30" width="283" height="15" uuid="a0e97585-03f8-487a-b6bd-5fe340c470f6"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Calibri" size="11" isBold="true" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[RELAÇÃO DE ORIXÁS E ENTIDADES DIVINAS DO MÉDIUM]]></text>
+			</staticText>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="80">
+			<rectangle>
+				<reportElement x="376" y="19" width="111" height="26" uuid="451ce522-68b4-4d77-bdc4-5396060bb236"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="384" y="8" width="63" height="20" uuid="ab5c59ee-5973-4f44-9343-e79b283605ab"/>
+				<graphicElement>
+					<pen lineWidth="0.0"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="17" y="20" width="349" height="26" uuid="cd2350dc-fe24-4c29-aa82-83ac7c664613"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="23" y="5" width="63" height="20" uuid="e6ad965b-e2b4-47bd-ae09-b0d73ca6ea22"/>
+				<graphicElement>
+					<pen lineWidth="0.0"/>
+				</graphicElement>
+			</rectangle>
+			<textField>
+				<reportElement x="383" y="25" width="100" height="17" uuid="89bb072e-587f-4fa2-b580-36df91efb19f"/>
+				<textElement>
+					<font fontName="Calibri" size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{matricula}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="23" y="26" width="304" height="18" uuid="ac016ed9-bba3-401f-8b01-878f3b0c0b2a"/>
+				<textElement>
+					<font fontName="Calibri" size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nome}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="380" y="10" width="66" height="17" uuid="811b4162-fded-4e00-9a8e-b007b577bb59"/>
+				<textElement textAlignment="Left">
+					<font fontName="Calibri" size="11" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[MATRÍCULA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="29" y="11" width="52" height="18" uuid="aceab40d-4bca-4701-b7eb-1f4ea7d1a85c"/>
+				<textElement>
+					<font fontName="Calibri" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[MÉDIUM]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="69" y="60" width="66" height="17" uuid="58ef1f94-15f7-4610-9c19-d474cec41ddc"/>
+				<textElement textAlignment="Left">
+					<font fontName="Calibri" size="11" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[TIPO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="169" y="60" width="66" height="17" uuid="0ee51176-032b-44c9-9059-f4416fa99b3d"/>
+				<textElement textAlignment="Left">
+					<font fontName="Calibri" size="11" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[ENTIDADE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="273" y="60" width="66" height="17" uuid="b5a835bb-61ae-4072-8c75-ff7b714719ac"/>
+				<textElement textAlignment="Left">
+					<font fontName="Calibri" size="11" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[CABOCLO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="373" y="60" width="66" height="17" uuid="81ac7bb1-e30e-4878-bfee-6abd50d2d611"/>
+				<textElement textAlignment="Left">
+					<font fontName="Calibri" size="11" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[ERÊ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="60" width="66" height="17" uuid="caa672ca-32bc-4ff7-b299-a50cad9f2be2"/>
+				<textElement textAlignment="Left">
+					<font fontName="Calibri" size="11" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[ORIXÁ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="457" y="60" width="66" height="17" uuid="e60e67ce-962d-4ea7-b6fa-8e385678a57c"/>
+				<textElement textAlignment="Left">
+					<font fontName="Calibri" size="11" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[EXU]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="22">
+			<textField>
+				<reportElement isPrintRepeatedValues="false" x="66" y="0" width="69" height="20" uuid="88a8fbfc-c889-47b4-aaa6-f2b13eaacfae"/>
+				<textFieldExpression><![CDATA[$F{tipo}.equals(null)?"":$F{tipo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement isPrintRepeatedValues="false" x="0" y="0" width="66" height="20" uuid="d69bb7af-7585-4359-8a3f-aa566d127975"/>
+				<textFieldExpression><![CDATA[$F{orixa}.equals(null)?"":$F{orixa}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement isPrintRepeatedValues="false" mode="Transparent" x="455" y="0" width="100" height="20" uuid="07ba3e5e-fcf2-47da-ad65-b57328c87a1f"/>
+				<textElement markup="none"/>
+				<textFieldExpression><![CDATA[$F{exu}.equals(null)?"":$F{exu}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement isPrintRepeatedValues="false" x="169" y="0" width="100" height="20" uuid="88ab7111-d5a4-407d-baf6-ef068f9ddf75"/>
+				<textFieldExpression><![CDATA[$F{entidade}.equals(null)?"":$F{entidade}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement isPrintRepeatedValues="false" x="273" y="0" width="82" height="20" uuid="166653cc-43fa-416a-9348-7bf4dcf3290a"/>
+				<textFieldExpression><![CDATA[$F{caboclo}.equals(null)?"":$F{caboclo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement isPrintRepeatedValues="false" x="373" y="2" width="82" height="20" uuid="8c3a60ae-e12f-41b1-86c2-629e7ee24a1b"/>
+				<textFieldExpression><![CDATA[$F{ere}.equals(null)?"":$F{ere}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="85">
+			<textField evaluationTime="Report">
+				<reportElement x="529" y="40" width="23" height="20" uuid="2ee09393-5b0a-4f36-b7ff-394076b9a85a"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="496" y="40" width="27" height="20" uuid="3d825a84-d4cc-4d69-bf95-62e024bb752b"/>
+				<textElement textAlignment="Right">
+					<font isStrikeThrough="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="4" y="10" width="554" height="20" uuid="1a308d27-ebc4-49a7-968a-760c4e025f50"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial Narrow" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[USO EXCLUSIVO DO TEJM]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="523" y="40" width="9" height="20" uuid="e17478b0-8562-45f0-bb27-f6b129b54de7"/>
+				<text><![CDATA[/]]></text>
+			</staticText>
+			<line>
+				<reportElement x="11" y="10" width="544" height="1" uuid="c31d2dea-f912-41f9-ab3e-d513d42653f5"/>
+			</line>
+			<break>
+				<reportElement x="0" y="66" width="100" height="1" uuid="24152054-80fd-4cd6-b388-39be23ef3ade"/>
+			</break>
+		</band>
+	</columnFooter>
+</jasperReport>

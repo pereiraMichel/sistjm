@@ -87,7 +87,8 @@ public class MediumOrixa {
                     + "INNER JOIN medium_ori mo ON mo.codMedium = m.idmedium "
                     + "LEFT JOIN orixas o ON o.idorixa = mo.cod_orixa "
                     + "LEFT JOIN tipo_orixa tpo ON tpo.idtipo_orixa = mo.codTipo "
-                    + "WHERE m.idmedium = " + this.codMedium;
+                    + "WHERE m.idmedium = " + this.codMedium + " "
+                    + "ORDER BY tpo.idtipo_orixa";
         
         try{
             con = new Conexao();
@@ -191,21 +192,18 @@ public class MediumOrixa {
                 
                 if(rs.absolute(1)){
                     quant = Integer.valueOf(rs.getString("quantidade"));
-
                     if(quant >= 4){
                         return quant;
                     }
                 }
-                
-
             }catch(Exception ex){
                 config.gravaErroLog("Erro na quantidade de Orixás do Médium. Descrição: " + ex.getMessage(), "Quantidade de Orixá", "sistejm.verquantmo");
             }
-        
         return quant;
     }
     
     public boolean incluirMediumOrixa(){
+        config = new Configuracoes();
         con = new Conexao();
         if(!this.verificaExistente()){
             
@@ -219,16 +217,18 @@ public class MediumOrixa {
                 conn = con.getConnection();
                 stmt = conn.createStatement();
                 stmt.executeUpdate(sql);
+                config.gravaBDBackup(sql);
                 return true;
 
             }catch(Exception ex){
-                System.out.println("Catch inclusão de Orixá do Médium ativado. Erro: " + ex.getMessage());
+                config.gravaErroLog(Constances.ERRORINC + ex.getMessage(), "Inclusão de Orixá", "sistejm.incorixa");
             }
         }
         return false;
     }
     
     public boolean alterarMediumOrixa(){
+        config = new Configuracoes();
         String sql = "UPDATE medium_ori SET cod_orixa = '" + this.codOrixa + "', "
                 + "codTipo = " + this.codTipo + ", "
                 + " WHERE medium = " + this.idMediumOrixa + "AND codMedium = " + this.codMedium;
@@ -238,15 +238,17 @@ public class MediumOrixa {
             conn = con.getConnection();
             stmt = conn.createStatement();
             stmt.executeUpdate(sql);
+            config.gravaBDBackup(sql);
             
             return true;
             
         }catch(Exception ex){
-            System.out.println("Catch alteração de Orixás de Médium ativado. Erro: " + ex.getMessage());
+            config.gravaErroLog(Constances.ERRORALT + ex.getMessage(), "Alteração de Orixá", "sistejm.altorixa");
         }
         return false;
     }
     public boolean excluirMediumOrixa(){
+        config = new Configuracoes();
         String sql = "DELETE FROM medium_ori WHERE idmedium_ori = " + this.idMediumOrixa;
 
         try{
@@ -254,16 +256,18 @@ public class MediumOrixa {
             conn = con.getConnection();
             stmt = conn.createStatement();
             stmt.executeUpdate(sql);
+            config.gravaBDBackup(sql);
             
             //Colocar direcionamento de outras tabelas
             return true;
             
         }catch(Exception ex){
-            System.out.println("Catch exclusão de Orixá de Médium ativado. Erro: " + ex.getMessage());
+            config.gravaErroLog(Constances.ERROREXC + ex.getMessage(), "Exclusão de Orixá", "sistejm.incorixa");
         }
         return false;
     }
     public boolean excluirOrixaMedium(){
+        config = new Configuracoes();
         String sql = "DELETE FROM medium_ori WHERE codMedium = " + this.codMedium;
 
         try{
@@ -271,12 +275,13 @@ public class MediumOrixa {
             conn = con.getConnection();
             stmt = conn.createStatement();
             stmt.executeUpdate(sql);
+            config.gravaBDBackup(sql);
             
-            //Colocar direcionamento de outras tabelas
+            
             return true;
             
         }catch(Exception ex){
-            System.out.println("Catch exclusão de Orixá de Médium ativado. Erro: " + ex.getMessage());
+            config.gravaErroLog(Constances.ERROREXC + ex.getMessage(), "Exclusão de Orixá", "sistejm.excorixa");
         }
         return false;
     }

@@ -22,11 +22,17 @@ public class Constances {
     public static final String TITULO_DORIXASMEDIUM = "TELA DE ORIXÁS E ENTIDADES DIVINAS DO MÉDIUM";
     public static final String TITULO_DMENSALIDADESMEDIUM = "TELA DE MENSALIDADES DO MÉDIUM";
     public static final String TITULO_DFICHASSMEDIUM = "TELA DE FICHAS DO MÉDIUM";
+    public static final String TITULO_DNIVER = "TELA DE ANIVERSÁRIOS DE MÉDIUM";
     
     public static final String SORI = "orixas";
     public static final String SENT = "entidade";
     public static final String SERE = "ere";
     public static final String SEXU = "exu";
     public static final String SCAB = "caboclo";
+    
+    public static final String ERRORINC = "Erro na inclusão. Mensagem: ";
+    public static final String ERRORALT = "Erro na alteração. Mensagem: ";
+    public static final String ERROREXC = "Erro na exclusão. Mensagem: ";
+    public static final String ERRORTAB = "Erro na tabela. Mensagem: ";
     
 }

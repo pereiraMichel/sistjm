@@ -9,6 +9,7 @@ import br.com.sistejm.classes.Constances;
 import br.com.sistejm.classes.Mediuns;
 import br.com.sistejm.classes.Relatorios;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import javax.swing.JOptionPane;
 
 /**
@@ -20,13 +21,31 @@ public class DRelMediuns extends javax.swing.JDialog {
     private int ano;
     private int mensalidade;
     private int coroacao;
-    private int orixas;
     private int endereco;
     private int telefone;
+    private int ativo;
+    private int foto;
     
     Mediuns m;
     Calendar c;
     Relatorios r;
+    Calendar cal;
+
+    public int getFoto() {
+        return foto;
+    }
+
+    public void setFoto(int foto) {
+        this.foto = foto;
+    }
+
+    public int getAtivo() {
+        return ativo;
+    }
+
+    public void setAtivo(int ativo) {
+        this.ativo = ativo;
+    }
 
     public int getCoroacao() {
         return coroacao;
@@ -68,16 +87,6 @@ public class DRelMediuns extends javax.swing.JDialog {
         this.mensalidade = mensalidade;
     }
 
-    public int getOrixas() {
-        return orixas;
-    }
-
-    public void setOrixas(int orixas) {
-        this.orixas = orixas;
-    }
-    
-    
-
     /**
      * Creates new form DRelMediuns
      */
@@ -86,11 +95,18 @@ public class DRelMediuns extends javax.swing.JDialog {
         initComponents();
         preencheTitulo();
         ocultaTextMensal(false);
+        selecaoAuto();
         preencheTabMediuns();
+        ocultaText(false);
     }
     
     public void preencheTitulo(){
         this.setTitle(Constances.TITULO_DFICHASSMEDIUM);
+    }
+    
+    public void selecaoAuto(){
+        this.foto = 1;
+        this.ativo = 9;
     }
     
     public void ocultaTextMensal(boolean valor){
@@ -99,9 +115,15 @@ public class DRelMediuns extends javax.swing.JDialog {
         txtAno.setVisible(valor);
     }
     
+    public void ocultaText(boolean valor){
+        txtIdMedium.setVisible(valor);
+        txtData.setVisible(valor);
+    }
+    
     public void preencheTabMediuns(){
         m = new Mediuns();
-        m.preencheTabMedium(tabMediuns);
+        m.setAtivo(this.ativo);
+        m.preencheTabNomeMedium(tabMediuns);
     }
 
     /**
@@ -113,6 +135,7 @@ public class DRelMediuns extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        bAtivo = new javax.swing.ButtonGroup();
         panelTop = new javax.swing.JPanel();
         labelTitulo = new javax.swing.JLabel();
         btCancelar = new javax.swing.JButton();
@@ -125,17 +148,16 @@ public class DRelMediuns extends javax.swing.JDialog {
         txtNomeMedium = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         tabMediuns = new javax.swing.JTable();
+        radioAtivo = new javax.swing.JRadioButton();
+        radioInativo = new javax.swing.JRadioButton();
         radioTodos = new javax.swing.JRadioButton();
-        radioMedEspecif = new javax.swing.JRadioButton();
         panelOutros = new javax.swing.JPanel();
         cMensalidades = new javax.swing.JCheckBox();
         cCoroacao = new javax.swing.JCheckBox();
-        cOrixas = new javax.swing.JCheckBox();
-        jCheckBox3 = new javax.swing.JCheckBox();
         txtAno = new javax.swing.JTextField();
         labelAno = new javax.swing.JLabel();
-        cTelefones = new javax.swing.JCheckBox();
         cEndereco = new javax.swing.JCheckBox();
+        cFoto = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -192,7 +214,7 @@ public class DRelMediuns extends javax.swing.JDialog {
                 .addGroup(panelTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(txtData, javax.swing.GroupLayout.DEFAULT_SIZE, 27, Short.MAX_VALUE)
                     .addComponent(txtIdMedium))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 219, Short.MAX_VALUE)
                 .addComponent(btImprimir, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -235,6 +257,12 @@ public class DRelMediuns extends javax.swing.JDialog {
 
         panelMedium.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "MÉDIUM", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Arial", 1, 10), new java.awt.Color(0, 0, 204))); // NOI18N
 
+        txtNomeMedium.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtNomeMediumKeyReleased(evt);
+            }
+        });
+
         tabMediuns.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -250,10 +278,30 @@ public class DRelMediuns extends javax.swing.JDialog {
         });
         jScrollPane1.setViewportView(tabMediuns);
 
-        radioTodos.setSelected(true);
-        radioTodos.setText("Todos");
+        bAtivo.add(radioAtivo);
+        radioAtivo.setText(" Médiuns ativos");
+        radioAtivo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                radioAtivoActionPerformed(evt);
+            }
+        });
 
-        radioMedEspecif.setText("De um médium específico");
+        bAtivo.add(radioInativo);
+        radioInativo.setText(" Médiuns Inativos");
+        radioInativo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                radioInativoActionPerformed(evt);
+            }
+        });
+
+        bAtivo.add(radioTodos);
+        radioTodos.setSelected(true);
+        radioTodos.setText(" Todos");
+        radioTodos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                radioTodosActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout panelMediumLayout = new javax.swing.GroupLayout(panelMedium);
         panelMedium.setLayout(panelMediumLayout);
@@ -263,11 +311,14 @@ public class DRelMediuns extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(panelMediumLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelMediumLayout.createSequentialGroup()
+                        .addGap(14, 14, 14)
+                        .addComponent(radioAtivo)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(radioInativo)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(radioTodos)
-                        .addGap(31, 31, 31)
-                        .addComponent(radioMedEspecif)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 89, Short.MAX_VALUE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 315, Short.MAX_VALUE)
                     .addComponent(txtNomeMedium))
                 .addContainerGap())
         );
@@ -275,16 +326,17 @@ public class DRelMediuns extends javax.swing.JDialog {
             panelMediumLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelMediumLayout.createSequentialGroup()
                 .addGroup(panelMediumLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(radioTodos)
-                    .addComponent(radioMedEspecif))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
+                    .addComponent(radioAtivo)
+                    .addComponent(radioInativo)
+                    .addComponent(radioTodos))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
                 .addComponent(txtNomeMedium, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
-        panelOutros.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "OUTROS", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Arial", 1, 10), new java.awt.Color(0, 0, 204))); // NOI18N
+        panelOutros.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "   ADICIONAIS   ", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Arial", 1, 10), new java.awt.Color(0, 0, 204))); // NOI18N
 
         cMensalidades.setText(" Mensalidades");
         cMensalidades.addActionListener(new java.awt.event.ActionListener() {
@@ -293,36 +345,27 @@ public class DRelMediuns extends javax.swing.JDialog {
             }
         });
 
-        cCoroacao.setText(" Histórico de coroação");
+        cCoroacao.setText(" Ccoroação");
         cCoroacao.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cCoroacaoActionPerformed(evt);
             }
         });
 
-        cOrixas.setText(" Orixás e entidades divinas");
-        cOrixas.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cOrixasActionPerformed(evt);
-            }
-        });
-
-        jCheckBox3.setText(" Atividades e colaborações");
-        jCheckBox3.setEnabled(false);
-
         labelAno.setText("Ano:");
 
-        cTelefones.setText(" Telefones");
-        cTelefones.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cTelefonesActionPerformed(evt);
-            }
-        });
-
-        cEndereco.setText(" Endereço");
+        cEndereco.setText(" Endereço, Telefones e Entidades");
         cEndereco.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cEnderecoActionPerformed(evt);
+            }
+        });
+
+        cFoto.setSelected(true);
+        cFoto.setText(" Com foto");
+        cFoto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cFotoActionPerformed(evt);
             }
         });
 
@@ -334,37 +377,31 @@ public class DRelMediuns extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(panelOutrosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(cCoroacao)
-                    .addComponent(cOrixas)
-                    .addComponent(jCheckBox3)
+                    .addComponent(cEndereco)
                     .addGroup(panelOutrosLayout.createSequentialGroup()
                         .addComponent(cMensalidades)
                         .addGap(29, 29, 29)
                         .addComponent(labelAno)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(txtAno, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(cTelefones)
-                    .addComponent(cEndereco))
+                    .addComponent(cFoto))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         panelOutrosLayout.setVerticalGroup(
             panelOutrosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelOutrosLayout.createSequentialGroup()
-                .addContainerGap(14, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(cFoto)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(cEndereco)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(cTelefones)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelOutrosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cMensalidades)
                     .addComponent(labelAno)
                     .addComponent(txtAno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(cCoroacao)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(cOrixas)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jCheckBox3)
-                .addContainerGap())
+                .addGap(43, 43, 43))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -376,9 +413,9 @@ public class DRelMediuns extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(panelMedium, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(panelOutros, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(40, Short.MAX_VALUE))
+                .addGap(23, 23, 23))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -388,7 +425,7 @@ public class DRelMediuns extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(panelMedium, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(panelOutros, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(panelOutros, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(panelDown, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -403,27 +440,49 @@ public class DRelMediuns extends javax.swing.JDialog {
 
     private void btImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btImprimirActionPerformed
 
-        r = new Relatorios();
+        if(!txtIdMedium.getText().equals("")){
+            r = new Relatorios();
+
+            if(this.endereco == 1){
+                r.relatorioFichaMedium(Integer.valueOf(txtIdMedium.getText()), this.foto); // ficha do médium
+            }
+            if(this.coroacao == 1 ){
+                r.relatorioSaidasMedium(Integer.valueOf(txtIdMedium.getText()));       
+            }
+            if(this.mensalidade == 1 ){
+                if(!txtAno.getText().equals("")){
+                    r.relatorioMensalidade("analitico", Integer.valueOf(txtIdMedium.getText()), 1, 0, Integer.valueOf(txtAno.getText()), 0, 0);       
+                }else{
+                    JOptionPane.showMessageDialog(null, "Preencha o ano");
+                }
+            }
+        }else{
+            JOptionPane.showMessageDialog(null, "Por favor, selecione o médium.");
+        }
         
-        r.relatorioFichaMedium(Integer.valueOf(txtIdMedium.getText()), 0, 0, 0, 0, 0, 0);
 //        r.relatorioFichaMedium(Integer.valueOf(txtIdMedium.getText()), ano, ano, ano, ano, ERROR, ABORT);
 
-//relatorioSaidas(String confirmado, int idmedium, int periodo, int mes1, int ano1, int mes2, int ano2)        
         
-// relatorioMensalidade(String tipo, int idmedium, int periodo, int mes1, int ano1, int mes2, int ano2)
+//        relatorioMensalidade(String tipo, int idmedium, int periodo, int mes1, int ano1, int mes2, int ano2)
 //tipo analitico // periodo 1
 
     }//GEN-LAST:event_btImprimirActionPerformed
 
     private void cMensalidadesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cMensalidadesActionPerformed
+        String ano = null;
 
+        cal = new GregorianCalendar();
+        ano = String.valueOf(cal.get(Calendar.YEAR));
+        
         if(cMensalidades.isSelected()){
             this.mensalidade = 1;
             ocultaTextMensal(true);
+            txtAno.setText(ano);
             txtAno.requestFocus();
         }else{
             this.mensalidade = 0;
             ocultaTextMensal(false);
+            txtAno.setText("");
         }
 
     }//GEN-LAST:event_cMensalidadesActionPerformed
@@ -438,14 +497,6 @@ public class DRelMediuns extends javax.swing.JDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_cCoroacaoActionPerformed
 
-    private void cOrixasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cOrixasActionPerformed
-        if(cOrixas.isSelected()){
-            this.orixas = 1;
-        }else{
-            this.orixas = 0;
-        }
-    }//GEN-LAST:event_cOrixasActionPerformed
-
     private void cEnderecoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cEnderecoActionPerformed
         if(cEndereco.isSelected()){
             this.endereco = 1;
@@ -454,19 +505,49 @@ public class DRelMediuns extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_cEnderecoActionPerformed
 
-    private void cTelefonesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cTelefonesActionPerformed
-        if(cTelefones.isSelected()){
-            this.telefone = 1;
-        }else{
-            this.telefone = 0;
-        }
-    }//GEN-LAST:event_cTelefonesActionPerformed
-
     private void tabMediunsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabMediunsMouseClicked
+        m = new Mediuns();
         String nomeMedium = String.valueOf(tabMediuns.getValueAt(tabMediuns.getSelectedRow(), 0));
         txtNomeMedium.setText(nomeMedium.toUpperCase());
+        txtIdMedium.setText(String.valueOf(m.retornaIdMedium(nomeMedium)));
         
     }//GEN-LAST:event_tabMediunsMouseClicked
+
+    private void radioAtivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioAtivoActionPerformed
+        this.ativo = 1;
+        preencheTabMediuns();
+        // TODO add your handling code here:
+    }//GEN-LAST:event_radioAtivoActionPerformed
+
+    private void radioInativoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioInativoActionPerformed
+        this.ativo = 0;
+        preencheTabMediuns();
+        // TODO add your handling code here:
+    }//GEN-LAST:event_radioInativoActionPerformed
+
+    private void radioTodosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioTodosActionPerformed
+        this.ativo = 9;
+        preencheTabMediuns();
+        // TODO add your handling code here:
+    }//GEN-LAST:event_radioTodosActionPerformed
+
+    private void cFotoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cFotoActionPerformed
+
+        if(cFoto.isSelected()){
+            this.foto = 1;
+        }else{
+            this.foto = 0;
+        }
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cFotoActionPerformed
+
+    private void txtNomeMediumKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNomeMediumKeyReleased
+
+        m = new Mediuns();
+        m.setAtivo(this.ativo);
+        m.buscaTabNomeMedium(tabMediuns, txtNomeMedium.getText());
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtNomeMediumKeyReleased
 
     public void fechar(){
         this.setAutoRequestFocus(false);
@@ -515,14 +596,13 @@ public class DRelMediuns extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.ButtonGroup bAtivo;
     private javax.swing.JButton btCancelar;
     private javax.swing.JButton btImprimir;
     private javax.swing.JCheckBox cCoroacao;
     private javax.swing.JCheckBox cEndereco;
+    private javax.swing.JCheckBox cFoto;
     private javax.swing.JCheckBox cMensalidades;
-    private javax.swing.JCheckBox cOrixas;
-    private javax.swing.JCheckBox cTelefones;
-    private javax.swing.JCheckBox jCheckBox3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel labelAno;
     private javax.swing.JLabel labelTitulo;
@@ -531,7 +611,8 @@ public class DRelMediuns extends javax.swing.JDialog {
     private javax.swing.JPanel panelMedium;
     private javax.swing.JPanel panelOutros;
     private javax.swing.JPanel panelTop;
-    private javax.swing.JRadioButton radioMedEspecif;
+    private javax.swing.JRadioButton radioAtivo;
+    private javax.swing.JRadioButton radioInativo;
     private javax.swing.JRadioButton radioTodos;
     private javax.swing.JTable tabMediuns;
     private javax.swing.JTextField txtAno;

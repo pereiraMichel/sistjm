@@ -48,7 +48,8 @@ public class Exu {
     
     public void preencheTabExu(JTable tabela){
 
-        String sql = "SELECT * FROM exu";
+        String sql = "SELECT * FROM exu "
+                + "   ORDER BY nome ASC";
         
         try{
             con = new Conexao();
@@ -68,12 +69,13 @@ public class Exu {
                 orixa.addRow(new Object[]{nomeEvento});
             }
         }catch(Exception ex){
-            System.out.println("Erro em tabela de exu. Mensagem: " + ex.getMessage());
+            config.gravaErroLog(Constances.ERRORTAB+ ex.getMessage(), "Tabela de Exu", "sistejm.tabexu");
         }        
     }
     public void buscaTabExus(JTable tabela, JTextField texto){
 
-        String sql = "SELECT * FROM exu WHERE nome LIKE '%" + texto.getText() + "'";
+        String sql = "SELECT * FROM exu WHERE nome LIKE '%" + texto.getText() + "' "
+                + "   ORDER BY nome ASC";
         
         try{
             con = new Conexao();
@@ -93,14 +95,15 @@ public class Exu {
                 orixa.addRow(new Object[]{nomeEvento});
             }
         }catch(Exception ex){
-            System.out.println("Erro em tabela de exu. Mensagem: " + ex.getMessage());
+            config.gravaErroLog(Constances.ERRORTAB+ ex.getMessage(), "Tabela de Exu", "sistejm.tabBexu");
         }        
     }
     
     public void verificaDuplicidade(){
         config = new Configuracoes();
 
-        String sql = "SELECT * FROM exu WHERE nome LIKE '%" + this.nome + "'";
+        String sql = "SELECT * FROM exu WHERE nome LIKE '%" + this.nome + "' "
+                + "   ORDER BY nome ASC";
         
         try{
             con = new Conexao();
@@ -146,6 +149,8 @@ public class Exu {
     
     public boolean incluirExu(){
         con = new Conexao();
+        config = new Configuracoes();
+        
         this.idExu = con.ultimoId("exu", "idexu");
         
         String sql = "INSERT INTO exu (idexu, nome) "
@@ -155,16 +160,19 @@ public class Exu {
             conn = con.getConnection();
             stmt = conn.createStatement();
             stmt.executeUpdate(sql);
+            config.gravaBDBackup(sql);
             
             return true;
             
         }catch(Exception ex){
-            System.out.println("Catch inclusão de entidade ativado. Erro: " + ex.getMessage());
+            config.gravaErroLog(Constances.ERRORINC+ ex.getMessage(), "Inclusão de Exu", "sistejm.incexu");
         }
         return false;
     }
     
     public boolean alterarExu(){
+        config = new Configuracoes();
+        
         String sql = "UPDATE exu SET nome = '" + this.nome + "' WHERE idexu = " + this.idExu;
         
         try{
@@ -172,15 +180,18 @@ public class Exu {
             conn = con.getConnection();
             stmt = conn.createStatement();
             stmt.executeUpdate(sql);
+            config.gravaBDBackup(sql);
             
             return true;
             
         }catch(Exception ex){
-            System.out.println("Catch alteração de exu ativado. Erro: " + ex.getMessage());
+            config.gravaErroLog(Constances.ERRORALT+ ex.getMessage(), "Alteração de Exu", "sistejm.altexu");
         }
         return false;
     }
     public boolean excluirExu(){
+        config = new Configuracoes();
+        
         String sql = "DELETE FROM exu WHERE idexu = " + this.idExu;
 
         try{
@@ -188,11 +199,12 @@ public class Exu {
             conn = con.getConnection();
             stmt = conn.createStatement();
             stmt.executeUpdate(sql);
+            config.gravaBDBackup(sql);
             
             return true;
             
         }catch(Exception ex){
-            System.out.println("Catch exclusão de entidade ativado. Erro: " + ex.getMessage());
+            config.gravaErroLog(Constances.ERROREXC+ ex.getMessage(), "Exclusão de Exu", "sistejm.excexu");
         }
         return false;
     }

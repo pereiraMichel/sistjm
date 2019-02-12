@@ -168,11 +168,12 @@ public class MediumCaboclo {
                 conn = con.getConnection();
                 stmt = conn.createStatement();
                 stmt.executeUpdate(sql);
+                config.gravaBDBackup(sql);
+                
                 return true;
 
             }catch(Exception ex){
                 config.gravaErroLog("Tentativa de inclusão do caboclo do Médium. Erro: " + ex.getMessage(), "Caboclo", "sistejm.mcaboclo");
-//                System.out.println("Catch inclusão de Entidade do Médium ativado. Erro: " + ex.getMessage());
             }
         }
         return false;
@@ -189,31 +190,31 @@ public class MediumCaboclo {
             conn = con.getConnection();
             stmt = conn.createStatement();
             stmt.executeUpdate(sql);
+            config.gravaBDBackup(sql);
             
             return true;
             
         }catch(Exception ex){
-                config.gravaErroLog("Tentativa de alteração da Caboclo do Médium. Erro: " + ex.getMessage(), "Alteração do Caboclo", "sistejm.mcaboclo");
+            config.gravaErroLog("Tentativa de alteração da Caboclo do Médium. Erro: " + ex.getMessage(), "Alteração do Caboclo", "sistejm.mcaboclo");
         }
         return false;
     }
     public boolean excluirMediumCaboclo(){
         config = new Configuracoes();
         
-        String sql = "DELETE FROM medium_caboclo WHERE idmedium_caboclo = " + this.idMediumCaboclo;
+        String sql = "DELETE FROM medium_caboclo WHERE codMedium = " + this.codMedium;
 
         try{
             con = new Conexao();
             conn = con.getConnection();
             stmt = conn.createStatement();
             stmt.executeUpdate(sql);
+            config.gravaBDBackup(sql);
             
-            //Colocar direcionamento de outras tabelas
             return true;
             
         }catch(Exception ex){
             config.gravaErroLog("Tentativa de exclusão do caboclo do Médium. Erro: " + ex.getMessage(), "Exclusão do Caboclo", "sistejm.mcaboclo");
-//            System.out.println("Catch exclusão de Orixá de Médium ativado. Erro: " + ex.getMessage());
         }
         return false;
     }
@@ -222,9 +223,10 @@ public class MediumCaboclo {
 
         String nome = null;
         try{
-            String sql = "SELECT o.nome FROM mediuns m "
+            String sql = "SELECT c.nome FROM mediuns m "
                     + " INNER JOIN medium_caboclo mc ON mc.codMedium = m.idmedium "
-                    + " INNER JOIN caboclo c ON c.idcaboclo = mc.cod_caboclo";
+                    + " INNER JOIN caboclo c ON c.idcaboclo = mc.cod_caboclo "
+                    + " ORDER BY c.nome ASC";
             
             con = new Conexao();
             conn = con.getConnection();
@@ -232,7 +234,7 @@ public class MediumCaboclo {
             rs = stmt.executeQuery(sql);
 
             while(rs.next()){
-                nome = rs.getString("o.nome");
+                nome = rs.getString("C.nome");
                 combo.addItem(nome);
             }
 
@@ -245,7 +247,8 @@ public class MediumCaboclo {
         config = new Configuracoes();
         String sql = "SELECT DISTINCT m.nome FROM mediuns m "
                 + "LEFT JOIN medium_caboclo mc ON m.idmedium = mc.codMedium  "
-                + "LEFT JOIN caboclo c ON c.idcaboclo = mc.cod_caboclo";
+                + "LEFT JOIN caboclo c ON c.idcaboclo = mc.cod_caboclo "
+                + "ORDER BY m.nome ASC";
         
         try{
             con = new Conexao();
@@ -340,7 +343,8 @@ public class MediumCaboclo {
                 + "FROM mediuns m "
                 + "INNER JOIN medium_caboclo mc ON m.idmedium = mc.codMedium  "
                 + "LEFT JOIN caboclo c ON c.idcaboclo = mc.cod_caboclo "
-                + "WHERE m.idmedium = " + this.codMedium;
+                + "WHERE m.idmedium = " + this.codMedium + " "
+                + "ORDER BY c.nome ASC";
 
 //        System.out.println(sql);
         try{

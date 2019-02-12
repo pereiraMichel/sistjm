@@ -102,8 +102,11 @@ public class Logradouro {
                 rs.next();
                 
                 if(rs.absolute(1)){
-                    return true;
+                    alteraEndereco();
+                }else{
+                    incluirEndereco();
                 }
+                return true;
 
             }catch(Exception ex){
                 config.gravaErroLog("Houve um erro de verificação de Endereço. Erro: " + ex.getMessage(), "Verificação do Endereço", "sistejm.incluiendereco");
@@ -111,6 +114,7 @@ public class Logradouro {
             return false;
     }
     public boolean incluirEndereco(){
+        config = new Configuracoes();
         con = new Conexao();
             
             this.idLogradouro = con.ultimoId("logradouro", "idlogradouro");
@@ -118,27 +122,29 @@ public class Logradouro {
             String sql = "INSERT INTO logradouro (idlogradouro, endereco, bairro, cidade, estado, cod_medium) "
                     + "VALUES (" + this.idLogradouro + ", '" + this.endereco + "', '" + this.bairro + "', "
                     + "'" + this.cidade + "', '" + this.estado + "', " + this.codMedium + ")";
-//            System.out.println(sql);
             
             
             try{
                 conn = con.getConnection();
                 stmt = conn.createStatement();
                 stmt.executeUpdate(sql);
+                config.gravaBDBackup(sql);
+                
                 return true;
 
             }catch(Exception ex){
                 config.gravaErroLog("Houve um erro no Endereço. Erro: " + ex.getMessage(), "Inclusão do Endereço", "sistejm.incluiendereco");
-//                System.out.println("Catch inclusão de Médium ativado. Erro: " + ex.getMessage());
             }
         return false;
     }
     public boolean alteraEndereco(){
+        config = new Configuracoes();
         con = new Conexao();
 
             String sql = "UPDATE logradouro SET endereco = '" + this.endereco + "', bairro = '" + this.bairro + "',"
                     + " cidade = '" + this.cidade + "', estado = '" + this.estado + "' "
                     + "WHERE cod_medium = " + this.codMedium;
+            
 //        System.out.println(sql);
             
             
@@ -146,16 +152,17 @@ public class Logradouro {
                 conn = con.getConnection();
                 stmt = conn.createStatement();
                 stmt.executeUpdate(sql);
+                config.gravaBDBackup(sql);
+                
                 return true;
 
             }catch(Exception ex){
                 config.gravaErroLog("Houve um erro no Endereço. Erro: " + ex.getMessage(), "Alteração do Endereço", "sistejm.alteraendereco");
-//                System.out.println("Catch inclusão de Médium ativado. Erro: " + ex.getMessage());
             }
         return false;
     }
     
-    public void excluirEndereco(){
+    public boolean excluirEndereco(){
         config = new Configuracoes();
         String sql = "DELETE FROM logradouro WHERE cod_medium = " + this.codMedium;
         
@@ -164,14 +171,14 @@ public class Logradouro {
             conn = con.getConnection();
             stmt = conn.createStatement();
             stmt.executeUpdate(sql);
+            config.gravaBDBackup(sql);
             
-//            return true;
+            return true;
             
         }catch(Exception ex){
             config.gravaErroLog("Houve um erro no Endereço. Erro: " + ex.getMessage(), "Exclusão do Endereço", "sistejm.excluiendereco");
-//            JOptionPane.showMessageDialog(null, "Houve um erro. consulte o arquivo C:/sistejm > erro > sistejm.excluiendereco para mais informações");
         }
-//        return false;
+        return false;
     }
 
     public int retornaIdLogradouro(String endereco){
@@ -197,7 +204,7 @@ public class Logradouro {
         return 0;
     }
     
-    public void exibeEnderecoMedium(JTextField endereco, JTextField bairro, JTextField cidade, JTextField estado){
+    public void exibeEnderecoMedium(JTextField idEndereco, JTextField endereco, JTextField bairro, JTextField cidade, JTextField estado){
         con = new Conexao();
         config = new Configuracoes();
         
@@ -211,6 +218,7 @@ public class Logradouro {
                 rs.next();
                 
                 if(rs.absolute(1)){
+                    idEndereco.setText(rs.getString("idlogradouro"));
                     endereco.setText(rs.getString("endereco"));
                     bairro.setText(rs.getString("bairro"));
                     cidade.setText(rs.getString("cidade"));
@@ -220,8 +228,5 @@ public class Logradouro {
             }catch(Exception ex){
                 config.gravaErroLog("Houve um erro de verificação de Endereço do médium. Erro: " + ex.getMessage(), "Verificação do Endereço", "sistejm.verificaendereco");
             }
-            
-        
     }
-    
 }

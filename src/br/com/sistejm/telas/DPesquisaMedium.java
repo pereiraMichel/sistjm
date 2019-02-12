@@ -5,7 +5,9 @@
  */
 package br.com.sistejm.telas;
 
+import br.com.sistejm.classes.Batismo;
 import br.com.sistejm.classes.Configuracoes;
+import br.com.sistejm.classes.Coroa;
 import br.com.sistejm.classes.Fotos;
 import br.com.sistejm.classes.Logradouro;
 import br.com.sistejm.classes.MediumCaboclo;
@@ -16,7 +18,13 @@ import br.com.sistejm.classes.MediumOrixa;
 import br.com.sistejm.classes.Mediuns;
 import br.com.sistejm.classes.Mensalidade;
 import br.com.sistejm.classes.Telefones;
+import java.awt.Color;
 import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 /**
@@ -35,6 +43,8 @@ public class DPesquisaMedium extends javax.swing.JDialog {
     MediumEre ere;
     MediumExu exu;
     MediumCaboclo mc;
+    Batismo b;
+    Coroa c;
     DMediumGeral med;
     TelaInicial inicial;
     Configuracoes config;
@@ -103,6 +113,7 @@ public class DPesquisaMedium extends javax.swing.JDialog {
         txtDataNascimento.setVisible(valor);
         txtDataEntrada.setVisible(valor);
         scroolObs.setVisible(valor);
+        scrollCampo.setVisible(valor);
     }
     
     public void exibeTabMedium(){
@@ -114,6 +125,38 @@ public class DPesquisaMedium extends javax.swing.JDialog {
         this.usuario = user;
         txtCodeUser.setText(String.valueOf(this.idUser));
     }
+    
+    public void exibeFoto(){
+        f = new Fotos();
+        f.setCodMedium(Integer.valueOf(txtIdMedium.getText()));
+                    
+        
+        if(f.retornaFoto() != null){
+            File file = new File(f.retornaFoto());
+    //                System.out.println("Ocorreu um problema: " + file);
+                BufferedImage bufferedImage = null;  
+                try {
+                    bufferedImage = ImageIO.read(new File(file.getPath()));
+                } catch (IOException e) {  
+    //                JOptionPane.showMessageDialog(null, "Arquivo não suportável");  
+                    System.out.println("Ocorreu um problema: " + e.getMessage());
+                }  
+                ImageIcon img = new ImageIcon(bufferedImage.getScaledInstance(200, 200, 200));
+                labelFoto.setIcon(img);
+        }else{
+            //icon-people.png
+            File file = new File("C:\\sistejm\\images\\icon-people.png");
+                BufferedImage bi = null;  
+                try {
+                    bi = ImageIO.read(new File(file.getPath()));
+                } catch (IOException e) {
+                    System.out.println("Ocorreu um problema: " + e.getMessage());
+                }  
+                ImageIcon img = new ImageIcon(bi);
+                labelFoto.setIcon(img);
+        }
+    }
+    
     
 
     /**
@@ -149,6 +192,11 @@ public class DPesquisaMedium extends javax.swing.JDialog {
         txtObservacoes = new javax.swing.JTextArea();
         txtAtivo = new javax.swing.JTextField();
         txtCodeUser = new javax.swing.JTextField();
+        panelFoto = new javax.swing.JPanel();
+        labelFoto = new javax.swing.JLabel();
+        labelStatus = new javax.swing.JLabel();
+        scrollCampo = new javax.swing.JScrollPane();
+        campoTexto = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -326,6 +374,34 @@ public class DPesquisaMedium extends javax.swing.JDialog {
 
         txtCodeUser.setEditable(false);
 
+        labelFoto.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        labelFoto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/sistejm/images/icon-people.png"))); // NOI18N
+
+        javax.swing.GroupLayout panelFotoLayout = new javax.swing.GroupLayout(panelFoto);
+        panelFoto.setLayout(panelFotoLayout);
+        panelFotoLayout.setHorizontalGroup(
+            panelFotoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelFotoLayout.createSequentialGroup()
+                .addComponent(labelFoto, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+        panelFotoLayout.setVerticalGroup(
+            panelFotoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(labelFoto, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
+
+        labelStatus.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        labelStatus.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        labelStatus.setText("STATUS");
+
+        campoTexto.setEditable(false);
+        campoTexto.setColumns(20);
+        campoTexto.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
+        campoTexto.setForeground(new java.awt.Color(0, 0, 153));
+        campoTexto.setLineWrap(true);
+        campoTexto.setRows(5);
+        scrollCampo.setViewportView(campoTexto);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -335,17 +411,25 @@ public class DPesquisaMedium extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(labelPesquisa, javax.swing.GroupLayout.DEFAULT_SIZE, 137, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtPesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(radioMatricula)
+                            .addComponent(radioNome))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(panelFoto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(36, 36, 36))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(labelPesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtPesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 531, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(radioMatricula)
-                                    .addComponent(radioNome)))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(scrollCampo, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                                    .addComponent(labelStatus, javax.swing.GroupLayout.DEFAULT_SIZE, 141, Short.MAX_VALUE)))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(txtDataEntrada, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -362,33 +446,39 @@ public class DPesquisaMedium extends javax.swing.JDialog {
                                 .addComponent(txtAtivo, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(txtCodeUser, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 265, Short.MAX_VALUE)))
-                .addContainerGap())
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(panelTop, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(labelPesquisa)
-                    .addComponent(txtPesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(radioNome))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(radioMatricula)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(8, 8, 8)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(16, 16, 16)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(scroolObs, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(txtDataEntrada, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(txtMatricula, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(txtIdMedium, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(txtDataNascimento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(txtIsento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(labelPesquisa)
+                            .addComponent(txtPesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(radioNome))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(radioMatricula)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(panelFoto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(labelStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(11, 11, 11)
+                        .addComponent(scrollCampo, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(scroolObs, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtDataEntrada, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtMatricula, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtIdMedium, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtDataNascimento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtIsento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(txtAtivo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(txtCodeUser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -426,19 +516,31 @@ public class DPesquisaMedium extends javax.swing.JDialog {
 
     private void tabelaMediumMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaMediumMouseClicked
 
-//        m = new Mediuns();
+        m = new Mediuns();
         inicial = new TelaInicial();
         med = new DMediumGeral(inicial, false);
-        String id = String.valueOf(tabelaMedium.getValueAt(tabelaMedium.getSelectedRow(), 0));
-        String matriculaMedium = String.valueOf(tabelaMedium.getValueAt(tabelaMedium.getSelectedRow(), 1));
-        String nomeMedium = String.valueOf(tabelaMedium.getValueAt(tabelaMedium.getSelectedRow(), 2));
-        String ativo = String.valueOf(tabelaMedium.getValueAt(tabelaMedium.getSelectedRow(), 3));
+//        String id = String.valueOf(tabelaMedium.getValueAt(tabelaMedium.getSelectedRow(), 0));
+        String matriculaMedium = String.valueOf(tabelaMedium.getValueAt(tabelaMedium.getSelectedRow(), 0));
+        String nomeMedium = String.valueOf(tabelaMedium.getValueAt(tabelaMedium.getSelectedRow(), 1));
+        String ativo = String.valueOf(tabelaMedium.getValueAt(tabelaMedium.getSelectedRow(), 2));
         
         txtPesquisa.setText(nomeMedium);
-        txtIdMedium.setText(id);
+        txtIdMedium.setText(String.valueOf(m.retornaIdMedium(nomeMedium)));
         txtMatricula.setText(matriculaMedium);
         btSelecionar.setEnabled(true);
-        txtAtivo.setText(ativo);
+//        txtAtivo.setText(ativo);
+        
+        Color corVerde = new Color(0,153,0);
+        Color corVermelho = new Color(255,0,0);
+        if(ativo.equals("Sim")){
+            labelStatus.setForeground(corVerde);
+            labelStatus.setText("ATIVO");
+        }else if (ativo.equals("Não")){
+            labelStatus.setForeground(corVermelho);
+            labelStatus.setText("INATIVO");
+        }
+        
+        exibeFoto();
         
 //        this.idMedium = m.retornaIdMediumPorMatricula(matriculaMedium);
         
@@ -463,7 +565,6 @@ public class DPesquisaMedium extends javax.swing.JDialog {
     private void txtPesquisaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPesquisaKeyReleased
 
         m = new Mediuns();
-        
         m.buscaTabMedium(tabelaMedium, this.selecao, txtPesquisa);
         
         // TODO add your handling code here:
@@ -474,6 +575,8 @@ public class DPesquisaMedium extends javax.swing.JDialog {
         f = new Fotos();
         t = new Telefones();
         l = new Logradouro();
+        b = new Batismo();
+        c = new Coroa();
         mensal = new Mensalidade();
         mo = new MediumOrixa();
         me = new MediumEntidade();
@@ -483,31 +586,81 @@ public class DPesquisaMedium extends javax.swing.JDialog {
 
         if(!txtIdMedium.getText().equals("")){
             if(JOptionPane.showConfirmDialog(null, "Deseja excluir? Toda as informações serão excluídas.", "EXCLUSÃO", JOptionPane.YES_NO_OPTION)== 0){
-                m.setIdMedium(Integer.valueOf(txtIdMedium.getText()));
-                f.setCodMedium(Integer.valueOf(txtIdMedium.getText()));
-                t.setCodMedium(Integer.valueOf(txtIdMedium.getText()));
-                l.setCodMedium(Integer.valueOf(txtIdMedium.getText()));
-                mensal.setCodMedium(Integer.valueOf(txtIdMedium.getText()));
-                mo.setCodMedium(Integer.valueOf(txtIdMedium.getText()));
-                me.setCodMedium(Integer.valueOf(txtIdMedium.getText()));
-                ere.setCodMedium(Integer.valueOf(txtIdMedium.getText()));
-                exu.setCodMedium(Integer.valueOf(txtIdMedium.getText()));
-                mc.setCodMedium(Integer.valueOf(txtIdMedium.getText()));
                 
+                scrollCampo.setVisible(true);
+                
+                //Processo de exclusão da Foto
+                f.setCodMedium(Integer.valueOf(txtIdMedium.getText()));
                 f.excluirFoto();
+                preencheCampo("Excluindo a foto... OK");
+
+                //Processo de exclusão do batismo
+                b.setCodMedium(Integer.valueOf(txtIdMedium.getText()));
+                b.excluirBatismoMedium();
+
+                //Processo de exclusão da corôa
+                c.setCodmedium(Integer.valueOf(txtIdMedium.getText()));
+                c.excluirCoroa();
+                preencheCampo("Excluindo a Corôa e batismo... OK");
+
+                //Processo de exclusão do telefone
+                t.setCodMedium(Integer.valueOf(txtIdMedium.getText()));
                 t.excluirTelefone();
+                
+                //Processo de exclusão do endereço
+                l.setCodMedium(Integer.valueOf(txtIdMedium.getText()));
                 l.excluirEndereco();
+                preencheCampo("Excluindo endereço e telefones... OK");
+                
+                //Processo de exclusão das mensalidades
+                mensal.setCodMedium(Integer.valueOf(txtIdMedium.getText()));
                 mensal.excluiMensalidade();
+                preencheCampo("Excluindo a mensalidade... OK");
+                
+                //Processo de exclusão do medium_ori
+                mo.setCodMedium(Integer.valueOf(txtIdMedium.getText()));
                 mo.excluirOrixaMedium();
+                preencheCampo("Excluindo Orixás do médium... OK");
+
+                //Processo de exclusão do medium_ent
+                me.setCodMedium(Integer.valueOf(txtIdMedium.getText()));
                 me.excluirEntidadeMedium();
+                preencheCampo("Excluindo Entidades do médium... OK");
+
+                //Processo de exclusão do medium_ere
+                ere.setCodMedium(Integer.valueOf(txtIdMedium.getText()));
+                ere.excluirMediumEre();
+                preencheCampo("Excluindo Erês do médium... OK");
+
+                //Processo de exclusão do medium_caboclo
+                mc.setCodMedium(Integer.valueOf(txtIdMedium.getText()));
+                mc.excluirMediumCaboclo();
+                preencheCampo("Excluindo Caboclos do médium... OK");
+
+                //Processo de exclusão do medium_exu
+                exu.setCodMedium(Integer.valueOf(txtIdMedium.getText()));
+                exu.excluirMediumExu();
+                preencheCampo("Excluindo Exus do médium... OK");
+
+                //Processo final de exclusão do médium
+                m.setIdMedium(Integer.valueOf(txtIdMedium.getText()));
                 m.excluirMedium();
+                preencheCampo("Excluindo o médium... OK");
                 
                 exibeTabMedium();
+                preencheCampo("Excluído com sucesso!");
+                config.gravaAtividades("Realizada a exclusão do médium " + txtPesquisa.getText(), this.usuario, "Exclusão do médium");
             }
             
         }
     }//GEN-LAST:event_btExcluirActionPerformed
 
+    public void preencheCampo(String texto){
+        campoTexto.setLineWrap(true);
+        campoTexto.append("\n" + texto);
+    }
+    
+    
     private void btNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btNovoActionPerformed
 
         inicial = new TelaInicial();
@@ -572,14 +725,19 @@ public class DPesquisaMedium extends javax.swing.JDialog {
     private javax.swing.JButton btNovo;
     private javax.swing.JButton btSelecionar;
     private javax.swing.ButtonGroup buttonGroup;
+    private javax.swing.JTextArea campoTexto;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel labelFoto;
     private javax.swing.JLabel labelPesquisa;
+    private javax.swing.JLabel labelStatus;
     private javax.swing.JLabel labelTitulo;
     private javax.swing.JLabel labelVersao;
     private javax.swing.JPanel panelDown;
+    private javax.swing.JPanel panelFoto;
     private javax.swing.JPanel panelTop;
     private javax.swing.JRadioButton radioMatricula;
     private javax.swing.JRadioButton radioNome;
+    private javax.swing.JScrollPane scrollCampo;
     private javax.swing.JScrollPane scroolObs;
     private javax.swing.JTable tabelaMedium;
     private javax.swing.JTextField txtAtivo;

@@ -46,7 +46,8 @@ public class Entidade {
     }
     public void preencheTabEntidade(JTable tabela){
 
-        String sql = "SELECT * FROM entidade";
+        String sql = "SELECT * FROM entidade "
+                + "ORDER BY nome ASC";
         
         try{
             con = new Conexao();
@@ -75,7 +76,8 @@ public class Entidade {
     }
     public void buscaTabEntidade(JTable tabela, JTextField texto){
 
-        String sql = "SELECT * FROM entidade WHERE nome LIKE '%" + texto.getText() + "'";
+        String sql = "SELECT * FROM entidade WHERE nome LIKE '%" + texto.getText() + "' "
+                + "  ORDER BY nome ASC";
         
         try{
             con = new Conexao();
@@ -93,15 +95,11 @@ public class Entidade {
 //            tabela.getColumnModel().getColumn(1).setPreferredWidth(110);
 
             while(rs.next()){
-//                int idEvento = rs.getInt("identidade");
                 String nomeEvento = rs.getString("nome");
                 orixa.addRow(new Object[]{nomeEvento});
-//                orixa.addRow(new Object[]{idEvento, nomeEvento});
             }
         }catch(Exception ex){
             config.gravaErroLog("Tentativa de busca da entidade. Erro: " + ex.getMessage(), "Entidade", "sistejm.entidade");
-            JOptionPane.showMessageDialog(null, "Houve um erro. consulte o arquivo C:/sistejm > erro > sistejm.entidade para mais informações");
-//            System.out.println("Erro em tabela de entidade. Mensagem: " + ex.getMessage());
         }        
     }
     
@@ -118,10 +116,11 @@ public class Entidade {
             
             //rs.next();
             if(rs.absolute(1)){
-                return true;
+                alterarEntidade();
             }else{
-                return false;
+                incluirEntidade();
             }
+            return true;
            
         }catch(Exception ex){
             System.out.println("Catch verificação de duplicidade de Entidades ativado. Erro: " + ex.getMessage());
@@ -130,8 +129,9 @@ public class Entidade {
     }    
     public boolean incluirEntidade(){
         con = new Conexao();
+        config = new Configuracoes();
 
-        if(!this.verificaExistente()){
+//        if(!this.verificaExistente()){
         
             this.idEntidade = con.ultimoId("entidade", "identidade");
 
@@ -142,17 +142,20 @@ public class Entidade {
                 conn = con.getConnection();
                 stmt = conn.createStatement();
                 stmt.executeUpdate(sql);
+                config.gravaBDBackup(sql);
 
                 return true;
 
             }catch(Exception ex){
-                System.out.println("Catch inclusão de entidade ativado. Erro: " + ex.getMessage());
+                config.gravaErroLog("Erro na inclusão. Mensagem: " + ex.getMessage(), "Inclusão de Entidades", "sistejm.incentidades");
             }
-        }
+//        }
         return false;
     }
     
     public boolean alterarEntidade(){
+        config = new Configuracoes();
+        
         String sql = "UPDATE entidade SET nome = '" + this.nome + "' WHERE identidade = " + this.idEntidade;
         
         try{
@@ -160,15 +163,18 @@ public class Entidade {
             conn = con.getConnection();
             stmt = conn.createStatement();
             stmt.executeUpdate(sql);
+            config.gravaBDBackup(sql);
             
             return true;
             
         }catch(Exception ex){
-            System.out.println("Catch alteração de entidade ativado. Erro: " + ex.getMessage());
+                config.gravaErroLog("Erro na alteração. Mensagem: " + ex.getMessage(), "Alteração de Entidades", "sistejm.altentidades");
         }
         return false;
     }
     public boolean excluirEntidade(){
+        config = new Configuracoes();
+        
         String sql = "DELETE FROM entidade WHERE identidade = " + this.idEntidade;
         
         try{
@@ -176,11 +182,12 @@ public class Entidade {
             conn = con.getConnection();
             stmt = conn.createStatement();
             stmt.executeUpdate(sql);
+            config.gravaBDBackup(sql);
             
             return true;
             
         }catch(Exception ex){
-            System.out.println("Catch exclusão de entidade ativado. Erro: " + ex.getMessage());
+                config.gravaErroLog("Erro na exclusão. Mensagem: " + ex.getMessage(), "Exclusão de Entidades", "sistejm.excentidades");
         }
         return false;
     }    

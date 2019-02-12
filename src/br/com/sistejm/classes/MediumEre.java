@@ -90,7 +90,7 @@ public class MediumEre {
                 medium.addRow(new Object[]{id, matricula, nome});
             }
         }catch(Exception ex){
-            config.gravaErroLog("Tentativa de exibir a tabela de Exu. Erro: " + ex.getMessage(), "Tabela de Exu", "sistejm.mere");
+            config.gravaErroLog("Tentativa de exibir a tabela de ERÊ. Erro: " + ex.getMessage(), "Tabela de Erê", "sistejm.mere");
         }        
     }
     public void buscaTabEreMatricula(JTable tabela, JTextField texto){
@@ -161,7 +161,6 @@ public class MediumEre {
         con = new Conexao();
         config = new Configuracoes();
         
-//        if(!this.verificaExistente()){
             
             this.idMediumEre = con.ultimoId("medium_ere", "idmedium_ere");
 
@@ -174,13 +173,13 @@ public class MediumEre {
                 conn = con.getConnection();
                 stmt = conn.createStatement();
                 stmt.executeUpdate(sql);
+                config.gravaBDBackup(sql);
+                
                 return true;
 
             }catch(Exception ex){
                 config.gravaErroLog("Tentativa de inclusão de Erê do Médium. Erro: " + ex.getMessage(), "Inclusão de Erê", "sistejm.mere");
-//                System.out.println("Catch inclusão de Entidade do Médium ativado. Erro: " + ex.getMessage());
             }
-//        }
         return false;
     }
     
@@ -195,6 +194,7 @@ public class MediumEre {
             conn = con.getConnection();
             stmt = conn.createStatement();
             stmt.executeUpdate(sql);
+            config.gravaBDBackup(sql);
             
             return true;
             
@@ -206,13 +206,15 @@ public class MediumEre {
     public boolean excluirMediumEre(){
         config = new Configuracoes();
         
-        String sql = "DELETE FROM medium_ere WHERE idmedium_ere = " + this.idMediumEre;
+        String sql = "DELETE FROM medium_ere WHERE codMedium = " + this.codMedium;
+//        String sql = "DELETE FROM medium_ere WHERE idmedium_ere = " + this.idMediumEre;
 
         try{
             con = new Conexao();
             conn = con.getConnection();
             stmt = conn.createStatement();
             stmt.executeUpdate(sql);
+            config.gravaBDBackup(sql);
             
             //Colocar direcionamento de outras tabelas
             return true;

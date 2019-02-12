@@ -56,17 +56,13 @@ public class Ere {
             DefaultTableModel ere = new DefaultTableModel();
             tabela.setModel(ere);
 
-//            ere.addColumn("ID");
             ere.addColumn("Erê");
 
-//            tabela.getColumnModel().getColumn(0).setPreferredWidth(5);
             tabela.getColumnModel().getColumn(0).setPreferredWidth(110);
 
             while(rs.next()){
-//                int idEvento = rs.getInt("idere");
                 String nomeEvento = rs.getString("nome");
                 ere.addRow(new Object[]{nomeEvento});
-//                ere.addRow(new Object[]{idEvento, nomeEvento});
             }
         }catch(Exception ex){
             System.out.println("Erro em tabela de erês. Mensagem: " + ex.getMessage());
@@ -100,6 +96,7 @@ public class Ere {
     
     public boolean verificaExistente(){
         con = new Conexao();
+        config = new Configuracoes();
         
         String sql = "SELECT nome FROM ere WHERE nome = '" + this.nome + "'";
         
@@ -111,20 +108,22 @@ public class Ere {
             
             rs.next();
             if(rs.absolute(1)){
-                return true;
+                alterarEre();
             }else{
-                return false;
+                incluirEre();
             }
+            return true;
            
         }catch(Exception ex){
-            System.out.println("Catch verificação de duplicidade de Erês ativado. Erro: " + ex.getMessage());
+            config.gravaErroLog("Erro na inclusão. Mrnsagem: " + ex.getMessage(), "Inclusão de Entidades", "sistejm.incentidades");
         }
         return false;
     }
     
     public boolean incluirEre(){
         con = new Conexao();
-        if(!this.verificaExistente()){
+        config = new Configuracoes();
+//        if(!this.verificaExistente()){
             
             this.idEre = con.ultimoId("ere", "idere");
 
@@ -135,17 +134,19 @@ public class Ere {
                 conn = con.getConnection();
                 stmt = conn.createStatement();
                 stmt.executeUpdate(sql);
+                config.gravaBDBackup(sql);
 
                 return true;
 
             }catch(Exception ex){
-                System.out.println("Catch inclusão de Erê ativado. Erro: " + ex.getMessage());
+                config.gravaErroLog(Constances.ERRORINC + ex.getMessage(), "Inclusão de Erê", "sistejm.incere");
             }
-        }
+//        }
         return false;
     }
     
     public boolean alterarEre(){
+        config = new Configuracoes();
         String sql = "UPDATE ere SET nome = '" + this.nome + "' WHERE idere = " + this.idEre;
         
         try{
@@ -153,15 +154,18 @@ public class Ere {
             conn = con.getConnection();
             stmt = conn.createStatement();
             stmt.executeUpdate(sql);
+            config.gravaBDBackup(sql);
             
             return true;
             
         }catch(Exception ex){
-            System.out.println("Catch alteração de Erês ativado. Erro: " + ex.getMessage());
+            config.gravaErroLog(Constances.ERRORALT+ ex.getMessage(), "Alteração de Erê", "sistejm.altere");
         }
         return false;
     }
     public boolean excluirEre(){
+        config = new Configuracoes();
+        
         String sql = "DELETE FROM ere WHERE idere = " + this.idEre;
         
         try{
@@ -169,11 +173,11 @@ public class Ere {
             conn = con.getConnection();
             stmt = conn.createStatement();
             stmt.executeUpdate(sql);
-            
+            config.gravaBDBackup(sql);
             return true;
             
         }catch(Exception ex){
-            System.out.println("Catch exclusão de Eres ativado. Erro: " + ex.getMessage());
+            config.gravaErroLog(Constances.ERROREXC+ ex.getMessage(), "Exclusão de Erê", "sistejm.excere");
         }
         return false;
     }

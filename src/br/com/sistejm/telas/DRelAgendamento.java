@@ -49,9 +49,9 @@ public class DRelAgendamento extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         ativaPanelData(false);
-        ativaPanels(false);
-        preencheNome();
-        preencheCodigo();
+//        ativaPanels(false);
+//        preencheNome();
+//        preencheCodigo();
         inicioPadrao();
     }
     
@@ -64,11 +64,11 @@ public class DRelAgendamento extends javax.swing.JDialog {
         this.setModelo("nome");
     }
    
-    public void ativaPanels(boolean valor){
-//        panelNome.setVisible(valor);
-        panelCodigo.setVisible(valor);
-        panelConsultor.setVisible(false);
-    }
+//    public void ativaPanels(boolean valor){
+////        panelNome.setVisible(valor);
+//        panelCodigo.setVisible(valor);
+//        panelConsultor.setVisible(false);
+//    }
     
     public void direcionaDataInicial(){
         txtDataInicial.requestFocus();
@@ -78,14 +78,14 @@ public class DRelAgendamento extends javax.swing.JDialog {
         this.dispose();
     }
     
-    public void preencheNome(){
-        at = new Agendamento();
-        at.preencheComboNome(comboNome);
-    }
-    public void preencheCodigo(){
-        at = new Agendamento();
-        at.preencheComboCodigo(comboCodigo);
-    }
+//    public void preencheNome(){
+//        at = new Agendamento();
+//        at.preencheComboNome(comboNome);
+//    }
+//    public void preencheCodigo(){
+//        at = new Agendamento();
+//        at.preencheComboCodigo(comboCodigo);
+//    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -102,6 +102,8 @@ public class DRelAgendamento extends javax.swing.JDialog {
         labelVersao = new javax.swing.JLabel();
         panelTop = new javax.swing.JPanel();
         labelTitulo = new javax.swing.JLabel();
+        btImprimir = new javax.swing.JButton();
+        btSair = new javax.swing.JButton();
         panelData = new javax.swing.JPanel();
         txtDataFinal = new javax.swing.JTextField();
         labelAte = new javax.swing.JLabel();
@@ -109,29 +111,10 @@ public class DRelAgendamento extends javax.swing.JDialog {
         labelPeriodo = new javax.swing.JLabel();
         radioHoje = new javax.swing.JRadioButton();
         radioOutras = new javax.swing.JRadioButton();
-        btImprimir = new javax.swing.JButton();
-        panelOrdem = new javax.swing.JPanel();
-        radioOCodigo = new javax.swing.JRadioButton();
-        radioOConsultor = new javax.swing.JRadioButton();
-        radioOPagantes = new javax.swing.JRadioButton();
-        radioONome = new javax.swing.JRadioButton();
-        radioOPadrao = new javax.swing.JRadioButton();
-        radioOData = new javax.swing.JRadioButton();
-        labelOrdem = new javax.swing.JLabel();
         labelRelatorio = new javax.swing.JLabel();
         radioNome = new javax.swing.JRadioButton();
         radioConsultor = new javax.swing.JRadioButton();
         radioCodigo = new javax.swing.JRadioButton();
-        panelConsultor = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        comboConsultor = new javax.swing.JComboBox<>();
-        panelNome = new javax.swing.JPanel();
-        comboNome = new javax.swing.JComboBox<>();
-        labelNome = new javax.swing.JLabel();
-        panelCodigo = new javax.swing.JPanel();
-        labelCodigo = new javax.swing.JLabel();
-        comboCodigo = new javax.swing.JComboBox<>();
-        btSair = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tabelaRelConsulta = new javax.swing.JTable();
 
@@ -163,6 +146,32 @@ public class DRelAgendamento extends javax.swing.JDialog {
         labelTitulo.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         labelTitulo.setText("Relatório de Agendamento | Atendimento");
 
+        btImprimir.setBackground(new java.awt.Color(255, 255, 255));
+        btImprimir.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
+        btImprimir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/sistejm/images/print.png"))); // NOI18N
+        btImprimir.setText("Imprimir");
+        btImprimir.setToolTipText("Imprimir");
+        btImprimir.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btImprimir.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btImprimir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btImprimirActionPerformed(evt);
+            }
+        });
+
+        btSair.setBackground(new java.awt.Color(255, 255, 255));
+        btSair.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
+        btSair.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/sistejm/images/cancelar.png"))); // NOI18N
+        btSair.setText("Sair");
+        btSair.setToolTipText("Sair");
+        btSair.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btSair.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btSair.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btSairActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout panelTopLayout = new javax.swing.GroupLayout(panelTop);
         panelTop.setLayout(panelTopLayout);
         panelTopLayout.setHorizontalGroup(
@@ -170,11 +179,21 @@ public class DRelAgendamento extends javax.swing.JDialog {
             .addGroup(panelTopLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(labelTitulo)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btImprimir, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btSair, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(44, 44, 44))
         );
         panelTopLayout.setVerticalGroup(
             panelTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(labelTitulo, javax.swing.GroupLayout.DEFAULT_SIZE, 45, Short.MAX_VALUE)
+            .addComponent(labelTitulo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(panelTopLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panelTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btSair, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btImprimir, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         panelData.setBackground(new java.awt.Color(255, 255, 255));
@@ -217,7 +236,7 @@ public class DRelAgendamento extends javax.swing.JDialog {
         groupPeriodo.add(radioOutras);
         radioOutras.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
         radioOutras.setSelected(true);
-        radioOutras.setText("  Outras datas");
+        radioOutras.setText("  Outras datas (dd/mm/aaaa)");
         radioOutras.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 radioOutrasActionPerformed(evt);
@@ -261,128 +280,6 @@ public class DRelAgendamento extends javax.swing.JDialog {
                 .addGap(22, 22, 22))
         );
 
-        btImprimir.setBackground(new java.awt.Color(255, 255, 255));
-        btImprimir.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
-        btImprimir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/sistejm/images/print.png"))); // NOI18N
-        btImprimir.setText("Gerar");
-        btImprimir.setToolTipText("Gerar");
-        btImprimir.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btImprimir.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btImprimir.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btImprimirActionPerformed(evt);
-            }
-        });
-
-        panelOrdem.setBackground(new java.awt.Color(255, 255, 255));
-        panelOrdem.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 204, 204), 1, true));
-
-        radioOCodigo.setBackground(new java.awt.Color(255, 255, 255));
-        buttonGroup.add(radioOCodigo);
-        radioOCodigo.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        radioOCodigo.setText("   Por código");
-        radioOCodigo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                radioOCodigoActionPerformed(evt);
-            }
-        });
-
-        radioOConsultor.setBackground(new java.awt.Color(255, 255, 255));
-        buttonGroup.add(radioOConsultor);
-        radioOConsultor.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        radioOConsultor.setText("   Por consultor");
-        radioOConsultor.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                radioOConsultorActionPerformed(evt);
-            }
-        });
-
-        radioOPagantes.setBackground(new java.awt.Color(255, 255, 255));
-        buttonGroup.add(radioOPagantes);
-        radioOPagantes.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        radioOPagantes.setText("   Por pagantes");
-        radioOPagantes.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                radioOPagantesActionPerformed(evt);
-            }
-        });
-
-        radioONome.setBackground(new java.awt.Color(255, 255, 255));
-        buttonGroup.add(radioONome);
-        radioONome.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        radioONome.setText("   Por Nome");
-        radioONome.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                radioONomeActionPerformed(evt);
-            }
-        });
-
-        radioOPadrao.setBackground(new java.awt.Color(255, 255, 255));
-        buttonGroup.add(radioOPadrao);
-        radioOPadrao.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        radioOPadrao.setSelected(true);
-        radioOPadrao.setText("   Padrão");
-        radioOPadrao.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                radioOPadraoActionPerformed(evt);
-            }
-        });
-
-        radioOData.setBackground(new java.awt.Color(255, 255, 255));
-        buttonGroup.add(radioOData);
-        radioOData.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        radioOData.setText("   Por data");
-        radioOData.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                radioODataActionPerformed(evt);
-            }
-        });
-
-        labelOrdem.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        labelOrdem.setText("Ordem:");
-
-        javax.swing.GroupLayout panelOrdemLayout = new javax.swing.GroupLayout(panelOrdem);
-        panelOrdem.setLayout(panelOrdemLayout);
-        panelOrdemLayout.setHorizontalGroup(
-            panelOrdemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelOrdemLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(labelOrdem)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 1, Short.MAX_VALUE)
-                .addGroup(panelOrdemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panelOrdemLayout.createSequentialGroup()
-                        .addComponent(radioOPadrao)
-                        .addGap(44, 44, 44)
-                        .addComponent(radioOCodigo))
-                    .addGroup(panelOrdemLayout.createSequentialGroup()
-                        .addComponent(radioOData)
-                        .addGap(38, 38, 38)
-                        .addComponent(radioOConsultor))
-                    .addGroup(panelOrdemLayout.createSequentialGroup()
-                        .addComponent(radioONome)
-                        .addGap(28, 28, 28)
-                        .addComponent(radioOPagantes)))
-                .addGap(18, 18, 18))
-        );
-        panelOrdemLayout.setVerticalGroup(
-            panelOrdemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelOrdemLayout.createSequentialGroup()
-                .addContainerGap(11, Short.MAX_VALUE)
-                .addGroup(panelOrdemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(radioOPadrao)
-                    .addComponent(radioOCodigo)
-                    .addComponent(labelOrdem))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(panelOrdemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(radioOData)
-                    .addComponent(radioOConsultor))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(panelOrdemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(radioOPagantes)
-                    .addComponent(radioONome))
-                .addContainerGap())
-        );
-
         labelRelatorio.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         labelRelatorio.setText("Relatório por:");
 
@@ -414,112 +311,6 @@ public class DRelAgendamento extends javax.swing.JDialog {
             }
         });
 
-        panelConsultor.setBackground(new java.awt.Color(255, 255, 255));
-        panelConsultor.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
-
-        jLabel1.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        jLabel1.setText("Consultor:");
-
-        comboConsultor.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
-        comboConsultor.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Caboclo", "Exu" }));
-
-        javax.swing.GroupLayout panelConsultorLayout = new javax.swing.GroupLayout(panelConsultor);
-        panelConsultor.setLayout(panelConsultorLayout);
-        panelConsultorLayout.setHorizontalGroup(
-            panelConsultorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelConsultorLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(comboConsultor, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(18, Short.MAX_VALUE))
-        );
-        panelConsultorLayout.setVerticalGroup(
-            panelConsultorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelConsultorLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(panelConsultorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(comboConsultor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
-        panelNome.setBackground(new java.awt.Color(255, 255, 255));
-        panelNome.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
-
-        comboNome.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
-        comboNome.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                comboNomeMouseClicked(evt);
-            }
-        });
-
-        labelNome.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        labelNome.setText("Nome:");
-
-        javax.swing.GroupLayout panelNomeLayout = new javax.swing.GroupLayout(panelNome);
-        panelNome.setLayout(panelNomeLayout);
-        panelNomeLayout.setHorizontalGroup(
-            panelNomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelNomeLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(labelNome)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
-                .addComponent(comboNome, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
-        panelNomeLayout.setVerticalGroup(
-            panelNomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelNomeLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(panelNomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(comboNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(labelNome, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
-        );
-
-        panelCodigo.setBackground(new java.awt.Color(255, 255, 255));
-        panelCodigo.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
-
-        labelCodigo.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        labelCodigo.setText("Código");
-
-        comboCodigo.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
-
-        javax.swing.GroupLayout panelCodigoLayout = new javax.swing.GroupLayout(panelCodigo);
-        panelCodigo.setLayout(panelCodigoLayout);
-        panelCodigoLayout.setHorizontalGroup(
-            panelCodigoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelCodigoLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(labelCodigo)
-                .addGap(27, 27, 27)
-                .addComponent(comboCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(17, Short.MAX_VALUE))
-        );
-        panelCodigoLayout.setVerticalGroup(
-            panelCodigoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelCodigoLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(panelCodigoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(comboCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(labelCodigo))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
-        btSair.setBackground(new java.awt.Color(255, 255, 255));
-        btSair.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
-        btSair.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/sistejm/images/cancelar.png"))); // NOI18N
-        btSair.setText("Sair");
-        btSair.setToolTipText("Sair");
-        btSair.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btSair.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btSair.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btSairActionPerformed(evt);
-            }
-        });
-
         tabelaRelConsulta.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -539,61 +330,35 @@ public class DRelAgendamento extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(panelOrdem, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(panelData, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(labelRelatorio)
-                            .addGap(18, 18, 18)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(radioConsultor)
-                                .addComponent(radioNome)
-                                .addComponent(radioCodigo))))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 568, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(btImprimir, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(labelRelatorio)
                         .addGap(18, 18, 18)
-                        .addComponent(btSair, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(panelNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(panelCodigo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(panelConsultor, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(24, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(radioConsultor)
+                            .addComponent(radioNome)
+                            .addComponent(radioCodigo))
+                        .addGap(26, 26, 26)
+                        .addComponent(panelData, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(33, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addComponent(panelTop, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(labelRelatorio)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(labelRelatorio)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(radioNome)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(radioConsultor)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(radioCodigo)))
-                        .addGap(18, 18, 18)
-                        .addComponent(panelData, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(panelOrdem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(28, 28, 28)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btImprimir, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btSair, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(panelNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(panelConsultor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(panelCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
+                        .addComponent(radioNome)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(radioConsultor)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(radioCodigo))
+                    .addComponent(panelData, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
                 .addComponent(panelDown, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
@@ -605,13 +370,13 @@ public class DRelAgendamento extends javax.swing.JDialog {
         config = new Configuracoes();
         String valor = null;
         
-        if(this.modelo.equals("nome")){
-            valor = comboNome.getSelectedItem().toString();
-        }else if (this.modelo.equals("consultor")){
-            valor = comboConsultor.getSelectedItem().toString();
-        }else if (this.modelo.equals("codigo")){
-            valor = comboCodigo.getSelectedItem().toString();
-        }
+//        if(this.modelo.equals("nome")){
+//            valor = comboNome.getSelectedItem().toString();
+//        }else if (this.modelo.equals("consultor")){
+//            valor = comboConsultor.getSelectedItem().toString();
+//        }else if (this.modelo.equals("codigo")){
+//            valor = comboCodigo.getSelectedItem().toString();
+//        }
         
         if(txtDataInicial.getText().equals("")){
             txtDataInicial.setText(config.retornaData());
@@ -647,8 +412,8 @@ public class DRelAgendamento extends javax.swing.JDialog {
     }//GEN-LAST:event_txtDataInicialKeyPressed
 
     private void radioNomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioNomeActionPerformed
-        ativaPanels(false);
-        panelNome.setVisible(true);
+//        ativaPanels(false);
+//        panelNome.setVisible(true);
         direcionaDataInicial();
         this.setModelo("nome");
 // TODO add your handling code here:
@@ -656,9 +421,9 @@ public class DRelAgendamento extends javax.swing.JDialog {
 
     private void radioConsultorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioConsultorActionPerformed
 
-        panelNome.setVisible(false);
-        panelCodigo.setVisible(false);
-        panelConsultor.setVisible(true);
+//        panelNome.setVisible(false);
+//        panelCodigo.setVisible(false);
+//        panelConsultor.setVisible(true);
         direcionaDataInicial();
         this.setModelo("consultor");
 
@@ -667,9 +432,9 @@ public class DRelAgendamento extends javax.swing.JDialog {
 
     private void radioCodigoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioCodigoActionPerformed
 
-        panelNome.setVisible(false);
-        panelConsultor.setVisible(false);
-        panelCodigo.setVisible(true);
+//        panelNome.setVisible(false);
+//        panelConsultor.setVisible(false);
+//        panelCodigo.setVisible(true);
         direcionaDataInicial();
         this.setModelo("codigo");
         // TODO add your handling code here:
@@ -692,46 +457,11 @@ public class DRelAgendamento extends javax.swing.JDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_radioHojeActionPerformed
 
-    private void radioOPadraoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioOPadraoActionPerformed
-
-        this.setOrdem("idagendamento");
-        // TODO add your handling code here:
-    }//GEN-LAST:event_radioOPadraoActionPerformed
-
-    private void radioODataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioODataActionPerformed
-        this.setOrdem("data");
-        // TODO add your handling code here:
-    }//GEN-LAST:event_radioODataActionPerformed
-
-    private void radioONomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioONomeActionPerformed
-        this.setOrdem("consultado");
-        // TODO add your handling code here:
-    }//GEN-LAST:event_radioONomeActionPerformed
-
-    private void radioOCodigoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioOCodigoActionPerformed
-        this.setOrdem("codigo");
-        // TODO add your handling code here:
-    }//GEN-LAST:event_radioOCodigoActionPerformed
-
-    private void radioOConsultorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioOConsultorActionPerformed
-        this.setOrdem("consultor");
-        // TODO add your handling code here:
-    }//GEN-LAST:event_radioOConsultorActionPerformed
-
-    private void radioOPagantesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioOPagantesActionPerformed
-        this.setOrdem("pago");
-        // TODO add your handling code here:
-    }//GEN-LAST:event_radioOPagantesActionPerformed
-
     private void btSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btSairActionPerformed
 
         this.fechar();
 // TODO add your handling code here:
     }//GEN-LAST:event_btSairActionPerformed
-
-    private void comboNomeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_comboNomeMouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_comboNomeMouseClicked
 
     
     public void pesquisaPreRelatorio(){
@@ -801,38 +531,21 @@ public class DRelAgendamento extends javax.swing.JDialog {
     private javax.swing.JButton btImprimir;
     private javax.swing.JButton btSair;
     private javax.swing.ButtonGroup buttonGroup;
-    private javax.swing.JComboBox<String> comboCodigo;
-    private javax.swing.JComboBox<String> comboConsultor;
-    private javax.swing.JComboBox<String> comboNome;
     private javax.swing.ButtonGroup groupPeriodo;
     private javax.swing.ButtonGroup groupTpRel;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel labelAte;
-    private javax.swing.JLabel labelCodigo;
-    private javax.swing.JLabel labelNome;
-    private javax.swing.JLabel labelOrdem;
     private javax.swing.JLabel labelPeriodo;
     private javax.swing.JLabel labelRelatorio;
     private javax.swing.JLabel labelTitulo;
     private javax.swing.JLabel labelVersao;
-    private javax.swing.JPanel panelCodigo;
-    private javax.swing.JPanel panelConsultor;
     private javax.swing.JPanel panelData;
     private javax.swing.JPanel panelDown;
-    private javax.swing.JPanel panelNome;
-    private javax.swing.JPanel panelOrdem;
     private javax.swing.JPanel panelTop;
     private javax.swing.JRadioButton radioCodigo;
     private javax.swing.JRadioButton radioConsultor;
     private javax.swing.JRadioButton radioHoje;
     private javax.swing.JRadioButton radioNome;
-    private javax.swing.JRadioButton radioOCodigo;
-    private javax.swing.JRadioButton radioOConsultor;
-    private javax.swing.JRadioButton radioOData;
-    private javax.swing.JRadioButton radioONome;
-    private javax.swing.JRadioButton radioOPadrao;
-    private javax.swing.JRadioButton radioOPagantes;
     private javax.swing.JRadioButton radioOutras;
     private javax.swing.JTable tabelaRelConsulta;
     private javax.swing.JTextField txtDataFinal;
