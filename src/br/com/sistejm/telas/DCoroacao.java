@@ -26,6 +26,15 @@ public class DCoroacao extends javax.swing.JDialog {
     private int dia;
     private int mes;
     private int ano;
+    private String selectPadr;
+
+    public String getSelectPadr() {
+        return selectPadr;
+    }
+
+    public void setSelectPadr(String selectPadr) {
+        this.selectPadr = selectPadr;
+    }
 
     public int getDia() {
         return dia;
@@ -58,6 +67,7 @@ public class DCoroacao extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         ocultaText(false);
+        this.selectPadr = "";
     }
 
     public void tabelaMediuns(){
@@ -106,8 +116,6 @@ public class DCoroacao extends javax.swing.JDialog {
         tabMedium = new javax.swing.JTable();
         txtPadrinho = new javax.swing.JTextField();
         txtMadrinha = new javax.swing.JTextField();
-        radioPadrinho = new javax.swing.JRadioButton();
-        radioMadrinha = new javax.swing.JRadioButton();
         txtPesquisar = new javax.swing.JTextField();
         labelBatismo = new javax.swing.JLabel();
         txtBatismo = new javax.swing.JTextField();
@@ -129,7 +137,10 @@ public class DCoroacao extends javax.swing.JDialog {
         txt7Anos = new javax.swing.JTextField();
         txt21Anos = new javax.swing.JTextField();
         txt14Anos = new javax.swing.JTextField();
-        jDateChooser1 = new com.toedter.calendar.JDateChooser();
+        jPanel2 = new javax.swing.JPanel();
+        radioPadrinho = new javax.swing.JRadioButton();
+        radioMadrinha = new javax.swing.JRadioButton();
+        jRadioButton1 = new javax.swing.JRadioButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -176,7 +187,7 @@ public class DCoroacao extends javax.swing.JDialog {
                 .addComponent(txtCodMedium, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(txtCodUser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 258, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 278, Short.MAX_VALUE)
                 .addComponent(btCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -233,12 +244,17 @@ public class DCoroacao extends javax.swing.JDialog {
         });
         jScrollPane1.setViewportView(tabMedium);
 
-        buttonGroup.add(radioPadrinho);
-        radioPadrinho.setForeground(new java.awt.Color(0, 102, 0));
-        radioPadrinho.setSelected(true);
+        txtPadrinho.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtPadrinhoKeyPressed(evt);
+            }
+        });
 
-        buttonGroup.add(radioMadrinha);
-        radioMadrinha.setForeground(new java.awt.Color(0, 102, 0));
+        txtMadrinha.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtMadrinhaKeyPressed(evt);
+            }
+        });
 
         txtPesquisar.setToolTipText("Pesquisar");
         txtPesquisar.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -289,12 +305,14 @@ public class DCoroacao extends javax.swing.JDialog {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(labelDataEntrada, javax.swing.GroupLayout.DEFAULT_SIZE, 122, Short.MAX_VALUE)
+                .addComponent(labelDataEntrada, javax.swing.GroupLayout.DEFAULT_SIZE, 106, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(labelDataEntrada, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 69, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(labelDataEntrada, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 11, Short.MAX_VALUE))
         );
 
         label3Anos.setText("3 Anos:");
@@ -317,6 +335,59 @@ public class DCoroacao extends javax.swing.JDialog {
 
         txt14Anos.setEditable(false);
 
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "   SELECIONE   ", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Arial", 1, 10), new java.awt.Color(0, 0, 204))); // NOI18N
+
+        buttonGroup.add(radioPadrinho);
+        radioPadrinho.setFont(new java.awt.Font("Arial", 1, 10)); // NOI18N
+        radioPadrinho.setForeground(new java.awt.Color(0, 0, 255));
+        radioPadrinho.setText(" PADRINHO");
+        radioPadrinho.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                radioPadrinhoActionPerformed(evt);
+            }
+        });
+
+        buttonGroup.add(radioMadrinha);
+        radioMadrinha.setFont(new java.awt.Font("Arial", 1, 10)); // NOI18N
+        radioMadrinha.setForeground(new java.awt.Color(204, 0, 204));
+        radioMadrinha.setText(" MADRINHA");
+        radioMadrinha.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                radioMadrinhaActionPerformed(evt);
+            }
+        });
+
+        buttonGroup.add(jRadioButton1);
+        jRadioButton1.setFont(new java.awt.Font("Arial", 1, 10)); // NOI18N
+        jRadioButton1.setSelected(true);
+        jRadioButton1.setText(" TODOS");
+        jRadioButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRadioButton1ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(radioPadrinho)
+                .addGap(18, 18, 18)
+                .addComponent(radioMadrinha)
+                .addGap(18, 18, 18)
+                .addComponent(jRadioButton1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addComponent(radioPadrinho)
+                .addComponent(radioMadrinha)
+                .addComponent(jRadioButton1))
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -325,122 +396,107 @@ public class DCoroacao extends javax.swing.JDialog {
             .addComponent(panelDown, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addGap(10, 10, 10)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(label7Anos)
+                                .addGap(18, 18, 18)
+                                .addComponent(txt7Anos))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(label3Anos)
+                                    .addComponent(label1Ano))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(18, 18, 18)
+                                        .addComponent(txt1Ano, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addGap(18, 18, 18)
+                                        .addComponent(txt3Anos, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(label21Anos)
+                            .addComponent(label14Anos))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txt14Anos, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
+                            .addComponent(txt21Anos))
+                        .addGap(273, 273, 273))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 409, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(labelConfirmacao)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(labelMadrinha)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(txtMadrinha))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(labelPadrinho)
+                                    .addGap(20, 20, 20)
+                                    .addComponent(txtPadrinho, javax.swing.GroupLayout.PREFERRED_SIZE, 285, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(labelMadrinha)
-                                            .addComponent(labelBatismo))
-                                        .addGap(18, 18, 18)
-                                        .addComponent(txtMadrinha))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(labelPadrinho)
-                                        .addGap(20, 20, 20)
-                                        .addComponent(txtPadrinho, javax.swing.GroupLayout.PREFERRED_SIZE, 285, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                            .addComponent(txtBatismo, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                                .addComponent(labelCoroacao)
-                                                .addGap(33, 33, 33)
-                                                .addComponent(txtCoroacao, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                        .addGap(66, 66, 66)
-                                        .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(radioPadrinho)
-                                    .addComponent(radioMadrinha))))
-                        .addGap(16, 16, 16)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtPesquisar, javax.swing.GroupLayout.PREFERRED_SIZE, 323, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 374, Short.MAX_VALUE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addComponent(labelCoroacao)
+                                        .addGap(33, 33, 33))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(labelBatismo)
+                                        .addGap(25, 25, 25)))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtBatismo, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtCoroacao, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(labelConfirmacao)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(labelNome)
                                 .addGap(32, 32, 32)
-                                .addComponent(labelNomeMedium))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(label7Anos)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(txt7Anos))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(label3Anos)
-                                            .addComponent(label1Ano))
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addGap(18, 18, 18)
-                                                .addComponent(txt1Ano, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                                .addGap(18, 18, 18)
-                                                .addComponent(txt3Anos, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(label21Anos)
-                                    .addComponent(label14Anos))
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(txt14Anos, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
-                                    .addComponent(txt21Anos))
-                                .addGap(81, 81, 81)
-                                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(16, 16, 16)))
-                .addGap(0, 0, Short.MAX_VALUE))
+                                .addComponent(labelNomeMedium)))
+                        .addGap(71, 71, 71)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtPesquisar, javax.swing.GroupLayout.PREFERRED_SIZE, 307, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(panelTop, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(6, 6, 6)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(labelNome, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(labelNomeMedium, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(10, 10, 10)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(3, 3, 3)
-                        .addComponent(labelPadrinho))
-                    .addComponent(radioPadrinho)
-                    .addComponent(txtPadrinho, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtPesquisar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(12, 12, 12)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(labelNome, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(labelNomeMedium, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(10, 10, 10)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(11, 11, 11)
-                                .addComponent(labelMadrinha)
-                                .addGap(21, 21, 21))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(radioMadrinha)
-                                    .addComponent(txtMadrinha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(17, 17, 17)))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(labelBatismo)
-                                .addComponent(txtBatismo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
+                                .addGap(3, 3, 3)
+                                .addComponent(labelPadrinho))
+                            .addComponent(txtPadrinho, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(0, 0, 0)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(labelMadrinha)
+                            .addComponent(txtMadrinha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(labelBatismo)
+                            .addComponent(txtBatismo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(labelCoroacao)
                             .addComponent(txtCoroacao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(labelConfirmacao)))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(15, 15, 15)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(labelConfirmacao)
+                        .addGap(20, 20, 20)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(label1Ano)
                             .addComponent(txt1Ano, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -463,7 +519,10 @@ public class DCoroacao extends javax.swing.JDialog {
                                     .addComponent(label21Anos)
                                     .addComponent(txt21Anos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
+                        .addComponent(txtPesquisar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addComponent(panelDown, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -489,21 +548,29 @@ public class DCoroacao extends javax.swing.JDialog {
         bat = new Batismo();
         String nome = String.valueOf(tabMedium.getValueAt(tabMedium.getSelectedRow(), 0));        
 
-        if(radioPadrinho.isSelected()){
-            txtPadrinho.setText(nome);
-
-        }else if (radioMadrinha.isSelected()){
-            txtMadrinha.setText(nome);
+        switch(this.selectPadr){
+            case "m":
+                txtPadrinho.setText(nome);
+                break;
+            case "f":
+                txtMadrinha.setText(nome);
+                break;
         }
-        if(txtBatismo.getText().equals("")){
-            JOptionPane.showMessageDialog(null, "A data do batismo não pode ficar vazio");
-        }else{
+//        if(txtBatismo.getText().equals("")){
+//            JOptionPane.showMessageDialog(null, "A data do batismo não pode ficar vazio");
+//        }else{
             bat.setCodMedium(Integer.valueOf(txtCodMedium.getText()));
             bat.setMadrinha(txtMadrinha.getText());
+            if(txtBatismo.getText().equals("")){
+                bat.setDataBatismo("01/01/1901");
+            }else{
+                bat.setDataBatismo(txtBatismo.getText());
+            }
             bat.setPadrinho(txtPadrinho.getText());
             bat.incluiPadrinhosBatismoMedium();
             consultaMedium();
-        }
+            txtBatismo.requestFocus();
+//        }
 
         // TODO add your handling code here:
     }//GEN-LAST:event_tabMediumMouseClicked
@@ -550,6 +617,7 @@ public class DCoroacao extends javax.swing.JDialog {
         if(txtBatismo.getText().length() == 10){//estou no ano
             this.mes = Integer.valueOf(txtBatismo.getText().substring(3, 5));
             this.ano = Integer.valueOf(txtBatismo.getText().substring(6, 10));
+            
             coroa.setAno(this.ano);
             coroa.setMes(this.mes);
             coroa.setConfirma("s");
@@ -575,10 +643,46 @@ public class DCoroacao extends javax.swing.JDialog {
     private void txtBatismoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBatismoKeyPressed
 
         if(evt.getKeyCode() == KeyEvent.VK_ENTER){
+            txtCoroacao.setText("");
             txtCoroacao.requestFocus();
         }
         // TODO add your handling code here:
     }//GEN-LAST:event_txtBatismoKeyPressed
+
+    private void radioPadrinhoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioPadrinhoActionPerformed
+
+        this.selectPadr = "m";
+        // TODO add your handling code here:
+    }//GEN-LAST:event_radioPadrinhoActionPerformed
+
+    private void radioMadrinhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioMadrinhaActionPerformed
+        this.selectPadr = "f";
+        // TODO add your handling code here:
+    }//GEN-LAST:event_radioMadrinhaActionPerformed
+
+    private void jRadioButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton1ActionPerformed
+        this.selectPadr = "a";
+    }//GEN-LAST:event_jRadioButton1ActionPerformed
+
+    private void txtPadrinhoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPadrinhoKeyPressed
+
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER){
+            bat = new Batismo();
+            bat.setPadrinho(txtPadrinho.getText());
+            bat.incluiPadrinho();
+        }
+
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtPadrinhoKeyPressed
+
+    private void txtMadrinhaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtMadrinhaKeyPressed
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER){
+            bat = new Batismo();
+            bat.setMadrinha(txtMadrinha.getText());
+            bat.incluiMadrinha();
+        }
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtMadrinhaKeyPressed
 
    
     public void completaAnos(){
@@ -701,7 +805,17 @@ public class DCoroacao extends javax.swing.JDialog {
         coroa.setCodmedium(idMedium);
         coroa.verificaCamposPadrao();
         
-        //alimenta batismo
+        if(!coroa.confereBatismoCoroa()){
+            coroa.setAno(0);
+            coroa.setMes(0);
+            coroa.setConfirma("n");
+            coroa.setDataRealizacao("01/01/1901");
+            coroa.setCodmedium(idMedium);
+            coroa.setCodtipocoroa(1);
+            coroa.insereCoroa();
+        }
+        
+//        //alimenta batismo
         bat.setCodMedium(idMedium);
         bat.verificaExistente();
         
@@ -759,9 +873,10 @@ public class DCoroacao extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btCancelar;
     private javax.swing.ButtonGroup buttonGroup;
-    private com.toedter.calendar.JDateChooser jDateChooser1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JRadioButton jRadioButton1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JLabel label14Anos;

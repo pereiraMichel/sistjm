@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rUsuarios" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="375e6fd3-db1f-4fd8-a080-daea69f3e99c">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString>
+		<![CDATA[SELECT u.nome, u.email, DATE_FORMAT(u.dataCadastro, '%d/%m/%Y') AS dtCad, a.acesso
+FROM tblusuario u
+LEFT JOIN acesso a ON u.codAcesso = a.idacesso]]>
+	</queryString>
+	<field name="nome" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="email" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="dtCad" class="java.lang.String"/>
+	<field name="acesso" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="84" splitType="Stretch">
+			<image hAlign="Center">
+				<reportElement x="4" y="3" width="83" height="62" uuid="c7700c80-d853-4698-af48-903fb3ae1624"/>
+				<imageExpression><![CDATA["C:\\Users\\Michel\\Documents\\NetBeansProjects\\SISTEJM\\src\\br\\com\\sistejm\\images\\logoTJM.jpg"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="87" y="33" width="283" height="15" uuid="7ece2794-e12b-423d-aa7d-9a004dabf8bb"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Calibri" size="11" isBold="true" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[RELAÇÃO DE USUÁRIOS DO SISTEMA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="88" y="3" width="282" height="30" forecolor="#0000CC" uuid="0997c980-c36e-4bf8-835c-1ff79f19dbef"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Calibri" size="12" isBold="true" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[TEMPLO ESPÍRITA JORGE MIGUEL]]></text>
+			</staticText>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="19" splitType="Stretch">
+			<staticText>
+				<reportElement x="291" y="0" width="100" height="17" uuid="c6ce8d5b-0230-4062-bf03-2ec4b1dbb414"/>
+				<textElement textAlignment="Left">
+					<font fontName="Calibri" size="11" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[DATA CADASTRO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="3" y="0" width="66" height="17" uuid="fa547ace-e1ca-4afb-99fd-81a6e5f51786"/>
+				<textElement textAlignment="Left">
+					<font fontName="Calibri" size="11" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[NOME]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="432" y="0" width="66" height="17" uuid="d1e37d5d-cab7-4fdb-9558-684b6db4ea11"/>
+				<textElement textAlignment="Left">
+					<font fontName="Calibri" size="11" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[ACESSO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="151" y="0" width="66" height="17" uuid="65ba145c-3679-4dae-84cb-c3ce2afde8ea"/>
+				<textElement textAlignment="Left">
+					<font fontName="Calibri" size="11" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[E-MAIL]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="21" splitType="Stretch">
+			<textField>
+				<reportElement x="4" y="0" width="147" height="20" uuid="1e6238c1-7315-4ba0-9b15-bd626c3155a7"/>
+				<textFieldExpression><![CDATA[$F{nome}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="151" y="0" width="140" height="20" uuid="27d9b46c-90fa-4b60-b97a-7d5ff8033e63"/>
+				<textFieldExpression><![CDATA[$F{email}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="291" y="0" width="135" height="20" uuid="10349c9d-6f98-46f5-9309-0dd728a3e39e"/>
+				<textFieldExpression><![CDATA[$F{dtCad}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="432" y="0" width="100" height="20" uuid="51bbe899-ea6f-4923-89f0-ced61a858f84"/>
+				<textFieldExpression><![CDATA[$F{acesso}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="51" splitType="Stretch">
+			<textField evaluationTime="Report">
+				<reportElement x="529" y="30" width="23" height="20" uuid="ce496688-190e-4f36-95d9-7d712c696821"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<break>
+				<reportElement x="0" y="50" width="100" height="1" uuid="56358aaa-c4a1-49a4-ae22-572ec352b226"/>
+			</break>
+			<staticText>
+				<reportElement x="4" y="0" width="554" height="20" uuid="f4737434-e027-4b17-961c-7fdcefaa54c7"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial Narrow" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[USO EXCLUSIVO DO TEJM]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="523" y="30" width="9" height="20" uuid="8f0f1fa7-d475-43b8-a462-c828d15b420d"/>
+				<text><![CDATA[/]]></text>
+			</staticText>
+			<line>
+				<reportElement x="11" y="0" width="544" height="1" uuid="743b011c-2f1d-4a85-9ffd-9e4006b7dfe8"/>
+			</line>
+			<textField>
+				<reportElement x="496" y="30" width="27" height="20" uuid="907e7faf-a5c5-451b-a88e-00429c84a8ae"/>
+				<textElement textAlignment="Right">
+					<font isStrikeThrough="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnFooter>
+</jasperReport>

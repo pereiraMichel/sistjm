@@ -182,49 +182,20 @@ public class Mediuns {
             DefaultTableModel medium = new DefaultTableModel();
             tabela.setModel(medium);
 
-//            medium.addColumn("ID");
-            medium.addColumn("Matrícula");
             medium.addColumn("Médium");
-            medium.addColumn("Ativo");
 
-//            tabela.getColumnModel().getColumn(0).setPreferredWidth(10);
-            tabela.getColumnModel().getColumn(0).setPreferredWidth(10);
-            tabela.getColumnModel().getColumn(1).setPreferredWidth(110);
-            tabela.getColumnModel().getColumn(2).setPreferredWidth(30);
+            tabela.getColumnModel().getColumn(0).setPreferredWidth(110);
 
             while(rs.next()){
-//                int id = rs.getInt("idmedium");
                 String nome = rs.getString("nome");
-                String matricula = rs.getString("matricula");
-                String ativo = null;
-                
-                if(rs.getString("ativo").equals("1")){
-                    ativo = "Sim";
-                }else{
-                    ativo = "Não";
-                }
-//                medium.addRow(new Object[]{matricula, nome});
-//                medium.addRow(new Object[]{id, matricula, nome, ativo});
-                medium.addRow(new Object[]{matricula, nome, ativo});
+                medium.addRow(new Object[]{nome});
             }
             
         }catch(Exception ex){
             System.out.println("Erro em tabela de mediuns. Mensagem: " + ex.getMessage());
         }        
     }
-    
-    public class Renderer extends DefaultTableCellRenderer {
-       public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-          super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-          if (row%2 != 0) {
-             setBackground(Color.RED);
-          } else {
-             setBackground(Color.WHITE);
-          }
-          return this; 
-       }
-    }
-    
+
     public void buscaTabMedium(JTable tabela, String tipoBusca, JTextField texto){
 
         String sql = "SELECT * FROM mediuns WHERE " + tipoBusca + " LIKE '%" + texto.getText() + "%' "
@@ -883,6 +854,59 @@ public class Mediuns {
                 funcao = "MÉDIUM";
             }
             return funcao;
+            
+        }catch(Exception ex){
+            config.gravaErroLog("Houve um erro na pesquisa de função do médium. Erro: " + ex.getMessage(), "Função do Médiuns", "sistejm.funcaomedium");
+        }
+        return null;
+    }
+    
+    public String retornaMatricula(){
+        config = new Configuracoes();
+
+        String sql = "SELECT matricula FROM mediuns WHERE idmedium = " + this.idMedium;
+
+        try{
+            con = new Conexao();
+            conn = con.getConnection();
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery(sql);
+                
+            rs.next();
+
+            if(rs.absolute(1)){
+                return rs.getString("matricula");
+
+            }
+            
+        }catch(Exception ex){
+            config.gravaErroLog("Houve um erro na pesquisa de função do médium. Erro: " + ex.getMessage(), "Função do Médiuns", "sistejm.funcaomedium");
+        }
+        return null;
+    }
+    public String retornaStatus(){
+        String situacao = null;
+        config = new Configuracoes();
+
+        String sql = "SELECT ativo FROM mediuns WHERE idmedium = " + this.idMedium;
+
+        try{
+            con = new Conexao();
+            conn = con.getConnection();
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery(sql);
+                
+            rs.next();
+
+            if(rs.absolute(1)){
+                int status = rs.getInt("ativo");
+                if(status == 0){
+                    situacao = "INATIVO";
+                }else{
+                    situacao = "ATIVO";
+                }
+                return situacao;
+            }
             
         }catch(Exception ex){
             config.gravaErroLog("Houve um erro na pesquisa de função do médium. Erro: " + ex.getMessage(), "Função do Médiuns", "sistejm.funcaomedium");

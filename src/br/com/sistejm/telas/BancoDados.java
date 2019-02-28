@@ -8,10 +8,13 @@ package br.com.sistejm.telas;
 import br.com.sistejm.classes.Configuracoes;
 import java.awt.event.KeyEvent;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -25,6 +28,40 @@ public class BancoDados extends javax.swing.JDialog {
     public BancoDados(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        verDB();
+    }
+    
+    public void verDB(){
+        String caminho = "C:\\sistejm\\config\\banco.properties";
+        File arquivoExistente = new File(caminho);
+        String security = "Negado para exibir";
+        String noExist = "Não localizado";
+        try{
+            
+        if(arquivoExistente.exists()){
+            Properties prop = new Properties();
+        
+            FileInputStream file = new FileInputStream(arquivoExistente);
+            prop.load(file);
+            file.close();
+            
+        txtServer.setText(security);
+//        txtServer.setText(prop.getProperty("prop.database.servidor"));
+        txtUsuario.setText(security);
+        txtSenha.setText(security);
+        txtBanco.setText(security);
+        
+        }else{//arquivo não existe
+//            
+        txtServer.setText(noExist);
+        txtUsuario.setText(noExist);
+        txtSenha.setText(noExist);
+        txtBanco.setText(noExist);
+        }
+        
+        }catch(Exception ex){
+            System.out.println(ex.getMessage());
+        }
     }
     
     public void fechar(){

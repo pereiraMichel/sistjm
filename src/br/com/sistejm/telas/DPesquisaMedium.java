@@ -97,10 +97,16 @@ public class DPesquisaMedium extends javax.swing.JDialog {
         bloqueiaButton(false);
         ocultaText(false);
         exibeTabMedium();
+        textFocus();
     }
     
     public void bloqueiaButton(boolean valor){
         btSelecionar.setEnabled(valor);
+    }
+    
+    public void textFocus(){
+        txtPesquisa.setText("");
+        txtPesquisa.requestFocus();
     }
     
     public void ocultaText(boolean valor){
@@ -493,11 +499,10 @@ public class DPesquisaMedium extends javax.swing.JDialog {
         config = new Configuracoes();
         
         inicial = new TelaInicial();
+        config.gravaAtividades("Seleção do médium " + txtPesquisa.getText() + " para atividades.", this.usuario, "Seleção do Médium");
         med = new DMediumGeral(inicial, false);
         med.recebeNomeMedium(txtPesquisa.getText(), txtMatricula.getText(), txtIdMedium.getText(), 
                 String.valueOf(this.idUser), txtAtivo.getText());
-        config.gravaAtividades("Seleção do médium " + txtPesquisa.getText() + " para atividades.", this.usuario, "Seleção do Médium");
-//        med.setFocusableWindowState(true);
         med.setLocationRelativeTo(med);
         med.setAutoRequestFocus(true);
         med.setVisible(true);
@@ -515,39 +520,28 @@ public class DPesquisaMedium extends javax.swing.JDialog {
     }//GEN-LAST:event_btCancelarActionPerformed
 
     private void tabelaMediumMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaMediumMouseClicked
+        Color cVerde = new Color(0,153,0);
+        Color cVermelho = Color.RED;
 
         m = new Mediuns();
-        inicial = new TelaInicial();
-        med = new DMediumGeral(inicial, false);
-//        String id = String.valueOf(tabelaMedium.getValueAt(tabelaMedium.getSelectedRow(), 0));
-        String matriculaMedium = String.valueOf(tabelaMedium.getValueAt(tabelaMedium.getSelectedRow(), 0));
-        String nomeMedium = String.valueOf(tabelaMedium.getValueAt(tabelaMedium.getSelectedRow(), 1));
-        String ativo = String.valueOf(tabelaMedium.getValueAt(tabelaMedium.getSelectedRow(), 2));
+/*        inicial = new TelaInicial();
+        med = new DMediumGeral(inicial, false);*/
+        String nomeMedium = String.valueOf(tabelaMedium.getValueAt(tabelaMedium.getSelectedRow(), 0));
         
         txtPesquisa.setText(nomeMedium);
         txtIdMedium.setText(String.valueOf(m.retornaIdMedium(nomeMedium)));
-        txtMatricula.setText(matriculaMedium);
-        btSelecionar.setEnabled(true);
-//        txtAtivo.setText(ativo);
-        
-        Color corVerde = new Color(0,153,0);
-        Color corVermelho = new Color(255,0,0);
-        if(ativo.equals("Sim")){
-            labelStatus.setForeground(corVerde);
-            labelStatus.setText("ATIVO");
-        }else if (ativo.equals("Não")){
-            labelStatus.setForeground(corVermelho);
-            labelStatus.setText("INATIVO");
+        m.setIdMedium(m.retornaIdMedium(nomeMedium));
+        String retStatus = m.retornaStatus();
+        if(retStatus.equals("ATIVO")){
+            labelStatus.setForeground(cVerde);
+        }else if(retStatus.equals("INATIVO")){
+            labelStatus.setForeground(cVermelho);
         }
-        
+        labelStatus.setText(retStatus);
+        txtMatricula.setText(m.retornaMatricula());
+        btSelecionar.setEnabled(true);
         exibeFoto();
         
-//        this.idMedium = m.retornaIdMediumPorMatricula(matriculaMedium);
-        
-//        med.setLocationRelativeTo(inicial);
-//        med.recebeNomeMedium(nomeMedium, matriculaMedium, id);
-//        med.setVisible(true);
-        // TODO add your handling code here:
     }//GEN-LAST:event_tabelaMediumMouseClicked
 
     private void radioNomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioNomeActionPerformed

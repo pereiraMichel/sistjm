@@ -43,6 +43,7 @@ public class Coroa {
     Statement stmt;
     ResultSet rs;
     Calendar cal;
+    Batismo bat;
 
     public String getDataRealizacao() {
         return dataRealizacao;
@@ -327,6 +328,30 @@ public class Coroa {
 
             }        
         }
+    }
+    
+    
+    public boolean confereBatismoCoroa(){
+        con = new Conexao();
+        config = new Configuracoes();
+        String sql = "SELECT * FROM coroa c WHERE c.codmedium = " + this.codmedium + " "
+                + "AND c.codtipocoroa = 1";
+        
+        try{
+            conn = con.getConnection();
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery(sql);
+            
+            rs.next();
+            
+            if(rs.absolute(1)){
+                return true;
+            }
+            
+        }catch(Exception ex){
+            config.gravaErroLog(Constances.ERROR_VBATISMO + ex.getMessage() + ". SQL: " + sql, "Verificação de Batismo", "sistejm.verbatismo");
+        }
+        return false;
     }
     
     public void consultaCoroaMedium(JTextField coroacao, JTextField umAno, 
@@ -835,6 +860,125 @@ public class Coroa {
             config.gravaErroLog(Constances.ERROR_EBATISMO + ex.getMessage() + ". SQL: " + sql, "Exclusão de Batismo", "sistejm.excluibatismo");
         }
         return false;
+    }
+    
+    public void exibeSaidasMedium(JTable tabela){
+        config = new Configuracoes();
+        
+        String sql = "SELECT m.nome, c.mes, c.ano, t.nome AS tipo"
+                + "DATE_FORMAT(c.dataRealizacao, '%d/%m/%Y') AS dtReal "
+                + "FROM mediuns m "
+                + "LEFT JOIN coroa c ON c.codmedium = m.idmedium " 
+                + "LEFT JOIN tipocoroa t ON t.idtipocoroa = c.codtipocoroa "
+                + "WHERE m.idmedium = " + this.codmedium + " "
+                + "ORDER BY t.idtipocoroa ASC";
+     
+        try{
+            con = new Conexao();
+            conn = con.getConnection();
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery(sql);
+                
+            DefaultTableModel medium = new DefaultTableModel();
+            tabela.setModel(medium);
+
+            medium.addColumn("Médium");
+            medium.addColumn("Mês");
+            medium.addColumn("Ano");
+            medium.addColumn("Corôa");
+
+            tabela.getColumnModel().getColumn(0).setPreferredWidth(110);
+            tabela.getColumnModel().getColumn(1).setPreferredWidth(10);
+            tabela.getColumnModel().getColumn(2).setPreferredWidth(10);
+            tabela.getColumnModel().getColumn(3).setPreferredWidth(80);
+
+            while(rs.next()){
+                String nome = rs.getString("m.nome");
+                int mes = rs.getInt("c.mes");
+                int ano = rs.getInt("c.ano");
+                String coroa = rs.getString("tipo");
+                medium.addRow(new Object[]{nome, mes, ano, coroa});
+            }
+            
+        }catch(Exception ex){
+            System.out.println("Erro em tabela de mediuns. Mensagem: " + ex.getMessage());
+        }       
+        
+    }
+    
+    public void exibeSaidas(JTable tabela){
+        config = new Configuracoes();
+        
+        String sql = "SELECT "
+                + "DATE_FORMAT(c.dataRealizacao, '%d/%m/%Y') AS dtReal, t.nome AS tipo, c.confirma "
+                + "FROM mediuns m "
+                + "LEFT JOIN coroa c ON c.codmedium = m.idmedium " 
+                + "LEFT JOIN tipocoroa t ON t.idtipocoroa = c.codtipocoroa "
+                + "WHERE m.idmedium = " + this.codmedium + " "
+                + "ORDER BY t.idtipocoroa ASC";
+     
+        try{
+            con = new Conexao();
+            conn = con.getConnection();
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery(sql);
+                
+            DefaultTableModel medium = new DefaultTableModel();
+            tabela.setModel(medium);
+
+            medium.addColumn("Data");
+            medium.addColumn("Corôa");
+
+            tabela.getColumnModel().getColumn(0).setPreferredWidth(80);
+            tabela.getColumnModel().getColumn(1).setPreferredWidth(80);
+
+            while(rs.next()){
+                String coroa = rs.getString("tipo");
+                String dtReal = null;
+                String confirm = rs.getString("confirma");
+                
+                if(confirm.equals("n")){
+                    dtReal = "";
+                }else{
+                    dtReal = rs.getString("dtReal");
+                }
+                medium.addRow(new Object[]{dtReal, coroa});
+            }
+            
+        }catch(Exception ex){
+            System.out.println("Erro em tabela de mediuns. Mensagem: " + ex.getMessage());
+        }       
+        
+    }
+    
+    public int retornaIdCoroa(){
+        config = new Configuracoes();
+        
+        String sql = "SELECT c.idcoroa "
+                + "FROM mediuns m "
+                + "LEFT JOIN coroa c ON c.codmedium = m.idmedium " 
+                + "LEFT JOIN tipocoroa t ON t.idtipocoroa = c.codtipocoroa "
+                + "WHERE m.idmedium = " + this.codmedium + " "
+                + "AND t.idtipocoroa = " + this.codtipocoroa;
+//                + "ORDER BY t.idtipocoroa ASC";
+     
+//        System.out.println(sql);
+        try{
+            con = new Conexao();
+            conn = con.getConnection();
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery(sql);
+            
+            rs.next();
+            
+            if(rs.absolute(1)){
+                return rs.getInt("c.idcoroa");
+            }
+            
+        }catch(Exception ex){
+            System.out.println("Erro em tabela de mediuns. Mensagem: " + ex.getMessage());
+        }
+        return 0;
     }
     
 }

@@ -569,5 +569,138 @@ public class Agendamento {
         return false;
     }
 
+    /* =======================================================================
+    */
+    public void preencheTabAgend(JTable tabela){
+
+        String sql = "SELECT *, "
+                + "DATE_FORMAT(data, '%d/%m/%Y') AS dataFormatada "
+                + "FROM agendamento";
+        
+        try{
+            con = new Conexao();
+            conn = con.getConnection();
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery(sql);
+                
+            DefaultTableModel agendamento = new DefaultTableModel();
+            tabela.setModel(agendamento);
+
+            agendamento.addColumn("Data");
+            agendamento.addColumn("Protocolo");
+            agendamento.addColumn("Consultor");
+            agendamento.addColumn("Consultado");
+
+            tabela.getColumnModel().getColumn(0).setPreferredWidth(20);
+            tabela.getColumnModel().getColumn(1).setPreferredWidth(20);
+            tabela.getColumnModel().getColumn(2).setPreferredWidth(50);
+            tabela.getColumnModel().getColumn(3).setPreferredWidth(50);
+
+            while(rs.next()){
+                String dataFormat = rs.getString("dataFormatada");
+                String codigo = rs.getString("codigo");
+                String nome = rs.getString("consultor");
+                String consultado = rs.getString("consultado");
+
+                agendamento.addRow(new Object[]{dataFormat, codigo, nome, consultado});
+            }
+        }catch(Exception ex){
+            System.out.println("Erro em tabela de agendamento. Mensagem: " + ex.getMessage());
+        }        
+    }
+    public void buscaTabAgend(JTable tabela, String data1, String data2, int pago, int baixa, int consultor){
+
+        String compPago = null;
+        String compBaixa = null;
+        String compConsultor = null;
+        String compData = null;
+        
+//        System.out.println(data1);
+//        System.out.println(data2);
+        
+        switch(pago){
+            case 0:
+                compPago = "AND pago = 'N' ";
+                break;
+            case 1:
+                compPago = "AND pago = 'S' ";
+                break;
+            case 9:
+                compPago = "";
+                break;
+        }
+        
+        switch(baixa){
+            case 0:
+                compBaixa = "AND baixa = 'N' ";
+                break;
+            case 1:
+                compBaixa = "AND baixa = 'S' ";
+                break;
+            case 9:
+                compBaixa = "";
+                break;
+        }
+        
+        switch(consultor){
+            case 1:
+                compConsultor = "AND consultor = 'Caboclo' ";
+                break;
+            case 2:
+                compConsultor = "AND consultor = 'Exu' ";
+                break;
+            case 9:
+                compConsultor = "";
+                break;
+        }
+        if(data1.equals("sem data") || data2.equals("sem data")){
+            compData = "";
+        }else{
+            compData = "AND data BETWEEN '" + config.retornaFormatoDataSQL(data1) + "' "
+                    + "AND '" + config.retornaFormatoDataSQL(data2) + "' ";
+        }
+
+        String sql = "SELECT *, DATE_FORMAT(data, '%d/%m/%Y') AS dataFormatada "
+                + "FROM agendamento "
+                + "WHERE "
+                + "idagendamento IS NOT NULL "
+                + compData
+                + compPago
+                + compBaixa
+                + compConsultor;
+        
+//        System.out.println(sql);
+        
+        try{
+            con = new Conexao();
+            conn = con.getConnection();
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery(sql);
+                
+            DefaultTableModel agendamento = new DefaultTableModel();
+            tabela.setModel(agendamento);
+
+            agendamento.addColumn("Data");
+            agendamento.addColumn("Protocolo");
+            agendamento.addColumn("Consultor");
+            agendamento.addColumn("Consultado");
+
+            tabela.getColumnModel().getColumn(0).setPreferredWidth(20);
+            tabela.getColumnModel().getColumn(1).setPreferredWidth(20);
+            tabela.getColumnModel().getColumn(2).setPreferredWidth(50);
+            tabela.getColumnModel().getColumn(3).setPreferredWidth(50);
+
+            while(rs.next()){
+                String dataFormat = rs.getString("dataFormatada");
+                String codigo = rs.getString("codigo");
+                String nome = rs.getString("consultor");
+                String consultado = rs.getString("consultado");
+
+                agendamento.addRow(new Object[]{dataFormat, codigo, nome, consultado});
+            }
+        }catch(Exception ex){
+            System.out.println("Erro em tabela de agendamento. Mensagem: " + ex.getMessage());
+        } 
+    }
     
 }

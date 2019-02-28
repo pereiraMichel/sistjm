@@ -5,8 +5,12 @@
  */
 package br.com.sistejm.telas;
 
+import br.com.sistejm.classes.Coroa;
 import br.com.sistejm.classes.MediumOrixa;
 import br.com.sistejm.classes.Produtos;
+import br.com.sistejm.classes.TipoCoroa;
+import br.com.sistejm.classes.TrabalhoSaidas;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -16,6 +20,25 @@ public class DTrabalhoSaidas extends javax.swing.JDialog {
 
     MediumOrixa mo;
     Produtos p;
+    Coroa c;
+    TipoCoroa tp;
+    
+    TrabalhoSaidas ts;
+    
+    DCoroa coroa;
+    TelaInicial inicio;
+    
+    private int codCoroa;
+
+    public int getCodCoroa() {
+        return codCoroa;
+    }
+
+    public void setCoroa(int codCoroa) {
+        this.codCoroa = codCoroa;
+    }
+    
+    
     /**
      * Creates new form DTtrabalhoSaidas
      */
@@ -23,21 +46,56 @@ public class DTrabalhoSaidas extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         exibeTabProdutos();
+        labelsOk(false);
+        this.codCoroa = 0;
+        ocultaTextField(false);
+    }
+    
+    public void ocultaTextField(boolean valor){
+        txtCodCoroa.setVisible(valor);
+        txtCodProduto.setVisible(valor);
+        txtIdMedium.setVisible(valor);
+        txtCodTrabalho.setVisible(valor);
     }
     
     public void recebeInfo(String nomeMedium, String idMedium){
         labelNomeMedium.setText(nomeMedium.toUpperCase());
         txtIdMedium.setText(idMedium);
-        /* Pegar O */
         mo = new MediumOrixa();
         mo.setCodMedium(Integer.valueOf(idMedium));
         mo.retornaOriMaePai(labelOrixaMae, labelOrixaPai);
+        exibeSaidas();
+        exibeTabTrabalhos();
         
+    }
+    
+    public void exibeSaidas(){
+        c = new Coroa();
+        c.setCodmedium(Integer.valueOf(txtIdMedium.getText()));
+        c.exibeSaidas(tabdatasaida);
+        
+    }
+    public void labelsOk(boolean valor){
+        labelOkCoroa.setVisible(valor);
+        labelOkProduto.setVisible(valor);
+        labelOkQuant.setVisible(valor);
     }
     
     public void exibeTabProdutos(){
         p = new Produtos();
         p.preencheTabelaProdutos(tabproduto);
+    }
+    
+    public void exibeTabCoroacao(){
+        c = new Coroa();
+        c.exibeSaidasMedium(tabproduto);
+    }
+    
+    public void exibeTabTrabalhos(){
+        ts = new TrabalhoSaidas();
+        ts.setCodcoroa(this.codCoroa);
+        ts.setCodMedium(Integer.valueOf(txtIdMedium.getText()));
+        ts.exibeTrabalhos(tabprodquant);
     }
 
     /**
@@ -52,10 +110,11 @@ public class DTrabalhoSaidas extends javax.swing.JDialog {
         panelTop = new javax.swing.JPanel();
         labelTitulo = new javax.swing.JLabel();
         btCancelar = new javax.swing.JButton();
-        txtData = new javax.swing.JTextField();
+        txtCodCoroa = new javax.swing.JTextField();
         txtIdMedium = new javax.swing.JTextField();
         btImprimir = new javax.swing.JButton();
         txtCodProduto = new javax.swing.JTextField();
+        txtCodTrabalho = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         tabproduto = new javax.swing.JTable();
         btTirar = new javax.swing.JButton();
@@ -76,6 +135,9 @@ public class DTrabalhoSaidas extends javax.swing.JDialog {
         jScrollPane3 = new javax.swing.JScrollPane();
         tabdatasaida = new javax.swing.JTable();
         labelTipo = new javax.swing.JLabel();
+        labelOkCoroa = new javax.swing.JLabel();
+        labelOkProduto = new javax.swing.JLabel();
+        labelOkQuant = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -101,7 +163,7 @@ public class DTrabalhoSaidas extends javax.swing.JDialog {
             }
         });
 
-        txtData.setEditable(false);
+        txtCodCoroa.setEditable(false);
 
         txtIdMedium.setEditable(false);
 
@@ -123,6 +185,8 @@ public class DTrabalhoSaidas extends javax.swing.JDialog {
 
         txtCodProduto.setEditable(false);
 
+        txtCodTrabalho.setEditable(false);
+
         javax.swing.GroupLayout panelTopLayout = new javax.swing.GroupLayout(panelTop);
         panelTop.setLayout(panelTopLayout);
         panelTopLayout.setHorizontalGroup(
@@ -130,13 +194,15 @@ public class DTrabalhoSaidas extends javax.swing.JDialog {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelTopLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(labelTitulo)
-                .addGap(168, 168, 168)
-                .addComponent(txtData, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(150, 150, 150)
+                .addComponent(txtCodCoroa, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(txtIdMedium, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(txtCodProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(txtCodTrabalho, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 81, Short.MAX_VALUE)
                 .addComponent(btImprimir, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -150,26 +216,42 @@ public class DTrabalhoSaidas extends javax.swing.JDialog {
                 .addGroup(panelTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btImprimir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(panelTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(txtData, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtCodCoroa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(txtIdMedium, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(txtCodProduto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(txtCodProduto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtCodTrabalho, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(btCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(19, Short.MAX_VALUE))
         );
 
         tabproduto.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null}
+                {}
             },
             new String [] {
-                "Produto"
+
             }
         ));
+        tabproduto.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tabprodutoMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tabproduto);
 
         btTirar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/sistejm/images/setaTira16x16.png"))); // NOI18N
+        btTirar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btTirarActionPerformed(evt);
+            }
+        });
 
         btColocar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/sistejm/images/setaInsere16x16.png"))); // NOI18N
+        btColocar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btColocarActionPerformed(evt);
+            }
+        });
 
         labelMedium.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         labelMedium.setText("MÉDIUM:");
@@ -185,18 +267,29 @@ public class DTrabalhoSaidas extends javax.swing.JDialog {
 
         labelQuantidade.setText("Quantidade");
 
+        txtQuantidade.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtQuantidadeKeyReleased(evt);
+            }
+        });
+
         txtSaida.setEditable(false);
 
         labelDataSaida.setText("Data saída:");
 
         tabprodquant.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null}
+                {}
             },
             new String [] {
-                "Produto", "Quantidade"
+
             }
         ));
+        tabprodquant.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tabprodquantMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(tabprodquant);
 
         panelDown.setBackground(new java.awt.Color(255, 255, 255));
@@ -221,59 +314,83 @@ public class DTrabalhoSaidas extends javax.swing.JDialog {
 
         tabdatasaida.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null}
+                {}
             },
             new String [] {
-                "Data", "Tipo"
+
             }
         ));
+        tabdatasaida.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tabdatasaidaMouseClicked(evt);
+            }
+        });
         jScrollPane3.setViewportView(tabdatasaida);
 
         labelTipo.setText("Tipo Corôa");
+
+        labelOkCoroa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/sistejm/images/sim.png"))); // NOI18N
+
+        labelOkProduto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/sistejm/images/sim.png"))); // NOI18N
+
+        labelOkQuant.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/sistejm/images/sim.png"))); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(panelTop, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(panelDown, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(labelFilho)
-                            .addComponent(labelMedium))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(labelOrixaPai)
-                                .addGap(61, 61, 61)
-                                .addComponent(labelOrixaMae))
-                            .addComponent(labelNomeMedium))))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(labelQuantidade, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(txtQuantidade, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(btTirar, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btColocar, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(labelDataSaida)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(txtSaida, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(labelTipo)))
-                .addContainerGap(37, Short.MAX_VALUE))
-            .addComponent(panelDown, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(labelTipo)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(labelQuantidade, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(txtQuantidade, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(21, 21, 21)
+                                        .addComponent(labelOkQuant)))
+                                .addGap(27, 27, 27)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(btTirar, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(btColocar, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(labelFilho)
+                                            .addComponent(labelMedium))
+                                        .addGap(18, 18, 18)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(labelOrixaPai)
+                                                .addGap(61, 61, 61)
+                                                .addComponent(labelOrixaMae))
+                                            .addComponent(labelNomeMedium)))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(86, 86, 86)
+                                        .addComponent(labelOkCoroa)
+                                        .addGap(194, 194, 194)
+                                        .addComponent(labelOkProduto)))
+                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addContainerGap())))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -287,25 +404,33 @@ public class DTrabalhoSaidas extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labelFilho)
                     .addComponent(labelOrixaPai)
-                    .addComponent(labelOrixaMae)
+                    .addComponent(labelOrixaMae))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labelDataSaida)
                     .addComponent(txtSaida, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(labelTipo))
-                .addGap(23, 23, 23)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(labelQuantidade)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtQuantidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(btColocar)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(btTirar))))
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 108, Short.MAX_VALUE)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(labelQuantidade)
+                            .addGap(8, 8, 8)
+                            .addComponent(txtQuantidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(labelOkQuant))
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(btColocar)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(btTirar))))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(labelOkCoroa)
+                    .addComponent(labelOkProduto))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
                 .addComponent(panelDown, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
@@ -319,6 +444,131 @@ public class DTrabalhoSaidas extends javax.swing.JDialog {
     private void btImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btImprimirActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btImprimirActionPerformed
+
+    private void btColocarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btColocarActionPerformed
+
+        ts = new TrabalhoSaidas();
+        
+        ts.setCodcoroa(Integer.valueOf(txtCodCoroa.getText()));
+        ts.setQuantidade(Integer.valueOf(txtQuantidade.getText()));
+        ts.setCodproduto(Integer.valueOf(txtCodProduto.getText()));
+//        ts.setCodMedium(Integer.valueOf(txtIdMedium.getText()));
+        
+        if(ts.verificaExistente()){
+            JOptionPane.showMessageDialog(null, "Produto já existente !");
+        }else{
+            ts.incluirTrabalhoSaidas();
+        }
+        
+        exibeTabTrabalhos();
+        
+        labelsOk(false);
+
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btColocarActionPerformed
+
+    private void tabdatasaidaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabdatasaidaMouseClicked
+
+        String dataSaida = String.valueOf(tabdatasaida.getValueAt(tabdatasaida.getSelectedRow(), 0));
+        String tipo = String.valueOf(tabdatasaida.getValueAt(tabdatasaida.getSelectedRow(), 1));
+        
+        txtSaida.setText(dataSaida);
+        labelTipo.setText(tipo);
+        //String.valueOf(tabMedium.getValueAt(tabMedium.getSelectedRow(), 0))
+        
+        if(dataSaida.equals("")){
+            if(JOptionPane.showConfirmDialog(null, "Ainda não foi agendada. Deseja agendar ?", "ATENÇÃO", JOptionPane.YES_NO_OPTION) == 0){
+                inicio = new TelaInicial();
+                coroa = new DCoroa(inicio, false);
+                coroa.setAutoRequestFocus(true);
+                this.setAutoRequestFocus(false);
+                coroa.setLocationRelativeTo(coroa);
+                coroa.setVisible(true);
+                this.fechar();
+                
+            }
+        }else{ // a data não está vazia, ou seja, confirmou a data
+            c = new Coroa();
+            tp = new TipoCoroa();
+            tp.setNome(tipo);
+            c.setCodtipocoroa(tp.retornaIdTipoCoroa());
+            c.setCodmedium(Integer.valueOf(txtIdMedium.getText()));
+            
+            txtCodCoroa.setText(String.valueOf(c.retornaIdCoroa()));
+            
+            this.codCoroa = Integer.valueOf(txtCodCoroa.getText());
+            ts.setCodcoroa(this.codCoroa);
+            exibeTabTrabalhos();
+            
+            labelOkCoroa.setVisible(true);
+            
+        }
+    }//GEN-LAST:event_tabdatasaidaMouseClicked
+
+    private void tabprodutoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabprodutoMouseClicked
+
+        String produto = String.valueOf(tabproduto.getValueAt(tabproduto.getSelectedRow(), 0));
+        p = new Produtos();
+        txtCodProduto.setText(String.valueOf(p.retornaIdProduto(produto)));
+        labelOkProduto.setVisible(true);
+        txtQuantidade.requestFocus();
+        
+    }//GEN-LAST:event_tabprodutoMouseClicked
+
+    private void txtQuantidadeKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtQuantidadeKeyReleased
+
+        if(txtQuantidade.getText().length() >= 1){
+            if(!txtQuantidade.getText().equals("0")){
+                labelOkQuant.setVisible(true);
+            }
+        }
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtQuantidadeKeyReleased
+
+    private void tabprodquantMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabprodquantMouseClicked
+
+        c = new Coroa();
+        p = new Produtos();
+        tp = new TipoCoroa();
+        ts = new TrabalhoSaidas();
+        
+        String nomeCoroa = String.valueOf(tabprodquant.getValueAt(tabprodquant.getSelectedRow(), 0));
+        String nomeProduto = String.valueOf(tabprodquant.getValueAt(tabprodquant.getSelectedRow(), 1));
+        String quantidade = String.valueOf(tabprodquant.getValueAt(tabprodquant.getSelectedRow(), 2));
+        
+        tp.setNome(nomeCoroa);
+        int codTpCoroa = tp.retornaIdTipoCoroa(); // pego o id do tipo de coroa
+        
+        c.setCodmedium(Integer.valueOf(txtIdMedium.getText()));
+        c.setCodtipocoroa(codTpCoroa); //pego o id da coroa
+        
+        ts.setCodMedium(Integer.valueOf(txtIdMedium.getText()));
+        ts.setQuantidade(Integer.valueOf(quantidade));
+        ts.setCodproduto(p.retornaIdProduto(nomeProduto));
+        ts.setCodcoroa(c.retornaIdCoroa());
+        
+//        System.out.println("Médium: " + ts.getCodMedium());//351
+//        System.out.println("Quantidade: " + ts.getQuantidade());//1
+//        System.out.println("Produto: " + ts.getCodproduto());//cod produto
+//        System.out.println("Cód Coroa: " + ts.getCodcoroa());//cod tipocoroa
+        
+        txtCodTrabalho.setText(String.valueOf(ts.retornaIdTrabalho()));
+
+    }//GEN-LAST:event_tabprodquantMouseClicked
+
+    private void btTirarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btTirarActionPerformed
+
+        if(!txtCodTrabalho.getText().equals("")){
+            ts = new TrabalhoSaidas();
+            ts.setIdtrabalho(Integer.valueOf(txtCodTrabalho.getText()));
+            ts.excluirTrabalho();
+            exibeTabTrabalhos();
+        }else{
+            JOptionPane.showMessageDialog(null, "Favor selecionar o trabalho", "ATENÇÃO", JOptionPane.WARNING_MESSAGE);
+        }
+
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btTirarActionPerformed
 
     public void fechar(){
         this.dispose();
@@ -379,6 +629,9 @@ public class DTrabalhoSaidas extends javax.swing.JDialog {
     private javax.swing.JLabel labelFilho;
     private javax.swing.JLabel labelMedium;
     private javax.swing.JLabel labelNomeMedium;
+    private javax.swing.JLabel labelOkCoroa;
+    private javax.swing.JLabel labelOkProduto;
+    private javax.swing.JLabel labelOkQuant;
     private javax.swing.JLabel labelOrixaMae;
     private javax.swing.JLabel labelOrixaPai;
     private javax.swing.JLabel labelQuantidade;
@@ -390,8 +643,9 @@ public class DTrabalhoSaidas extends javax.swing.JDialog {
     private javax.swing.JTable tabdatasaida;
     private javax.swing.JTable tabprodquant;
     private javax.swing.JTable tabproduto;
+    private javax.swing.JTextField txtCodCoroa;
     private javax.swing.JTextField txtCodProduto;
-    private javax.swing.JTextField txtData;
+    private javax.swing.JTextField txtCodTrabalho;
     private javax.swing.JTextField txtIdMedium;
     private javax.swing.JTextField txtQuantidade;
     private javax.swing.JTextField txtSaida;

@@ -37,6 +37,7 @@ public class Relatorios {
     Statement stmt;
     ResultSet rs;
     Calendar cal;
+    Configuracoes config;
 
 //Agendamento | Atendimento    
     public void geraRelatorioAgendamento(String modelo, String valor, String data1, String data2, String ordem){
@@ -94,6 +95,100 @@ public class Relatorios {
         }
         
     }
+
+// ==============================================================================
+    public void relTabAgend(String data1, String data2, int pago, int baixa, int consultor){
+
+        config = new Configuracoes();
+        
+        String compPago = null;
+        String compBaixa = null;
+        String compConsultor = null;
+        String compData = null;
+        
+        switch(pago){
+            case 0:
+                compPago = "AND pago = 'N' ";
+                break;
+            case 1:
+                compPago = "AND pago = 'S' ";
+                break;
+            case 9:
+                compPago = "";
+                break;
+        }
+        
+        switch(baixa){
+            case 0:
+                compBaixa = "AND baixa = 'N' ";
+                break;
+            case 1:
+                compBaixa = "AND baixa = 'S' ";
+                break;
+            case 9:
+                compBaixa = "";
+                break;
+        }
+        
+        switch(consultor){
+            case 1:
+                compConsultor = "AND consultor = 'Caboclo' ";
+                break;
+            case 2:
+                compConsultor = "AND consultor = 'Exu' ";
+                break;
+            case 9:
+                compConsultor = "";
+                break;
+        }
+
+        if(data1.equals("sem data") || data2.equals("sem data")){
+            compData = "";
+        }else{
+            compData = "AND data BETWEEN '" + config.retornaFormatoDataSQL(data1) + "' "
+                    + "AND '" + config.retornaFormatoDataSQL(data2) + "' ";
+        }
+        
+        String sql = "SELECT *, DATE_FORMAT(data, '%d/%m/%Y') AS dataFormat "
+                + "FROM agendamento "
+                + "WHERE "
+                + "idagendamento IS NOT NULL "
+                + compData
+                + compPago
+                + compBaixa
+                + compConsultor + " "
+                + "ORDER BY consultor"
+                ;
+        
+                System.out.println(sql);
+        
+        try{
+            con = new Conexao();
+            conn = con.getConnection();
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery(sql);
+            
+            //Gera o relatório                
+            String path = "relatorios//report_agendamentogeral.jasper";
+            
+            JRResultSetDataSource jr = new JRResultSetDataSource(rs); // Cria um resultset do banco de dados
+            
+            Map param = new HashMap(); // Abre o parâmetro
+
+            
+            JasperPrint print = JasperFillManager.fillReport(path, param, jr); // Junta as informações do banco e parâmetros
+            JasperViewer view = new JasperViewer(print, false);//Prepara a visualização do relatório - true, fecha aplicação | false, mantém aplicação aberto
+            view.setVisible(true); //Visualiza o relatório
+            view.toFront();//Puxa o relatório para frente do frame.
+
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
+    }
+
+
+// ==============================================================================    
+    
 // Comprovante de agendamento
     public void geraComprovanteAtendimento(String comprovante){
         String sql = "SELECT *, DATE_FORMAT(data, '%d/%m/%Y') AS dataFormatada FROM agendamento WHERE codigo = '" + comprovante + "'";
@@ -314,8 +409,8 @@ public class Relatorios {
                     "FROM mediuns m " +
                     "LEFT JOIN logradouro l ON l.cod_medium = m.idmedium " +
                     "LEFT JOIN foto f ON f.cod_medium = m.idmedium " +
-                    "WHERE m.idmedium = " + idMedium + " " +
-                    "AND m.ativo = 1";
+                    "WHERE m.idmedium = " + idMedium;
+//                    "AND m.ativo = 1";
 
 //                System.out.println(sql);
 
@@ -345,6 +440,40 @@ public class Relatorios {
         }
         
     }    
+// Gera relatório de usuários
+    public void relUsuarios(){
+        
+        String sql = "SELECT u.nome, u.email, DATE_FORMAT(u.dataCadastro, '%d/%m/%Y') AS dtCad, a.acesso " +
+                     "FROM tblusuario u " +
+                     "LEFT JOIN acesso a ON u.codAcesso = a.idacesso";
+
+//                System.out.println(sql);
+
+        try{
+            con = new Conexao();
+            conn = con.getConnection();
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery(sql);
+            
+            //Gera o relatório                
+            String path = "relatorios//rUsuarios.jasper";
+            
+            JRResultSetDataSource jr = new JRResultSetDataSource(rs); // Cria um resultset do banco de dados
+
+            
+            Map param = new HashMap(); // Abre o parâmetro
+
+            JasperPrint print = JasperFillManager.fillReport(path, param, jr); // Junta as informações do banco e parâmetros
+            JasperViewer view = new JasperViewer(print, false);//Prepara a visualização do relatório - true, fecha aplicação | false, mantém aplicação aberto
+            view.setVisible(true); //Visualiza o relatório
+            view.toFront();//Puxa o relatório para frente do frame.
+
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
+        
+    }
+    
     public void geraAnosCarteira(int ano1, int ano2){
         
         try{

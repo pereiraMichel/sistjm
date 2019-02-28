@@ -173,7 +173,7 @@ public class Mensalidade {
                 + "WHERE ano = " + this.ano + " "
                 + "AND cod_medium = " + this.codMedium;
         
-                System.out.println(sql);
+//                System.out.println(sql);
         
         try{
             

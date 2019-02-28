@@ -132,6 +132,8 @@ public class Batismo {
         config = new Configuracoes();
         String sql = "SELECT * FROM batismo WHERE codmedium = " + this.codMedium;
         
+//        System.out.println(sql);
+
         try{
             conn = con.getConnection();
             stmt = conn.createStatement();
@@ -141,9 +143,8 @@ public class Batismo {
             
             if(rs.absolute(1)){
                 alterarBatismoMedium();
-//                System.out.println("Chegou aqui... existe registros");
             }else{
-                this.incluirBatismoMedium();
+                incluirBatismoMedium();
             }
             
             return true;
@@ -227,6 +228,52 @@ public class Batismo {
         }
         return false;
     }
+    public boolean incluiPadrinho(){
+        config = new Configuracoes();
+        String sql = "UPDATE batismo SET "
+                + "padrinho = '" + this.padrinho + "' "
+                + " WHERE codmedium = " + this.codMedium;
+        
+//        System.out.println(sql);
+        
+        try{
+            con = new Conexao();
+            conn = con.getConnection();
+            stmt = conn.createStatement();
+            stmt.executeUpdate(sql);
+            config.gravaBDBackup(sql);
+            
+            return true;
+            
+        }catch(Exception ex){
+            System.out.println(Constances.ERROR_ABATISMO + ex.getMessage());
+        }
+        return false;
+    }
+    
+    public boolean incluiMadrinha(){
+        config = new Configuracoes();
+        String sql = "UPDATE batismo SET "
+                + "madrinha = '" + this.madrinha + "' "
+                + " WHERE codmedium = " + this.codMedium;
+        
+//        System.out.println(sql);
+        
+        try{
+            con = new Conexao();
+            conn = con.getConnection();
+            stmt = conn.createStatement();
+            stmt.executeUpdate(sql);
+            config.gravaBDBackup(sql);
+            
+            return true;
+            
+        }catch(Exception ex){
+            System.out.println(Constances.ERROR_ABATISMO + ex.getMessage());
+        }
+        return false;
+    }
+    
     public boolean excluirBatismoMedium(){
         config = new Configuracoes();
         String sql = "DELETE FROM batismo WHERE codmedium = " + this.codMedium;
@@ -265,6 +312,7 @@ public class Batismo {
                 
                 String pad = rs.getString("padrinho");
                 String mad = rs.getString("madrinha");
+                String datBat = rs.getString("dataFBatismo");
                 
                 if(pad.equals(null)){
                     padrinho.setText("");
@@ -277,14 +325,15 @@ public class Batismo {
                     madrinha.setText(mad);
                 }
                 
-                dataBatismo.setText(rs.getString("dataFBatismo"));
-                
+                if(dataBatismo.equals("01/01/1901")){
+                    dataBatismo.setText("");
+                }else{
+                    dataBatismo.setText(rs.getString("dataFBatismo"));
+                }
             }
-            
         }catch(Exception ex){
             config.gravaErroLog(Constances.ERROR_VBATISMO + ex.getMessage() + ". SQL: " + sql, "Verificação de Batismo", "sistejm.excluibatismo");
         }
-    
     }
 
 }

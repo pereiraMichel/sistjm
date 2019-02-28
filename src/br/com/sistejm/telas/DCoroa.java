@@ -6,6 +6,7 @@
 package br.com.sistejm.telas;
 
 import br.com.sistejm.classes.Configuracoes;
+import br.com.sistejm.classes.Constances;
 import br.com.sistejm.classes.Coroa;
 import br.com.sistejm.classes.Mediuns;
 import java.awt.event.KeyEvent;
@@ -65,6 +66,7 @@ public class DCoroa extends javax.swing.JDialog {
     public DCoroa(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        tituloTela();
         preencheCampos();
         campoPeriodo(false);
         campoMesAno(false);
@@ -73,6 +75,10 @@ public class DCoroa extends javax.swing.JDialog {
         preencheRadioTodos();
         limpaLabels();
         ocultaText(false);
+    }
+    
+    public void tituloTela(){
+        this.setTitle(Constances.TITULO_DCOROACAO);
     }
     
     public void limpaLabels(){

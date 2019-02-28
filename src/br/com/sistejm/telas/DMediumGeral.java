@@ -135,37 +135,35 @@ public class DMediumGeral extends javax.swing.JDialog {
         men.setCodMedium(Integer.valueOf(idMedium));
         men.setCodUsuario(Integer.valueOf(iduser));
         men.verificaAno();
-        
-//        System.out.println(nome);
-//        System.out.println(matricula);
-//        System.out.println(idMedium);
-//        System.out.println(iduser);
-//        System.out.println(ativo);
+
         m.setMatricula(txtMatricula.getText());
         m.setIdMedium(Integer.valueOf(idMedium));
         m.exibeCamposMedium(txtIdMedium, txtNome, txtMatricula, checkIsento, txtDataNascimento, txtDataEntrada, 
                 txtObservacoes, txtEndereco, txtBairro, txtCidade, txtEstado, radioSim, radioNao, radioM, radioF, 
                 txtEmail, txtFuncao);
         
-        if(checkIsento.isSelected()){
-            this.isento = 1;
-            btFinanceiro.setEnabled(false);
+        if(!txtIdMedium.equals("")){
+            if(checkIsento.isSelected()){
+                this.isento = 1;
+                btFinanceiro.setEnabled(false);
 
-        }else{
-            this.isento = 0;
-            btFinanceiro.setEnabled(true);
+            }else{
+                this.isento = 0;
+                btFinanceiro.setEnabled(true);
+            }
+
+            if(ativo.equals("Sim")){
+                this.ativo = 1;
+            }else if(ativo.equals("Não")){
+                this.ativo = 0;
+            }
+
+            exibeTelefones();
+            exibeFoto();
+            exibeUltimaCoroa();
+            exibeUltimoPagamento();
         }
         
-        if(ativo.equals("Sim")){
-            this.ativo = 1;
-        }else if(ativo.equals("Não")){
-            this.ativo = 0;
-        }
- 
-        exibeTelefones();
-        exibeFoto();
-        exibeUltimaCoroa();
-        exibeUltimoPagamento();
         
     }
     
@@ -243,13 +241,12 @@ public class DMediumGeral extends javax.swing.JDialog {
     }
     
     public void exibeFoto(){
+//        System.out.println("Id do médium: " + txtIdMedium.getText());
         f = new Fotos();
         f.setCodMedium(Integer.valueOf(txtIdMedium.getText()));
-                    
         
         if(f.retornaFoto() != null){
             File file = new File(f.retornaFoto());
-    //                System.out.println("Ocorreu um problema: " + file);
                 BufferedImage bufferedImage = null;  
                 try {
                     bufferedImage = ImageIO.read(new File(file.getPath()));
@@ -297,15 +294,18 @@ public class DMediumGeral extends javax.swing.JDialog {
         config = new Configuracoes();
         txtMatricula.setText("");
         txtNome.setText("");
+        txtDataNascimento.setText("");
+        txtEmail.setText("");
         txtEndereco.setText("");
         txtTelefone.setText("");
         txtBairro.setText("");
-        txtCidade.setText("");
-        txtEstado.setText("");
+        txtCidade.setText("RIO DE JANEIRO");
+        txtEstado.setText("RJ");
         config.limpaTabela(tabelaTelefone);
         labelFoto.setText("");
         txtObservacoes.setText("");
         txtIdMedium.setText("");
+//        exibeFoto();
         txtNome.requestFocus();
     }
 
@@ -428,7 +428,7 @@ public class DMediumGeral extends javax.swing.JDialog {
                 .addComponent(txtDataNascSQL, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(txtCodeUser, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(663, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         panelTopLayout.setVerticalGroup(
             panelTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -502,7 +502,7 @@ public class DMediumGeral extends javax.swing.JDialog {
                 .addContainerGap())
         );
 
-        jPanel15.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
+        jPanel15.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)), "   CONTROLE   ", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Arial", 1, 10), new java.awt.Color(0, 0, 153))); // NOI18N
 
         btPesquisa.setBackground(new java.awt.Color(255, 255, 255));
         btPesquisa.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
@@ -1117,11 +1117,6 @@ public class DMediumGeral extends javax.swing.JDialog {
 
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "   NOME   ", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Arial", 1, 10), new java.awt.Color(0, 0, 153))); // NOI18N
 
-        txtNome.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtNomeActionPerformed(evt);
-            }
-        });
         txtNome.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 txtNomeKeyPressed(evt);
@@ -1258,7 +1253,7 @@ public class DMediumGeral extends javax.swing.JDialog {
                                         .addGroup(layout.createSequentialGroup()
                                             .addGap(30, 30, 30)
                                             .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))))
-                        .addContainerGap(17, Short.MAX_VALUE))))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1466,25 +1461,25 @@ public class DMediumGeral extends javax.swing.JDialog {
                     txtIdMedium.setText(String.valueOf(codIdMedium));
                     //verificar se o usuário existe
 
-//                    m.setCodUsuario(Integer.valueOf(txtCodeUser.getText()));
-//                    m.setIdMedium(codIdMedium);
-//                    m.setMatricula(txtMatricula.getText());
-//                    m.setNomeMedium(txtNome.getText());
-//                    m.setDataCadastro(txtDataCadastro.getText());
+                    m.setCodUsuario(Integer.valueOf(txtCodeUser.getText()));
+                    m.setIdMedium(codIdMedium);
+                    m.setMatricula(txtMatricula.getText());
+                    m.setNomeMedium(txtNome.getText());
+                    m.setDataCadastro(txtDataCadastro.getText());
                     
-//                    if(txtDataNascimento.getText().isEmpty()){
-//                        m.setDataNascimento(dataVazia);
-//                    }
-//                    if(txtDataEntrada.getText().isEmpty()){
-//                        m.setDataEntrada(dataVazia);
-//                    }
+                    if(txtDataNascimento.getText().isEmpty()){
+                        m.setDataNascimento(dataVazia);
+                    }
+                    if(txtDataEntrada.getText().isEmpty()){
+                        m.setDataEntrada(dataVazia);
+                    }
                     
-//                    if(m.incluirMedium()){
-//                        JOptionPane.showMessageDialog(null, "Cadastrado");
-//
-//                    }else{
-//                        limpaCampos();
-//                    }
+                    if(m.incluirMedium()){
+                        JOptionPane.showMessageDialog(null, "Cadastrado");
+
+                    }else{
+                        limpaCampos();
+                    }
             }
             txtDataNascimento.requestFocus();
         }
@@ -1748,10 +1743,6 @@ public class DMediumGeral extends javax.swing.JDialog {
     private void btImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btImprimirActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btImprimirActionPerformed
-
-    private void txtNomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNomeActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtNomeActionPerformed
 
     private void txtEnderecoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtEnderecoKeyPressed
 

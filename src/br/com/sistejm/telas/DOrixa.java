@@ -53,7 +53,8 @@ public class DOrixa extends javax.swing.JDialog {
         initComponents();
         ativaBotoes(true);
         this.isCellEditable(tabelaOrixa.getRowCount(), tabelaOrixa.getColumnCount());
-        txtId.setVisible(true);
+        txtId.setVisible(false);
+        txtNome.requestFocus();
         
     }
     

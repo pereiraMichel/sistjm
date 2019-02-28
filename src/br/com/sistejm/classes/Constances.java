@@ -23,6 +23,8 @@ public class Constances {
     public static final String TITULO_DMENSALIDADESMEDIUM = "TELA DE MENSALIDADES DO MÉDIUM";
     public static final String TITULO_DFICHASSMEDIUM = "TELA DE FICHAS DO MÉDIUM";
     public static final String TITULO_DNIVER = "TELA DE ANIVERSÁRIOS DE MÉDIUM";
+    public static final String TITULO_DCOROACAO = "TELA DE COROAÇÃO DOS MÉDIUNS";
+    public static final String TITULO_DTRABATEND = "TELA DE TRABALHOS DE ATENDIMENTOS";
     
     public static final String SORI = "orixas";
     public static final String SENT = "entidade";

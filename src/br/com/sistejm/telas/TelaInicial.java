@@ -266,7 +266,9 @@ public class TelaInicial extends javax.swing.JFrame {
         subMenuCComprom = new javax.swing.JMenuItem();
         subMenuCoroa = new javax.swing.JMenuItem();
         subMenuMediuns = new javax.swing.JMenuItem();
-        subMenuTrabalho = new javax.swing.JMenuItem();
+        subMenuTrabalhos = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
         menuTesouraria = new javax.swing.JMenu();
         subMenuMensalidades = new javax.swing.JMenuItem();
         subMenuPagamentos = new javax.swing.JMenuItem();
@@ -773,14 +775,20 @@ public class TelaInicial extends javax.swing.JFrame {
         });
         menuAdm.add(subMenuMediuns);
 
-        subMenuTrabalho.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_T, java.awt.event.InputEvent.CTRL_MASK));
-        subMenuTrabalho.setText("Trabalhos");
-        subMenuTrabalho.addActionListener(new java.awt.event.ActionListener() {
+        subMenuTrabalhos.setText("Trabalhos");
+
+        jMenuItem1.setText("Atendimentos");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                subMenuTrabalhoActionPerformed(evt);
+                jMenuItem1ActionPerformed(evt);
             }
         });
-        menuAdm.add(subMenuTrabalho);
+        subMenuTrabalhos.add(jMenuItem1);
+
+        jMenuItem2.setText("Corôas | Saídas");
+        subMenuTrabalhos.add(jMenuItem2);
+
+        menuAdm.add(subMenuTrabalhos);
 
         menu.add(menuAdm);
 
@@ -1081,7 +1089,12 @@ public class TelaInicial extends javax.swing.JFrame {
     }
     
     private void subMenuBancoDadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuBancoDadosActionPerformed
-        chamaBD();
+        BancoDados banco = new BancoDados(this, false);
+        banco.setLocationRelativeTo(banco);
+        banco.setTitle("Banco de Dados");
+        banco.setVisible(true);
+
+//        chamaBD();
     }//GEN-LAST:event_subMenuBancoDadosActionPerformed
 
     private void subMenuMediunsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuMediunsActionPerformed
@@ -1376,20 +1389,11 @@ public class TelaInicial extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_subMenuBaixaActionPerformed
 
-    private void subMenuTrabalhoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuTrabalhoActionPerformed
-
-        DTrabalhos trab = new DTrabalhos(this, false);
-        trab.setTitle("Selecione o tipo de trabalho");
-        trab.setLocationRelativeTo(trab);
-        trab.setVisible(true);
-        // TODO add your handling code here:
-    }//GEN-LAST:event_subMenuTrabalhoActionPerformed
-
     private void subMenuCoroaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuCoroaActionPerformed
 
         config = new Configuracoes();
         DCoroa coroa = new DCoroa(this, false);
-        coroa.setTitle("Coroa - Agendamentos");
+//        coroa.setTitle("Coroa - Agendamentos");
         coroa.recebeInfo(iduser, user);
         coroa.setAutoRequestFocus(true);
         coroa.setLocationRelativeTo(coroa);
@@ -1542,6 +1546,13 @@ public class TelaInicial extends javax.swing.JFrame {
         niver.setVisible(true);
         // TODO add your handling code here:
     }//GEN-LAST:event_btVerTodosNiverActionPerformed
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        DTrabalhos trab = new DTrabalhos(this, false);
+        trab.setLocationRelativeTo(trab);
+        trab.setVisible(true);
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     public void autorizaUsuario(){
         
@@ -1786,6 +1797,8 @@ public class TelaInicial extends javax.swing.JFrame {
     private javax.swing.JButton btVerTodosNiver;
     private javax.swing.JTextArea campoTexto;
     private javax.swing.ButtonGroup groupSaidas;
+    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JToolBar.Separator jSeparator2;
     private javax.swing.JLabel labelAcesso;
@@ -1855,7 +1868,7 @@ public class TelaInicial extends javax.swing.JFrame {
     private javax.swing.JMenuItem subMenuRelUsuarios;
     private javax.swing.JMenuItem subMenuReservas;
     private javax.swing.JMenuItem subMenuSair;
-    private javax.swing.JMenuItem subMenuTrabalho;
+    private javax.swing.JMenu subMenuTrabalhos;
     private javax.swing.JToolBar toolbar;
     private javax.swing.JTextField txtAcesso;
     private javax.swing.JTextField txtData;

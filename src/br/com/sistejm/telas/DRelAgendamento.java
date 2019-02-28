@@ -9,6 +9,10 @@ import br.com.sistejm.classes.Agendamento;
 import br.com.sistejm.classes.Configuracoes;
 import br.com.sistejm.classes.Relatorios;
 import java.awt.event.KeyEvent;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import javax.swing.JTextField;
 
 /**
@@ -20,56 +24,71 @@ public class DRelAgendamento extends javax.swing.JDialog {
     Agendamento at;
     Configuracoes config;
     Relatorios rel;
-    
-    public String modelo;
-    public String ordem;
+    Calendar cal;
+    Date d;
 
-    public String getModelo() {
-        return modelo;
+    
+    public int pago;
+    public int baixado;
+    public int consultor;
+    public String dataInicial;
+    public String dataFinal;
+
+    public int getPago() {
+        return pago;
     }
 
-    public void setModelo(String modelo) {
-        this.modelo = modelo;
+    public void setPago(int pago) {
+        this.pago = pago;
     }
 
-    public String getOrdem() {
-        return ordem;
+    public int getBaixado() {
+        return baixado;
     }
 
-    public void setOrdem(String ordem) {
-        this.ordem = ordem;
+    public void setBaixado(int baixado) {
+        this.baixado = baixado;
     }
-    
-    
-    
+
+    public int getConsultor() {
+        return consultor;
+    }
+
+    public void setConsultor(int consultor) {
+        this.consultor = consultor;
+    }
     /**
      * Creates new form DRelAgendamento
      */
     public DRelAgendamento(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        ativaPanelData(false);
-//        ativaPanels(false);
-//        preencheNome();
-//        preencheCodigo();
-        inicioPadrao();
+        ativaPanelData(true);
+        preencheTabela();
+        alimentaVar();
+    }
+    
+    public void alimentaVar(){
+        this.pago = 9;
+        this.consultor = 9;
+        this.baixado = 9;
+        this.dataInicial = "sem data";
+        this.dataFinal = "sem data";
+    }
+    public void preencheTabelaGeral(){
+        at = new Agendamento();
+        at.preencheTabAgend(tabelaRelConsulta);
     }
     
     public void ativaPanelData(boolean valor){
-        panelData.setEnabled(valor);
+        panelPeriodo.setEnabled(valor);
     }
-    
-    public void inicioPadrao(){
-        this.setOrdem("idagendamento");
-        this.setModelo("nome");
+
+    public void preencheTabela(){
+        at = new Agendamento();
+        at.preencheTabAgend(tabelaRelConsulta);
     }
    
-//    public void ativaPanels(boolean valor){
-////        panelNome.setVisible(valor);
-//        panelCodigo.setVisible(valor);
-//        panelConsultor.setVisible(false);
-//    }
-    
     public void direcionaDataInicial(){
         txtDataInicial.requestFocus();
     }
@@ -77,15 +96,7 @@ public class DRelAgendamento extends javax.swing.JDialog {
     public void fechar(){
         this.dispose();
     }
-    
-//    public void preencheNome(){
-//        at = new Agendamento();
-//        at.preencheComboNome(comboNome);
-//    }
-//    public void preencheCodigo(){
-//        at = new Agendamento();
-//        at.preencheComboCodigo(comboCodigo);
-//    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -96,27 +107,36 @@ public class DRelAgendamento extends javax.swing.JDialog {
     private void initComponents() {
 
         buttonGroup = new javax.swing.ButtonGroup();
-        groupTpRel = new javax.swing.ButtonGroup();
+        groupPagos = new javax.swing.ButtonGroup();
         groupPeriodo = new javax.swing.ButtonGroup();
+        groupBaixa = new javax.swing.ButtonGroup();
         panelDown = new javax.swing.JPanel();
         labelVersao = new javax.swing.JLabel();
         panelTop = new javax.swing.JPanel();
         labelTitulo = new javax.swing.JLabel();
         btImprimir = new javax.swing.JButton();
         btSair = new javax.swing.JButton();
-        panelData = new javax.swing.JPanel();
-        txtDataFinal = new javax.swing.JTextField();
+        panelPeriodo = new javax.swing.JPanel();
         labelAte = new javax.swing.JLabel();
-        txtDataInicial = new javax.swing.JTextField();
         labelPeriodo = new javax.swing.JLabel();
         radioHoje = new javax.swing.JRadioButton();
         radioOutras = new javax.swing.JRadioButton();
-        labelRelatorio = new javax.swing.JLabel();
-        radioNome = new javax.swing.JRadioButton();
-        radioConsultor = new javax.swing.JRadioButton();
-        radioCodigo = new javax.swing.JRadioButton();
+        txtDataInicial = new javax.swing.JTextField();
+        txtDataFinal = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         tabelaRelConsulta = new javax.swing.JTable();
+        panelPagos = new javax.swing.JPanel();
+        rPagos = new javax.swing.JRadioButton();
+        rNaoPagos = new javax.swing.JRadioButton();
+        rTodosPagos = new javax.swing.JRadioButton();
+        panelConsultores = new javax.swing.JPanel();
+        cCab = new javax.swing.JRadioButton();
+        cExu = new javax.swing.JRadioButton();
+        cTodo = new javax.swing.JRadioButton();
+        panelBaixa = new javax.swing.JPanel();
+        rTodosBaixa = new javax.swing.JRadioButton();
+        rNaoBaixa = new javax.swing.JRadioButton();
+        cBaixa = new javax.swing.JRadioButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -187,40 +207,23 @@ public class DRelAgendamento extends javax.swing.JDialog {
         );
         panelTopLayout.setVerticalGroup(
             panelTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(labelTitulo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(panelTopLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(panelTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(btSair, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btImprimir, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(labelTitulo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        panelData.setBackground(new java.awt.Color(255, 255, 255));
-        panelData.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
-
-        txtDataFinal.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
-        txtDataFinal.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                txtDataFinalKeyReleased(evt);
-            }
-        });
+        panelPeriodo.setBackground(new java.awt.Color(255, 255, 255));
+        panelPeriodo.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "   PERÍODO   ", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Arial", 1, 10), new java.awt.Color(0, 0, 153))); // NOI18N
 
         labelAte.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         labelAte.setText("até");
 
-        txtDataInicial.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
-        txtDataInicial.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                txtDataInicialKeyPressed(evt);
-            }
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                txtDataInicialKeyReleased(evt);
-            }
-        });
-
         labelPeriodo.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        labelPeriodo.setText("Período:");
+        labelPeriodo.setText("De");
 
         radioHoje.setBackground(new java.awt.Color(255, 255, 255));
         groupPeriodo.add(radioHoje);
@@ -243,73 +246,60 @@ public class DRelAgendamento extends javax.swing.JDialog {
             }
         });
 
-        javax.swing.GroupLayout panelDataLayout = new javax.swing.GroupLayout(panelData);
-        panelData.setLayout(panelDataLayout);
-        panelDataLayout.setHorizontalGroup(
-            panelDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelDataLayout.createSequentialGroup()
+        txtDataInicial.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
+        txtDataInicial.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtDataInicialKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtDataInicialKeyReleased(evt);
+            }
+        });
+
+        txtDataFinal.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
+        txtDataFinal.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtDataFinalKeyReleased(evt);
+            }
+        });
+
+        javax.swing.GroupLayout panelPeriodoLayout = new javax.swing.GroupLayout(panelPeriodo);
+        panelPeriodo.setLayout(panelPeriodoLayout);
+        panelPeriodoLayout.setHorizontalGroup(
+            panelPeriodoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelPeriodoLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(labelPeriodo)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(panelDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panelDataLayout.createSequentialGroup()
-                        .addComponent(txtDataInicial, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(labelAte)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txtDataFinal, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(panelDataLayout.createSequentialGroup()
-                        .addComponent(radioHoje)
-                        .addGap(18, 18, 18)
-                        .addComponent(radioOutras)))
-                .addContainerGap())
-        );
-        panelDataLayout.setVerticalGroup(
-            panelDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelDataLayout.createSequentialGroup()
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(txtDataInicial, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
+                .addComponent(labelAte)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(txtDataFinal, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(34, 34, 34))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelPeriodoLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(panelDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addComponent(radioHoje)
+                .addGap(18, 18, 18)
+                .addComponent(radioOutras)
+                .addGap(21, 21, 21))
+        );
+        panelPeriodoLayout.setVerticalGroup(
+            panelPeriodoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelPeriodoLayout.createSequentialGroup()
+                .addGroup(panelPeriodoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(radioHoje)
                     .addComponent(radioOutras))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(panelDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtDataInicial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(panelPeriodoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labelAte)
-                    .addComponent(txtDataFinal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(labelPeriodo))
-                .addGap(22, 22, 22))
+                    .addComponent(labelPeriodo)
+                    .addComponent(txtDataInicial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtDataFinal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
 
-        labelRelatorio.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        labelRelatorio.setText("Relatório por:");
-
-        groupTpRel.add(radioNome);
-        radioNome.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
-        radioNome.setSelected(true);
-        radioNome.setText("   Nome");
-        radioNome.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                radioNomeActionPerformed(evt);
-            }
-        });
-
-        groupTpRel.add(radioConsultor);
-        radioConsultor.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
-        radioConsultor.setText("  Consultor");
-        radioConsultor.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                radioConsultorActionPerformed(evt);
-            }
-        });
-
-        groupTpRel.add(radioCodigo);
-        radioCodigo.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
-        radioCodigo.setText("  Comprovante");
-        radioCodigo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                radioCodigoActionPerformed(evt);
-            }
-        });
+        jScrollPane1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "   PRÉ-VISUALIZAÇÃO   ", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Arial", 1, 10), new java.awt.Color(0, 0, 153))); // NOI18N
 
         tabelaRelConsulta.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -321,6 +311,166 @@ public class DRelAgendamento extends javax.swing.JDialog {
         ));
         jScrollPane1.setViewportView(tabelaRelConsulta);
 
+        panelPagos.setBackground(new java.awt.Color(255, 255, 255));
+        panelPagos.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "   PAGOS   ", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Arial", 1, 10), new java.awt.Color(0, 0, 153))); // NOI18N
+
+        rPagos.setBackground(new java.awt.Color(255, 255, 255));
+        groupPagos.add(rPagos);
+        rPagos.setText(" Sim");
+        rPagos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rPagosActionPerformed(evt);
+            }
+        });
+
+        rNaoPagos.setBackground(new java.awt.Color(255, 255, 255));
+        groupPagos.add(rNaoPagos);
+        rNaoPagos.setText(" Não");
+        rNaoPagos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rNaoPagosActionPerformed(evt);
+            }
+        });
+
+        rTodosPagos.setBackground(new java.awt.Color(255, 255, 255));
+        groupPagos.add(rTodosPagos);
+        rTodosPagos.setSelected(true);
+        rTodosPagos.setText(" Todos");
+        rTodosPagos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rTodosPagosActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout panelPagosLayout = new javax.swing.GroupLayout(panelPagos);
+        panelPagos.setLayout(panelPagosLayout);
+        panelPagosLayout.setHorizontalGroup(
+            panelPagosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelPagosLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(rPagos)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(rNaoPagos)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(rTodosPagos)
+                .addContainerGap(30, Short.MAX_VALUE))
+        );
+        panelPagosLayout.setVerticalGroup(
+            panelPagosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelPagosLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addGroup(panelPagosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(rPagos)
+                    .addComponent(rNaoPagos)
+                    .addComponent(rTodosPagos)))
+        );
+
+        panelConsultores.setBackground(new java.awt.Color(255, 255, 255));
+        panelConsultores.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "   CONSULTORES   ", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Arial", 1, 10), new java.awt.Color(0, 0, 153))); // NOI18N
+
+        cCab.setBackground(new java.awt.Color(255, 255, 255));
+        buttonGroup.add(cCab);
+        cCab.setText(" Caboclo");
+        cCab.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cCabActionPerformed(evt);
+            }
+        });
+
+        cExu.setBackground(new java.awt.Color(255, 255, 255));
+        buttonGroup.add(cExu);
+        cExu.setText(" Exu");
+        cExu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cExuActionPerformed(evt);
+            }
+        });
+
+        cTodo.setBackground(new java.awt.Color(255, 255, 255));
+        buttonGroup.add(cTodo);
+        cTodo.setSelected(true);
+        cTodo.setText(" Todos");
+        cTodo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cTodoActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout panelConsultoresLayout = new javax.swing.GroupLayout(panelConsultores);
+        panelConsultores.setLayout(panelConsultoresLayout);
+        panelConsultoresLayout.setHorizontalGroup(
+            panelConsultoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelConsultoresLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(cCab)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(cExu)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(cTodo)
+                .addContainerGap(8, Short.MAX_VALUE))
+        );
+        panelConsultoresLayout.setVerticalGroup(
+            panelConsultoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelConsultoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addComponent(cCab)
+                .addComponent(cExu)
+                .addComponent(cTodo))
+        );
+
+        panelBaixa.setBackground(new java.awt.Color(255, 255, 255));
+        panelBaixa.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "   BAIXADO   ", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Arial", 1, 10), new java.awt.Color(0, 0, 204))); // NOI18N
+
+        rTodosBaixa.setBackground(new java.awt.Color(255, 255, 255));
+        groupBaixa.add(rTodosBaixa);
+        rTodosBaixa.setSelected(true);
+        rTodosBaixa.setText(" Todos");
+        rTodosBaixa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rTodosBaixaActionPerformed(evt);
+            }
+        });
+
+        rNaoBaixa.setBackground(new java.awt.Color(255, 255, 255));
+        groupBaixa.add(rNaoBaixa);
+        rNaoBaixa.setText(" Não");
+        rNaoBaixa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rNaoBaixaActionPerformed(evt);
+            }
+        });
+
+        cBaixa.setBackground(new java.awt.Color(255, 255, 255));
+        groupBaixa.add(cBaixa);
+        cBaixa.setText(" Sim");
+        cBaixa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cBaixaActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout panelBaixaLayout = new javax.swing.GroupLayout(panelBaixa);
+        panelBaixa.setLayout(panelBaixaLayout);
+        panelBaixaLayout.setHorizontalGroup(
+            panelBaixaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelBaixaLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(cBaixa)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(rNaoBaixa)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(rTodosBaixa)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        panelBaixaLayout.setVerticalGroup(
+            panelBaixaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelBaixaLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addGroup(panelBaixaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cBaixa)
+                    .addComponent(rNaoBaixa)
+                    .addComponent(rTodosBaixa)))
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -328,37 +478,36 @@ public class DRelAgendamento extends javax.swing.JDialog {
             .addComponent(panelDown, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(panelTop, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 568, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(labelRelatorio)
-                        .addGap(18, 18, 18)
+                        .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(radioConsultor)
-                            .addComponent(radioNome)
-                            .addComponent(radioCodigo))
-                        .addGap(26, 26, 26)
-                        .addComponent(panelData, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(33, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(panelPagos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(panelConsultores, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(panelBaixa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 568, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(153, 153, 153)
+                        .addComponent(panelPeriodo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(58, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addComponent(panelTop, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(labelRelatorio)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(radioNome)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(radioConsultor)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(radioCodigo))
-                    .addComponent(panelData, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(panelPeriodo, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(panelBaixa, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(panelPagos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(panelConsultores, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(panelDown, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
@@ -368,38 +517,51 @@ public class DRelAgendamento extends javax.swing.JDialog {
     private void btImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btImprimirActionPerformed
         rel = new Relatorios();
         config = new Configuracoes();
-        String valor = null;
-        
-//        if(this.modelo.equals("nome")){
-//            valor = comboNome.getSelectedItem().toString();
-//        }else if (this.modelo.equals("consultor")){
-//            valor = comboConsultor.getSelectedItem().toString();
-//        }else if (this.modelo.equals("codigo")){
-//            valor = comboCodigo.getSelectedItem().toString();
-//        }
-        
+
         if(txtDataInicial.getText().equals("")){
-            txtDataInicial.setText(config.retornaData());
+            this.dataInicial = "sem data";
+        }else{
+            this.dataInicial = config.retornaFormatoDataSQL(txtDataInicial.getText());
         }
         if(txtDataFinal.getText().equals("")){
-            txtDataFinal.setText(config.retornaData());
+            this.dataFinal = "sem data";
+        }else{
+            this.dataFinal = config.retornaFormatoDataSQL(txtDataFinal.getText());
         }
         
-        rel.geraRelatorioAgendamento(this.getModelo(), valor, config.retornaFormatoDataSQL(txtDataInicial.getText()), config.retornaFormatoDataSQL(txtDataFinal.getText()), this.getOrdem());
+        rel.relTabAgend(this.dataInicial, this.dataFinal, this.pago, this.baixado, this.consultor);
+//        rel.geraRelatorioAgendamento(this.getModelo(), valor, config.retornaFormatoDataSQL(txtDataInicial.getText()), config.retornaFormatoDataSQL(txtDataFinal.getText()), this.getOrdem());
 
-        // TODO add your handling code here:
     }//GEN-LAST:event_btImprimirActionPerformed
 
     private void txtDataInicialKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDataInicialKeyReleased
 
-        mascaraData(txtDataInicial);
+        if(txtDataInicial.getText().length() == 2){
+            txtDataInicial.setText(txtDataInicial.getText() + "/");
+        }
+        if(txtDataInicial.getText().length() == 5){
+            txtDataInicial.setText(txtDataInicial.getText() + "/");
+        }
+        if(txtDataInicial.getText().length() == 10){
+            txtDataInicial.requestFocus();
+            this.dataInicial = txtDataInicial.getText();
+        }
         // TODO add your handling code here:
     }//GEN-LAST:event_txtDataInicialKeyReleased
 
     private void txtDataFinalKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDataFinalKeyReleased
 
-        mascaraData(txtDataFinal);
-        // TODO add your handling code here:
+        if(txtDataFinal.getText().length() == 2){
+            txtDataFinal.setText(txtDataFinal.getText() + "/");
+        }
+        if(txtDataFinal.getText().length() == 5){
+            txtDataFinal.setText(txtDataFinal.getText() + "/");
+        }
+        if(txtDataFinal.getText().length() == 10){
+            this.dataFinal = txtDataFinal.getText();
+            pesquisaPreRelatorio();
+        }
+
     }//GEN-LAST:event_txtDataFinalKeyReleased
 
     private void txtDataInicialKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDataInicialKeyPressed
@@ -411,40 +573,12 @@ public class DRelAgendamento extends javax.swing.JDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtDataInicialKeyPressed
 
-    private void radioNomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioNomeActionPerformed
-//        ativaPanels(false);
-//        panelNome.setVisible(true);
-        direcionaDataInicial();
-        this.setModelo("nome");
-// TODO add your handling code here:
-    }//GEN-LAST:event_radioNomeActionPerformed
-
-    private void radioConsultorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioConsultorActionPerformed
-
-//        panelNome.setVisible(false);
-//        panelCodigo.setVisible(false);
-//        panelConsultor.setVisible(true);
-        direcionaDataInicial();
-        this.setModelo("consultor");
-
-        // TODO add your handling code here:
-    }//GEN-LAST:event_radioConsultorActionPerformed
-
-    private void radioCodigoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioCodigoActionPerformed
-
-//        panelNome.setVisible(false);
-//        panelConsultor.setVisible(false);
-//        panelCodigo.setVisible(true);
-        direcionaDataInicial();
-        this.setModelo("codigo");
-        // TODO add your handling code here:
-    }//GEN-LAST:event_radioCodigoActionPerformed
-
     private void radioOutrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioOutrasActionPerformed
 
         txtDataInicial.setText("");
         txtDataFinal.setText("");
         txtDataInicial.requestFocus();
+        
         // TODO add your handling code here:
     }//GEN-LAST:event_radioOutrasActionPerformed
 
@@ -454,27 +588,93 @@ public class DRelAgendamento extends javax.swing.JDialog {
         
         txtDataInicial.setText(config.retornaData());
         txtDataFinal.setText(config.retornaData());
+
+        pesquisaPreRelatorio();
         // TODO add your handling code here:
     }//GEN-LAST:event_radioHojeActionPerformed
 
     private void btSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btSairActionPerformed
-
         this.fechar();
 // TODO add your handling code here:
     }//GEN-LAST:event_btSairActionPerformed
 
+    private void cCabActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cCabActionPerformed
+
+        this.consultor = 1;
+
+        pesquisaPreRelatorio();
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cCabActionPerformed
+
+    private void cExuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cExuActionPerformed
+
+        this.consultor = 2;
+        pesquisaPreRelatorio();
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cExuActionPerformed
+
+    private void cTodoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cTodoActionPerformed
+        this.consultor = 9;
+        pesquisaPreRelatorio();
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cTodoActionPerformed
+
+    private void rTodosPagosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rTodosPagosActionPerformed
+        this.pago = 9;
+        pesquisaPreRelatorio();
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rTodosPagosActionPerformed
+
+    private void rTodosBaixaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rTodosBaixaActionPerformed
+        this.baixado = 9;
+        pesquisaPreRelatorio();
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rTodosBaixaActionPerformed
+
+    private void rPagosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rPagosActionPerformed
+
+        this.pago = 1;
+        pesquisaPreRelatorio();
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rPagosActionPerformed
+
+    private void rNaoPagosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rNaoPagosActionPerformed
+
+        this.pago = 0;
+        pesquisaPreRelatorio();
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rNaoPagosActionPerformed
+
+    private void cBaixaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cBaixaActionPerformed
+
+        this.baixado = 1;
+        pesquisaPreRelatorio();
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cBaixaActionPerformed
+
+    private void rNaoBaixaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rNaoBaixaActionPerformed
+        this.baixado = 0;
+        pesquisaPreRelatorio();
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rNaoBaixaActionPerformed
+
     
     public void pesquisaPreRelatorio(){
         at = new Agendamento();
+        config = new Configuracoes();
         
-        switch(this.modelo){
-            case "nome":
-                
+        if(txtDataInicial.getText().equals("")){
+            this.dataInicial = "sem data";
+        }else{
+            this.dataInicial = config.retornaFormatoDataSQL(txtDataInicial.getText());
         }
-        
-        
-        at.buscaTabAgendamento(tabelaRelConsulta, this.modelo, modelo, txtDataInicial.getText(), txtDataFinal.getText());
-        //JTable tabela, String coluna, String valor, String data1, String data2
+        if(txtDataFinal.getText().equals("")){
+            this.dataFinal = "sem data";
+        }else{
+            this.dataFinal = config.retornaFormatoDataSQL(txtDataFinal.getText());
+        }
+        at.buscaTabAgend(tabelaRelConsulta, this.dataInicial, this.dataFinal, this.pago, this.baixado, this.consultor);
+
     }
     
     public void mascaraData(JTextField campo){
@@ -531,21 +731,30 @@ public class DRelAgendamento extends javax.swing.JDialog {
     private javax.swing.JButton btImprimir;
     private javax.swing.JButton btSair;
     private javax.swing.ButtonGroup buttonGroup;
+    private javax.swing.JRadioButton cBaixa;
+    private javax.swing.JRadioButton cCab;
+    private javax.swing.JRadioButton cExu;
+    private javax.swing.JRadioButton cTodo;
+    private javax.swing.ButtonGroup groupBaixa;
+    private javax.swing.ButtonGroup groupPagos;
     private javax.swing.ButtonGroup groupPeriodo;
-    private javax.swing.ButtonGroup groupTpRel;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel labelAte;
     private javax.swing.JLabel labelPeriodo;
-    private javax.swing.JLabel labelRelatorio;
     private javax.swing.JLabel labelTitulo;
     private javax.swing.JLabel labelVersao;
-    private javax.swing.JPanel panelData;
+    private javax.swing.JPanel panelBaixa;
+    private javax.swing.JPanel panelConsultores;
     private javax.swing.JPanel panelDown;
+    private javax.swing.JPanel panelPagos;
+    private javax.swing.JPanel panelPeriodo;
     private javax.swing.JPanel panelTop;
-    private javax.swing.JRadioButton radioCodigo;
-    private javax.swing.JRadioButton radioConsultor;
+    private javax.swing.JRadioButton rNaoBaixa;
+    private javax.swing.JRadioButton rNaoPagos;
+    private javax.swing.JRadioButton rPagos;
+    private javax.swing.JRadioButton rTodosBaixa;
+    private javax.swing.JRadioButton rTodosPagos;
     private javax.swing.JRadioButton radioHoje;
-    private javax.swing.JRadioButton radioNome;
     private javax.swing.JRadioButton radioOutras;
     private javax.swing.JTable tabelaRelConsulta;
     private javax.swing.JTextField txtDataFinal;
